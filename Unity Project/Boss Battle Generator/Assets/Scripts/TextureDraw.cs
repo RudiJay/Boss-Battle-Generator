@@ -41,7 +41,7 @@ public static class TextureDraw
         }
     }
 
-    public static void Rect(Texture2D texture, int x0, int y0, int width, int height, Color col)
+    public static void Rect(Texture2D texture, int x0, int y0, int width, int height, Color col, int rotation = 0)
     {
         int dy = height / 2;
         int dx = width / 2;
@@ -50,7 +50,16 @@ public static class TextureDraw
         {
             for (int x = -dx; x <= dx; x++)
             {
-                texture.SetPixel(x0 + x, y0 + y, col);
+                int rotX = x0 + x;
+                int rotY = y0 + y;
+
+                if (rotation != 0)
+                {
+                    rotX = (int)((x0 + x) * Mathf.Cos(rotation) - (y0 + y) * Mathf.Sin(rotation));
+                    rotY = (int)((x0 + x) * Mathf.Sin(rotation) + (y0 + y) * Mathf.Cos(rotation));
+                }
+
+                texture.SetPixel(rotX, rotY, col);
             }
         }
     }

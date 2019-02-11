@@ -13,7 +13,7 @@ public class GeneratorScript : MonoBehaviour
 
     //Random values
     [SerializeField]
-    int shapeMax = 5;
+    int shapeMax = 5, symmetricMax = 4;
 
     private void Awake()
     {
@@ -37,11 +37,15 @@ public class GeneratorScript : MonoBehaviour
                 int textureHeight = (int)(maxBossHeight * 1.25f);
 
                 var texture = new Texture2D(textureWidth, textureHeight, TextureFormat.ARGB32, false);
+                texture.wrapMode = TextureWrapMode.Clamp;
 
                 //TextureDraw.Clear(texture);
                 
                 int shapeSeed = Random.Range(0, shapeMax);
+                int symmetricSeed = Random.Range(0, symmetricMax);
                 Debug.Log("Shape seed (0, " + shapeMax + "): " + shapeSeed);
+                //Debug.Log("Symmetric seed (0, " + symmetricMax + "): " + symmetricSeed);
+
                 if (shapeSeed < shapeMax / 2)
                 {
                     int radiusMax = maxBossWidth / 2;
@@ -49,8 +53,17 @@ public class GeneratorScript : MonoBehaviour
                     int radiusSeed = Random.Range(radiusMin, radiusMax);
                     Debug.Log("Radius seed (" + radiusMin + ", " + radiusMax + "): " + radiusSeed);
 
+                    int xMax = textureWidth - radiusSeed;
+                    int xMin = radiusSeed;
+                    int xSeed = Random.Range(xMin, xMax);
+                    Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
 
-                    TextureDraw.Circle(texture, textureWidth / 2, textureHeight / 2, radiusSeed, Color.red);
+                    int yMax = textureHeight - radiusSeed;
+                    int yMin = radiusSeed;
+                    int ySeed = Random.Range(yMin, yMax);
+                    Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
+
+                    TextureDraw.Circle(texture, xSeed, ySeed, radiusSeed, Color.red);
                 }
                 else
                 {
@@ -64,6 +77,7 @@ public class GeneratorScript : MonoBehaviour
 
                     TextureDraw.Rect(texture, textureWidth / 2, textureHeight / 2, widthSeed, heightSeed, Color.red);
                 }
+
 
                 texture.Apply();
 

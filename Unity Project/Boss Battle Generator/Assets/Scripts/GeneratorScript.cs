@@ -53,7 +53,7 @@ public class GeneratorScript : MonoBehaviour
                 int shapeSeed = Random.Range(0, shapeMax);
                 int symmetricSeed = Random.Range(0, symmetricMax);
                 Debug.Log("Shape seed (0, " + shapeMax + "): " + shapeSeed);
-                //Debug.Log("Symmetric seed (0, " + symmetricMax + "): " + symmetricSeed);
+                Debug.Log("Symmetric seed (0, " + symmetricMax + "): " + symmetricSeed);
 
                 if (shapeSeed < shapeMax / 2)
                 {
@@ -71,6 +71,22 @@ public class GeneratorScript : MonoBehaviour
                     int yMin = yOffset + radiusSeed;
                     int ySeed = Random.Range(yMin, yMax);
                     Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
+
+                    if (symmetricSeed >= symmetricMax * 0.2)
+                    {
+                        if (symmetricSeed > symmetricMax * 0.6)
+                        {
+                            //if symmetric type 1, double up shape on both sides
+                            //get opposite xSeed
+                            int x2 = 2 * (textureWidth / 2) - xSeed;
+                            TextureDraw.Circle(texture, x2, ySeed, radiusSeed, Color.red);
+                        }
+                        else
+                        {
+                            //if symmetric type 2, simply put shape in the middle
+                            xSeed = textureWidth / 2;
+                        }
+                    }
 
                     TextureDraw.Circle(texture, xSeed, ySeed, radiusSeed, Color.red);
                 }

@@ -35,11 +35,20 @@ public class GeneratorScript : MonoBehaviour
             {
                 int textureWidth = (int)(maxBossWidth * 1.25f);
                 int textureHeight = (int)(maxBossHeight * 1.25f);
+                int xOffset = (textureWidth - maxBossWidth) / 2;
+                int yOffset = (textureHeight - maxBossHeight) / 2;
 
                 var texture = new Texture2D(textureWidth, textureHeight, TextureFormat.ARGB32, false);
                 texture.wrapMode = TextureWrapMode.Clamp;
 
                 //TextureDraw.Clear(texture);
+                for (int y = yOffset; y < maxBossHeight + yOffset; y++)
+                {
+                    for (int x = xOffset; x < maxBossWidth + xOffset; x++)
+                    {
+                        texture.SetPixel(x, y, Color.clear);
+                    }
+                }
                 
                 int shapeSeed = Random.Range(0, shapeMax);
                 int symmetricSeed = Random.Range(0, symmetricMax);
@@ -53,13 +62,13 @@ public class GeneratorScript : MonoBehaviour
                     int radiusSeed = Random.Range(radiusMin, radiusMax);
                     Debug.Log("Radius seed (" + radiusMin + ", " + radiusMax + "): " + radiusSeed);
 
-                    int xMax = textureWidth - radiusSeed;
-                    int xMin = radiusSeed;
+                    int xMax = maxBossWidth + xOffset - radiusSeed;
+                    int xMin = xOffset + radiusSeed;
                     int xSeed = Random.Range(xMin, xMax);
                     Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
 
-                    int yMax = textureHeight - radiusSeed;
-                    int yMin = radiusSeed;
+                    int yMax = maxBossHeight + yOffset - radiusSeed;
+                    int yMin = yOffset + radiusSeed;
                     int ySeed = Random.Range(yMin, yMax);
                     Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
 
@@ -69,13 +78,24 @@ public class GeneratorScript : MonoBehaviour
                 {
                     int minWidth = maxBossWidth / 10;
                     int minHeight = maxBossHeight / 10;
+
                     int widthSeed = Random.Range(minWidth, maxBossWidth);
                     int heightSeed = Random.Range(minHeight, maxBossHeight);
                     Debug.Log("Width seed (" + minWidth + ", " + maxBossWidth + "): " + widthSeed);
                     Debug.Log("Height seed (" + minHeight + ", " + maxBossHeight + "): " + heightSeed);
 
+                    int xMax = maxBossWidth + xOffset - (widthSeed / 2);
+                    int xMin = xOffset + (widthSeed / 2);
+                    int xSeed = Random.Range(xMin, xMax);
+                    Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
 
-                    TextureDraw.Rect(texture, textureWidth / 2, textureHeight / 2, widthSeed, heightSeed, Color.red);
+                    int yMax = maxBossHeight + yOffset - (heightSeed / 2);
+                    int yMin = yOffset + (heightSeed / 2);
+                    int ySeed = Random.Range(yMin, yMax);
+                    Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
+
+
+                    TextureDraw.Rect(texture, xSeed, ySeed, widthSeed, heightSeed, Color.red);
                 }
 
 

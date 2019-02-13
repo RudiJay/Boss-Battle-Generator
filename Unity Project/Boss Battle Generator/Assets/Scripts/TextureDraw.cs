@@ -20,6 +20,27 @@ public static class TextureDraw
     }
 
     /// <summary>
+    /// Copy pixels from one texture onto another at a position
+    /// </summary>
+    /// <param name="textureIO">texture to copy other texture onto</param>
+    /// <param name="textureIn">texture to copy onto other texture</param>
+    /// <param name="x0">x position to start copying texture at</param>
+    /// <param name="y0">y position to start copying texture at</param>
+    public static void CopyFromTexture(Texture2D textureIO, Texture2D textureIn, int x0, int y0)
+    {
+        for (int y = 0; y < textureIn.height; y++)
+        {
+            for (int x = 0; x < textureIn.width; x++)
+            {
+                if (textureIn.GetPixel(x, y).a != 0)
+                {
+                    textureIO.SetPixel(x0 + x, y0 + y, textureIn.GetPixel(x, y));
+                }
+            }
+        }
+    }
+
+    /// <summary>
     /// Draws a circle on the texture
     /// </summary>
     /// <param name="texture">texture to draw circle onto</param>
@@ -40,7 +61,16 @@ public static class TextureDraw
             }
         }
     }
-
+    /// <summary>
+    /// Draws a rectangle on the texture
+    /// </summary>
+    /// <param name="texture">texture to draw rect onto</param>
+    /// <param name="x0">x coordinate of midpoint of rect</param>
+    /// <param name="y0">y coordinate of midpoint of rect</param>
+    /// <param name="width">total width of rect</param>
+    /// <param name="height">total height of rect</param>
+    /// <param name="col">color of rect</param>
+    /// <param name="rotation">rotation of rect (known issues)</param>
     public static void Rect(Texture2D texture, int x0, int y0, int width, int height, Color col, int rotation = 0)
     {
         int dy = height / 2;

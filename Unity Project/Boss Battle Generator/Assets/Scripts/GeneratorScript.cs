@@ -123,6 +123,14 @@ public class GeneratorScript : MonoBehaviour
                         Debug.Log("Height seed (" + minHeight + ", " + maxBossHeight + "): " + heightSeed + " (" + height + "%)");
 
                         snapshotSpriteObj.transform.localScale = new Vector3(width, height);
+
+                        int rotSeed = Random.Range(0, 360);
+                        Debug.Log("Rot seed (" + rotSeed + ")");
+
+                        snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, rotSeed);
+
+                        //TODO: Work out maths to determine additional length of width and height in order to correctly determine max and min
+                        //Currently not that big of a deal
                         
                         int xMax = maxBossWidth + xOffset - (widthSeed / 2);
                         int xMin = xOffset + (widthSeed / 2);

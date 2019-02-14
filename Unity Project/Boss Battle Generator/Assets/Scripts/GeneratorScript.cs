@@ -93,11 +93,13 @@ public class GeneratorScript : MonoBehaviour
                     Debug.Log("Shape seed (0, " + shapeMax + "): " + shapeSeed);
                     Debug.Log("Symmetric seed (0, " + symmetricMax + "): " + symmetricSeed);
 
+                    snapshotSpriteObj.transform.rotation = Quaternion.identity;
+
                     Shape spriteShape = Shape.CIRCLE;
 
                     if (shapeSeed < shapeMax / 2)
                     {
-                        spriteShape = Shape.CIRCLE;
+                        spriteShape = Shape.SQUARE;
                     }
                     else
                     {
@@ -124,26 +126,29 @@ public class GeneratorScript : MonoBehaviour
 
                         snapshotSpriteObj.transform.localScale = new Vector3(width, height);
 
-                        int rotSeed = Random.Range(0, 360);
+                        int rotSeed = Random.Range(0, 180);
                         Debug.Log("Rot seed (" + rotSeed + ")");
 
                         snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, rotSeed);
 
-                        //TODO: Work out maths to determine additional length of width and height in order to correctly determine max and min
-                        //Currently not that big of a deal
-                        
-                        int xMax = maxBossWidth + xOffset - (widthSeed / 2);
-                        int xMin = xOffset + (widthSeed / 2);
+                        float theta = rotSeed * Mathf.Deg2Rad;
+
+                        int rotWidth = (int)(Mathf.Abs(widthSeed * Mathf.Sin(theta)) + Mathf.Abs(heightSeed * Mathf.Cos(theta)));
+                        Debug.Log("width " + rotWidth);
+                        int rotHeight = (int)(Mathf.Abs(widthSeed * Mathf.Cos(theta)) + Mathf.Abs(heightSeed * Mathf.Sin(theta)));
+                        Debug.Log("fgf " + rotHeight);
+
+                        int xMax = maxBossWidth + xOffset - (rotWidth / 2);
+                        int xMin = xOffset + (rotWidth / 2);
                         int xSeed = Random.Range(xMin, xMax);
                         Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
 
-                        x0 = xSeed;
-
-                        int yMax = maxBossHeight + yOffset - (heightSeed / 2);
+                        int yMax = maxBossHeight + yOffset - (rotHeight / 2);
                         int yMin = yOffset + (heightSeed / 2);
                         int ySeed = Random.Range(yMin, yMax);
                         Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
-                        
+
+                        x0 = xSeed;
                         y0 = ySeed;
                     }
                     else if (spriteShape == Shape.CIRCLE)

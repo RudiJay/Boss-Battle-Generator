@@ -64,7 +64,7 @@ public class GeneratorScript : MonoBehaviour
         yOffset = (textureHeight - maxBossHeight) / 2;
     }
 
-    public void GenerateBoss()
+    public void GenerateSprite()
     {
         if (bossObj && spriteSnapshotCam && snapshotSpriteObj)
         {
@@ -117,26 +117,34 @@ public class GeneratorScript : MonoBehaviour
                         int minWidth = maxBossWidth / 10;
                         int minHeight = maxBossHeight / 10;
 
-                        int widthSeed = Random.Range(minWidth, maxBossWidth);
-                        int heightSeed = Random.Range(minHeight, maxBossHeight);
-                        float width = widthSeed / (float)maxBossWidth;
-                        float height = heightSeed / (float)maxBossHeight;
-                        Debug.Log("Width seed (" + minWidth + ", " + maxBossWidth + "): " + widthSeed + " (" + width + "%)");
-                        Debug.Log("Height seed (" + minHeight + ", " + maxBossHeight + "): " + heightSeed + " (" + height + "%)");
-
-                        snapshotSpriteObj.transform.localScale = new Vector3(width, height);
-
-                        int rotSeed = Random.Range(0, 180);
+                        int rotSeed = Random.Range(-45, 45);
                         Debug.Log("Rot seed (" + rotSeed + ")");
 
                         snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, rotSeed);
 
                         float theta = rotSeed * Mathf.Deg2Rad;
 
-                        int rotWidth = (int)(Mathf.Abs(widthSeed * Mathf.Sin(theta)) + Mathf.Abs(heightSeed * Mathf.Cos(theta)));
+                        /*
+                        int maxRotWidth = 
+                            (int)(((maxBossWidth * Mathf.Cos(theta)) - (maxBossHeight * Mathf.Sin(theta))) / (Mathf.Pow(Mathf.Cos(theta), 2) - Mathf.Pow(Mathf.Sin(theta), 2)));
+
+                        int maxRotHeight = 
+                            (int)(((maxBossHeight * Mathf.Cos(theta)) - (maxBossWidth * Mathf.Sin(theta))) / (Mathf.Pow(Mathf.Cos(theta), 2) - Mathf.Pow(Mathf.Sin(theta), 2)));
+                        */
+
+                        int widthSeed = Random.Range(minWidth, (int)(maxBossWidth * 0.75f));
+                        int heightSeed = Random.Range(minHeight, (int)(maxBossHeight * 0.75f));
+                        float width = widthSeed / (float)maxBossWidth;
+                        float height = heightSeed / (float)maxBossHeight;
+                        Debug.Log("Width seed (" + minWidth + ", " + (int)(maxBossWidth * 0.75f) + "): " + widthSeed + " (" + width + "%)");
+                        Debug.Log("Height seed (" + minHeight + ", " + (int)(maxBossHeight * 0.75f) + "): " + heightSeed + " (" + height + "%)");
+
+                        snapshotSpriteObj.transform.localScale = new Vector3(width, height);                        
+
+                        int rotWidth = (int)(Mathf.Abs(heightSeed * Mathf.Sin(theta)) + Mathf.Abs(widthSeed * Mathf.Cos(theta)));
                         Debug.Log("width " + rotWidth);
-                        int rotHeight = (int)(Mathf.Abs(widthSeed * Mathf.Cos(theta)) + Mathf.Abs(heightSeed * Mathf.Sin(theta)));
-                        Debug.Log("fgf " + rotHeight);
+                        int rotHeight = (int)(Mathf.Abs(widthSeed * Mathf.Sin(theta)) + Mathf.Abs(heightSeed * Mathf.Cos(theta)));
+                        Debug.Log("height " + rotHeight);
 
                         int xMax = maxBossWidth + xOffset - (rotWidth / 2);
                         int xMin = xOffset + (rotWidth / 2);
@@ -144,7 +152,7 @@ public class GeneratorScript : MonoBehaviour
                         Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
 
                         int yMax = maxBossHeight + yOffset - (rotHeight / 2);
-                        int yMin = yOffset + (heightSeed / 2);
+                        int yMin = yOffset + (rotHeight / 2);
                         int ySeed = Random.Range(yMin, yMax);
                         Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
 

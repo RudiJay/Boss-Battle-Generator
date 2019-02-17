@@ -177,7 +177,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Generate
+  m_Text: Generate Sprite
 --- !u!1 &1997497984759763202
 GameObject:
   m_ObjectHideFlags: 0

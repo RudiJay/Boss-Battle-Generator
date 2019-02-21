@@ -32,7 +32,7 @@ public static class TextureDraw
         {
             for (int x = 0; x < textureIn.width; x++)
             {
-                if (textureIn.GetPixel(x, y).a != 0)
+                if (textureIn.GetPixel(x, y).a == 1)
                 {
                     textureIO.SetPixel(x0 + x, y0 + y, textureIn.GetPixel(x, y));
                 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GeneratorScript : MonoBehaviour
 {
@@ -11,6 +12,11 @@ public class GeneratorScript : MonoBehaviour
     private Camera spriteSnapshotCam;
 
     private GameObject snapshotSpriteObj;
+
+    private InputField seedInputField;
+
+    [SerializeField]
+    private int seed;
 
     [SerializeField]
     private int maxBossWidth = 500, maxBossHeight = 500;
@@ -60,13 +66,17 @@ public class GeneratorScript : MonoBehaviour
 
         snapshotSpriteObj = GameObject.FindWithTag("SnapshotSpriteObj");
 
+        seedInputField = GameObject.FindWithTag("SeedInputField").GetComponent<InputField>();
+
+        GenerateSeed();
+
         textureWidth = (int)(maxBossWidth * 1.25f);
         textureHeight = (int)(maxBossHeight * 1.25f);
         xOffset = (textureWidth - maxBossWidth) / 2;
         yOffset = (textureHeight - maxBossHeight) / 2;
     }
 
-    private void DrawFromSnapshot(Texture2D texture, int x0, int y0)
+    private void DrawShapeFromSnapshot(Texture2D texture, int x0, int y0)
     {
         spriteSnapshotCam.targetTexture = RenderTexture.GetTemporary(textureHeight, textureWidth, 16);
 
@@ -85,6 +95,13 @@ public class GeneratorScript : MonoBehaviour
         y0 -= snapshot.height / 2;
 
         TextureDraw.CopyFromTexture(texture, snapshot, x0, y0);
+    }
+
+    public void GenerateSeed()
+    {
+        seed = System.Environment.TickCount;
+
+        seedInputField.text = seed.ToString();
     }
 
     public void GenerateSprite()
@@ -111,6 +128,7 @@ public class GeneratorScript : MonoBehaviour
 
                 for (int i = 0; i < spriteShapeComplexity; i++)
                 {
+                    Random.InitState(seed);
                     int shapeSeed = Random.Range(0, shapeMax);
                     int symmetricSeed = Random.Range(0, symmetricMax);
                     Debug.Log("Shape seed (0, " + shapeMax + "): " + shapeSeed);
@@ -131,6 +149,8 @@ public class GeneratorScript : MonoBehaviour
 
                     int x0 = (textureWidth / 2);
                     int y0 = (textureHeight / 2);
+                    
+
 
                     if (spriteShape == Shape.RECTANGLE)
                     {
@@ -202,7 +222,7 @@ public class GeneratorScript : MonoBehaviour
                                 //if symmetric type 1, double up shape on both sides
                                 //get opposite xSeed
                                 int x2 = 2 * (textureWidth / 2) - xSeed;
-                                DrawFromSnapshot(texture, x2, ySeed);
+                                DrawShapeFromSnapshot(texture, x2, ySeed);
                             }
                             else
                             {
@@ -215,8 +235,7 @@ public class GeneratorScript : MonoBehaviour
                         y0 = ySeed;
                     }
 
-                    DrawFromSnapshot(texture, x0, y0);
-                    
+                    DrawShapeFromSnapshot(texture, x0, y0);
                 }
 
                 texture.Apply();

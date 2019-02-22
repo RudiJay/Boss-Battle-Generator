@@ -257,12 +257,37 @@ PrefabInstance:
     - target: {fileID: 7634551186174344537, guid: 49214b1ee525e934894a60406387b7a1,
         type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7634551186174344537, guid: 49214b1ee525e934894a60406387b7a1,
         type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7634551186174344537, guid: 49214b1ee525e934894a60406387b7a1,
+        type: 3}
+      propertyPath: m_KeyboardType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7634551186174344537, guid: 49214b1ee525e934894a60406387b7a1,
+        type: 3}
+      propertyPath: m_CharacterValidation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7634551186174344537, guid: 49214b1ee525e934894a60406387b7a1,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 117920401}
+    - target: {fileID: 7634551186174344537, guid: 49214b1ee525e934894a60406387b7a1,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetSeed
+      objectReference: {fileID: 0}
+    - target: {fileID: 7634551186174344537, guid: 49214b1ee525e934894a60406387b7a1,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49214b1ee525e934894a60406387b7a1, type: 3}

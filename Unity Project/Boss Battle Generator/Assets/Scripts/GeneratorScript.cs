@@ -104,6 +104,11 @@ public class GeneratorScript : MonoBehaviour
         seedInputField.text = seed.ToString();
     }
 
+    public void SetSeed(string inString)
+    {
+        seed = int.Parse(inString);
+    }
+
     public void GenerateSprite()
     {
         if (bossObj && spriteSnapshotCam && snapshotSpriteObj)

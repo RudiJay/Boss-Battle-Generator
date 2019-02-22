@@ -7,6 +7,8 @@ public class GeneratorScript : MonoBehaviour
 {
     public static GeneratorScript Instance;
 
+    private System.Random rand;
+
     private GameObject bossObj;
 
     private Camera spriteSnapshotCam;
@@ -60,6 +62,8 @@ public class GeneratorScript : MonoBehaviour
 
     private void Start()
     {
+        rand = new System.Random();
+
         bossObj = GameObject.FindWithTag("Boss");
 
         spriteSnapshotCam = GameObject.FindWithTag("SpriteSnapshotCam").GetComponent<Camera>();
@@ -67,8 +71,6 @@ public class GeneratorScript : MonoBehaviour
         snapshotSpriteObj = GameObject.FindWithTag("SnapshotSpriteObj");
 
         seedInputField = GameObject.FindWithTag("SeedInputField").GetComponent<InputField>();
-
-        GenerateSeed();
 
         textureWidth = (int)(maxBossWidth * 1.25f);
         textureHeight = (int)(maxBossHeight * 1.25f);
@@ -102,15 +104,39 @@ public class GeneratorScript : MonoBehaviour
         seed = System.Environment.TickCount;
 
         seedInputField.text = seed.ToString();
+
+        rand = new System.Random(seed);
     }
 
     public void SetSeed(string inString)
     {
-        seed = int.Parse(inString);
+        if (inString.Length != 0)
+        {
+            seed = int.Parse(inString);
+        }
+
+        rand = new System.Random(seed);
+
+        GenerateBoss(false);
     }
 
-    public void GenerateSprite()
+    public void GenerateBoss(bool seedNeedsSetting)
     {
+        if (seedNeedsSetting)
+        {
+            GenerateSeed();
+        }
+
+        GenerateSprite(false);
+    }
+
+    public void GenerateSprite(bool seedNeedsSetting)
+    {
+        if (seedNeedsSetting)
+        {
+            GenerateSeed();
+        }
+
         if (bossObj && spriteSnapshotCam && snapshotSpriteObj)
         {
             SpriteRenderer sprite = bossObj.GetComponentInChildren<SpriteRenderer>();
@@ -133,9 +159,8 @@ public class GeneratorScript : MonoBehaviour
 
                 for (int i = 0; i < spriteShapeComplexity; i++)
                 {
-                    Random.InitState(seed);
-                    int shapeSeed = Random.Range(0, shapeMax);
-                    int symmetricSeed = Random.Range(0, symmetricMax);
+                    int shapeSeed = rand.Next(0, shapeMax);
+                    int symmetricSeed = rand.Next(0, symmetricMax);
                     Debug.Log("Shape seed (0, " + shapeMax + "): " + shapeSeed);
                     Debug.Log("Symmetric seed (0, " + symmetricMax + "): " + symmetricSeed);
 
@@ -154,8 +179,6 @@ public class GeneratorScript : MonoBehaviour
 
                     int x0 = (textureWidth / 2);
                     int y0 = (textureHeight / 2);
-                    
-
 
                     if (spriteShape == Shape.RECTANGLE)
                     {
@@ -165,15 +188,15 @@ public class GeneratorScript : MonoBehaviour
                         int minWidth = maxBossWidth / 10;
                         int minHeight = maxBossHeight / 10;
 
-                        int rotSeed = Random.Range(-45, 45);
+                        int rotSeed = rand.Next(-45, 45);
                         Debug.Log("Rot seed (" + rotSeed + ")");
 
                         snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, rotSeed);
 
                         float theta = rotSeed * Mathf.Deg2Rad;
 
-                        int widthSeed = Random.Range(minWidth, (int)(maxBossWidth * shapeSizeLimiter));
-                        int heightSeed = Random.Range(minHeight, (int)(maxBossHeight * shapeSizeLimiter));
+                        int widthSeed = rand.Next(minWidth, (int)(maxBossWidth * shapeSizeLimiter));
+                        int heightSeed = rand.Next(minHeight, (int)(maxBossHeight * shapeSizeLimiter));
                         float width = widthSeed / (float)maxBossWidth;
                         float height = heightSeed / (float)maxBossHeight;
                         Debug.Log("Width seed (" + minWidth + ", " + (int)(maxBossWidth * shapeSizeLimiter) + "): " + widthSeed + " (" + width + "%)");
@@ -186,12 +209,12 @@ public class GeneratorScript : MonoBehaviour
 
                         int xMax = maxBossWidth + xOffset - (rotWidth / 2);
                         int xMin = xOffset + (rotWidth / 2);
-                        int xSeed = Random.Range(xMin, xMax);
+                        int xSeed = rand.Next(xMin, xMax);
                         Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
 
                         int yMax = maxBossHeight + yOffset - (rotHeight / 2);
                         int yMin = yOffset + (rotHeight / 2);
-                        int ySeed = Random.Range(yMin, yMax);
+                        int ySeed = rand.Next(yMin, yMax);
                         Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
 
                         x0 = xSeed;
@@ -204,7 +227,7 @@ public class GeneratorScript : MonoBehaviour
 
                         int radiusMax = maxBossWidth / 2;
                         int radiusMin = radiusMax / 10;
-                        int radiusSeed = Random.Range(radiusMin, radiusMax);
+                        int radiusSeed = rand.Next(radiusMin, radiusMax);
                         float scale = radiusSeed / (float)radiusMax;
                         Debug.Log("Radius seed (" + radiusMin + ", " + radiusMax + "): " + radiusSeed + " (" + scale + "%)");
                         
@@ -212,12 +235,12 @@ public class GeneratorScript : MonoBehaviour
 
                         int xMax = maxBossWidth + xOffset - radiusSeed;
                         int xMin = xOffset + radiusSeed;
-                        int xSeed = Random.Range(xMin, xMax);
+                        int xSeed = rand.Next(xMin, xMax);
                         Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
 
                         int yMax = maxBossHeight + yOffset - radiusSeed;
                         int yMin = yOffset + radiusSeed;
-                        int ySeed = Random.Range(yMin, yMax);
+                        int ySeed = rand.Next(yMin, yMax);
                         Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
 
                         if (symmetricSeed >= symmetricMax * 0.2)

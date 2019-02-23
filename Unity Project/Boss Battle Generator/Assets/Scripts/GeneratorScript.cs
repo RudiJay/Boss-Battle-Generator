@@ -166,7 +166,7 @@ public class GeneratorScript : MonoBehaviour
 
                     snapshotSpriteObj.transform.rotation = Quaternion.identity;
 
-                    Shape spriteShape = Shape.CIRCLE;
+                    Shape spriteShape;
 
                     if (shapeSeed < shapeMax / 2)
                     {
@@ -177,90 +177,178 @@ public class GeneratorScript : MonoBehaviour
                         spriteShape = Shape.CIRCLE;
                     }
 
+                    spriteShape = Shape.RECTANGLE;
+
                     int x0 = (textureWidth / 2);
                     int y0 = (textureHeight / 2);
 
-                    if (spriteShape == Shape.RECTANGLE)
+                    switch (spriteShape)
                     {
-                        int index = System.Array.FindIndex(ComponentShapeSprites, s => s.name == "Rect");
-                        snapshotSprite.sprite = ComponentShapeSprites[index];
-
-                        int minWidth = maxBossWidth / 10;
-                        int minHeight = maxBossHeight / 10;
-
-                        int rotSeed = rand.Next(-45, 45);
-                        Debug.Log("Rot seed (" + rotSeed + ")");
-
-                        snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, rotSeed);
-
-                        float theta = rotSeed * Mathf.Deg2Rad;
-
-                        int widthSeed = rand.Next(minWidth, (int)(maxBossWidth * shapeSizeLimiter));
-                        int heightSeed = rand.Next(minHeight, (int)(maxBossHeight * shapeSizeLimiter));
-                        float width = widthSeed / (float)maxBossWidth;
-                        float height = heightSeed / (float)maxBossHeight;
-                        Debug.Log("Width seed (" + minWidth + ", " + (int)(maxBossWidth * shapeSizeLimiter) + "): " + widthSeed + " (" + width + "%)");
-                        Debug.Log("Height seed (" + minHeight + ", " + (int)(maxBossHeight * shapeSizeLimiter) + "): " + heightSeed + " (" + height + "%)");
-
-                        snapshotSpriteObj.transform.localScale = new Vector3(width, height);                        
-
-                        int rotWidth = (int)(Mathf.Abs(heightSeed * Mathf.Sin(theta)) + Mathf.Abs(widthSeed * Mathf.Cos(theta)));
-                        int rotHeight = (int)(Mathf.Abs(widthSeed * Mathf.Sin(theta)) + Mathf.Abs(heightSeed * Mathf.Cos(theta)));
-
-                        int xMax = maxBossWidth + xOffset - (rotWidth / 2);
-                        int xMin = xOffset + (rotWidth / 2);
-                        int xSeed = rand.Next(xMin, xMax);
-                        Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
-
-                        int yMax = maxBossHeight + yOffset - (rotHeight / 2);
-                        int yMin = yOffset + (rotHeight / 2);
-                        int ySeed = rand.Next(yMin, yMax);
-                        Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
-
-                        x0 = xSeed;
-                        y0 = ySeed;
-                    }
-                    else if (spriteShape == Shape.CIRCLE)
-                    {
-                        int index = System.Array.FindIndex(ComponentShapeSprites, s => s.name == "Ellipse");
-                        snapshotSprite.sprite = ComponentShapeSprites[index];
-
-                        int radiusMax = maxBossWidth / 2;
-                        int radiusMin = radiusMax / 10;
-                        int radiusSeed = rand.Next(radiusMin, radiusMax);
-                        float scale = radiusSeed / (float)radiusMax;
-                        Debug.Log("Radius seed (" + radiusMin + ", " + radiusMax + "): " + radiusSeed + " (" + scale + "%)");
-                        
-                        snapshotSpriteObj.transform.localScale = new Vector3(scale, scale);
-
-                        int xMax = maxBossWidth + xOffset - radiusSeed;
-                        int xMin = xOffset + radiusSeed;
-                        int xSeed = rand.Next(xMin, xMax);
-                        Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
-
-                        int yMax = maxBossHeight + yOffset - radiusSeed;
-                        int yMin = yOffset + radiusSeed;
-                        int ySeed = rand.Next(yMin, yMax);
-                        Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
-
-                        if (symmetricSeed >= symmetricMax * 0.2)
-                        {
-                            if (symmetricSeed > symmetricMax * 0.6)
+                        case Shape.CIRCLE:
                             {
-                                //if symmetric type 1, double up shape on both sides
-                                //get opposite xSeed
-                                int x2 = 2 * (textureWidth / 2) - xSeed;
-                                DrawShapeFromSnapshot(texture, x2, ySeed);
-                            }
-                            else
-                            {
-                                //if symmetric type 2, simply put shape in the middle
-                                xSeed = textureWidth / 2;
-                            }
-                        }
+                                int index = System.Array.FindIndex(ComponentShapeSprites, s => s.name == "Ellipse");
+                                snapshotSprite.sprite = ComponentShapeSprites[index];
 
-                        x0 = xSeed;
-                        y0 = ySeed;
+                                int radiusMax = maxBossWidth / 2;
+                                int radiusMin = radiusMax / 10;
+                                int radiusSeed = rand.Next(radiusMin, radiusMax);
+                                float scale = radiusSeed / (float)radiusMax;
+
+                                snapshotSpriteObj.transform.localScale = new Vector3(scale, scale);
+
+                                int xMax = maxBossWidth + xOffset - radiusSeed;
+                                int xMin = xOffset + radiusSeed;
+                                int xSeed = rand.Next(xMin, xMax);
+
+                                int yMax = maxBossHeight + yOffset - radiusSeed;
+                                int yMin = yOffset + radiusSeed;
+                                int ySeed = rand.Next(yMin, yMax);
+
+                                if (symmetricSeed >= symmetricMax * 0.2)
+                                {
+                                    if (symmetricSeed > symmetricMax * 0.6)
+                                    {
+                                        //if symmetric type 1, double up shape on both sides
+                                        //get opposite xSeed
+                                        int x2 = 2 * (textureWidth / 2) - xSeed;
+                                        DrawShapeFromSnapshot(texture, x2, ySeed);
+                                    }
+                                    else
+                                    {
+                                        //if symmetric type 2, simply put shape in the middle
+                                        xSeed = textureWidth / 2;
+                                    }
+                                }
+
+                                x0 = xSeed;
+                                y0 = ySeed;
+
+                                Debug.Log("Radius seed (" + radiusMin + ", " + radiusMax + "): " + radiusSeed + " (" + scale + "%)");
+                                Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
+                                Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
+                            };
+                            break;
+                        case Shape.SQUARE:
+                            {
+                                int index = System.Array.FindIndex(ComponentShapeSprites, s => s.name == "Rect");
+                                snapshotSprite.sprite = ComponentShapeSprites[index];
+
+                                int minSize = maxBossWidth / 10;
+
+                                int rotSeed = rand.Next(-45, 45);
+                                
+                                float theta = rotSeed * Mathf.Deg2Rad;
+
+                                int sizeSeed = rand.Next(minSize, (int)(maxBossWidth * shapeSizeLimiter));
+                                float size = sizeSeed / (float)maxBossWidth;
+
+                                int rotSize = (int)(Mathf.Abs(sizeSeed * Mathf.Sin(theta)) + Mathf.Abs(sizeSeed * Mathf.Cos(theta)));
+
+                                int xMax = maxBossWidth + xOffset - (rotSize / 2);
+                                int xMin = xOffset + (rotSize / 2);
+                                int xSeed = rand.Next(xMin, xMax);
+
+                                int yMax = maxBossHeight + yOffset - (rotSize / 2);
+                                int yMin = yOffset + (rotSize / 2);
+                                int ySeed = rand.Next(yMin, yMax);
+
+                                if (symmetricSeed >= symmetricMax * 0.2)
+                                {
+                                    if (symmetricSeed > symmetricMax * 0.75)
+                                    {
+                                        //if symmetric type 1, double up shape on both sides
+                                        //get opposite xSeed
+                                        int x2 = 2 * (textureWidth / 2) - xSeed;
+                                        snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, -rotSeed);
+                                        DrawShapeFromSnapshot(texture, x2, ySeed);
+                                    }
+                                    else
+                                    {
+                                        Debug.Log("symmetry getting rid of rotation");
+                                        //get rid of rotation
+                                        rotSeed = (int)Mathf.Round(rotSeed / 45) * 45;
+                                        
+                                        if (symmetricSeed > symmetricMax * 0.4)
+                                        {
+                                            //if symmetric type 2, simply put shape in the middle
+                                            xSeed = textureWidth / 2;
+                                        }
+                                    }
+                                }
+
+                                snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, rotSeed);
+                                snapshotSpriteObj.transform.localScale = new Vector3(size, size);
+
+                                x0 = xSeed;
+                                y0 = ySeed;
+
+                                Debug.Log("Rot seed (" + rotSeed + ")");
+                                Debug.Log("Size seed (" + minSize + ", " + (int)(maxBossWidth * shapeSizeLimiter) + "): " + sizeSeed + " (" + size + "%)");
+                                Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
+                                Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
+                            }
+                            break;
+                        case Shape.RECTANGLE:
+                            {
+                                int index = System.Array.FindIndex(ComponentShapeSprites, s => s.name == "Rect");
+                                snapshotSprite.sprite = ComponentShapeSprites[index];
+
+                                int minWidth = maxBossWidth / 10;
+                                int minHeight = maxBossHeight / 10;
+
+                                int rotSeed = rand.Next(-45, 45);
+
+                                float theta = rotSeed * Mathf.Deg2Rad;
+
+                                int widthSeed = rand.Next(minWidth, (int)(maxBossWidth * shapeSizeLimiter));
+                                int heightSeed = rand.Next(minHeight, (int)(maxBossHeight * shapeSizeLimiter));
+                                float width = widthSeed / (float)maxBossWidth;
+                                float height = heightSeed / (float)maxBossHeight;
+                                
+                                int rotWidth = (int)(Mathf.Abs(heightSeed * Mathf.Sin(theta)) + Mathf.Abs(widthSeed * Mathf.Cos(theta)));
+                                int rotHeight = (int)(Mathf.Abs(widthSeed * Mathf.Sin(theta)) + Mathf.Abs(heightSeed * Mathf.Cos(theta)));
+
+                                int xMax = maxBossWidth + xOffset - (rotWidth / 2);
+                                int xMin = xOffset + (rotWidth / 2);
+                                int xSeed = rand.Next(xMin, xMax);
+
+                                int yMax = maxBossHeight + yOffset - (rotHeight / 2);
+                                int yMin = yOffset + (rotHeight / 2);
+                                int ySeed = rand.Next(yMin, yMax);
+
+                                if (symmetricSeed >= symmetricMax * 0.2)
+                                {
+                                    if (symmetricSeed > symmetricMax * 0.6)
+                                    {
+                                        //if symmetric type 1, double up shape on both sides
+                                        //get opposite xSeed
+                                        int x2 = 2 * (textureWidth / 2) - xSeed;
+                                        snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, -rotSeed);
+                                        DrawShapeFromSnapshot(texture, x2, ySeed);
+                                    }
+                                    else
+                                    {
+                                        //if symmetric type 2, simply put shape in the middle
+                                        xSeed = textureWidth / 2;
+
+                                        //additionally get rid of rotation
+                                        rotSeed = 0;
+                                    }
+                                }
+
+                                snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, rotSeed);
+                                snapshotSpriteObj.transform.localScale = new Vector3(width, height);
+
+                                x0 = xSeed;
+                                y0 = ySeed;
+
+                                Debug.Log("Rot seed (" + rotSeed + ")");
+                                Debug.Log("Width seed (" + minWidth + ", " + (int)(maxBossWidth * shapeSizeLimiter) + "): " + widthSeed + " (" + width + "%)");
+                                Debug.Log("Height seed (" + minHeight + ", " + (int)(maxBossHeight * shapeSizeLimiter) + "): " + heightSeed + " (" + height + "%)");
+                                Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
+                                Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
+                            };
+                            break;
                     }
 
                     DrawShapeFromSnapshot(texture, x0, y0);

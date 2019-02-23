@@ -110,7 +110,7 @@ public class GeneratorScript : MonoBehaviour
 
     public void SetSeed(string inString)
     {
-        if (inString.Length != 0)
+        if (inString.Length > 0 && inString.Length <= 9)
         {
             seed = int.Parse(inString);
         }

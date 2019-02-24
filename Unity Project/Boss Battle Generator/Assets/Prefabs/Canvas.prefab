@@ -657,7 +657,7 @@ GameObject:
   - component: {fileID: 2647949842299185121}
   - component: {fileID: 5821955259589706490}
   m_Layer: 5
-  m_Name: GenerateAllButton
+  m_Name: NewBossButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -851,7 +851,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Generate All
+  m_Text: 'Generate New Boss Fight
 
 '
 --- !u!1 &7445146564500311880

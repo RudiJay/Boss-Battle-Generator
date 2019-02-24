@@ -322,7 +322,7 @@ PrefabInstance:
     - target: {fileID: 5821955259589706490, guid: 49214b1ee525e934894a60406387b7a1,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: GenerateBoss
+      value: GenerateBossFight
       objectReference: {fileID: 0}
     - target: {fileID: 5821955259589706490, guid: 49214b1ee525e934894a60406387b7a1,
         type: 3}

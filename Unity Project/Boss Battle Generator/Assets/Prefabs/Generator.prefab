@@ -228,10 +228,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e165a98502e1ec44b9e1816e2d28ef57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoGeneratorDelay: 0.1
   seed: 0
   maxBossWidth: 625
   maxBossHeight: 625
-  shapeSizeLimiter: 0.75
+  shapeSizeLimiter: 0.7
   shapeMax: 100
   symmetricMax: 100
   spriteShapeComplexity: 1
@@ -246,3 +247,4 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 48c94c2e8e3fb6248b1c6132fea221af, type: 3}
   - {fileID: 21300000, guid: eba78284cdbb423419c2dc55db74cf8a, type: 3}
   - {fileID: 21300000, guid: 4e2fa0a1ac37783418c02a03d63eae14, type: 3}
+  - {fileID: 21300000, guid: 509b4ad5f8e571b4788c2b508077be0f, type: 3}

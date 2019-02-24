@@ -17,6 +17,17 @@ public class GeneratorScript : MonoBehaviour
 
     private InputField seedInputField;
 
+    private IEnumerator autoGenerator;
+    private bool isAutoGenerating = false;
+
+    [Header("Interface")]
+    [SerializeField]
+    private float autoGeneratorDelay = 2.0f;
+    [SerializeField]
+    private bool ShowSpriteBorder = false;
+
+    
+    [Header("Generation Variables")]
     [SerializeField]
     private int seed;
 
@@ -34,25 +45,27 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField]
     private int spriteShapeComplexity = 3;
 
-    [SerializeField]
+    [SerializeField][Space(20)]
     private Sprite[] ComponentShapeSprites;
+
+    
 
     private enum Shape
     {
         CIRCLE,
-        RING,
-        ELLIPSE,
-        SEMICIRCLE,
+        //RING,
+        //ELLIPSE,
+        //SEMICIRCLE,
         SQUARE,
-        RECTANGLE,
-        DIAMOND,
-        RHOMBUS,
-        EQUITRI,
-        ISOTRI,
-        RIGHTANGLETRI,
-        SCALENETRI,
-        PENTAGON,
-        HEXAGON
+        RECT,
+        //DIAMOND,
+        //RHOMBUS,
+        //EQUITRI,
+        //ISOTRI,
+        //RANGLETRI,
+        //SCALENETRI,
+        //PENT,
+        //HEX
     }
 
     private void Awake()
@@ -63,6 +76,8 @@ public class GeneratorScript : MonoBehaviour
     private void Start()
     {
         rand = new System.Random();
+
+        autoGenerator = AutoGenerateBossFights();
 
         bossObj = GameObject.FindWithTag("Boss");
 
@@ -76,6 +91,35 @@ public class GeneratorScript : MonoBehaviour
         textureHeight = (int)(maxBossHeight * 1.25f);
         xOffset = (textureWidth - maxBossWidth) / 2;
         yOffset = (textureHeight - maxBossHeight) / 2;
+    }
+
+    private void Update()
+    {
+        if (Input.GetButtonDown("ToggleAutoGenerate"))
+        {
+            if (!isAutoGenerating)
+            {
+                StartCoroutine(autoGenerator);
+            }
+            else
+            {
+                StopCoroutine(autoGenerator);
+            }
+
+            isAutoGenerating = !isAutoGenerating;
+        }
+    }
+
+    private IEnumerator AutoGenerateBossFights()
+    {
+        while (true)
+        {
+            WaitForSeconds delay = new WaitForSeconds(autoGeneratorDelay);
+
+            GenerateBossFight(true);
+
+            yield return delay;
+        }
     }
 
     private void DrawShapeFromSnapshot(Texture2D texture, int x0, int y0)
@@ -117,15 +161,17 @@ public class GeneratorScript : MonoBehaviour
 
         rand = new System.Random(seed);
 
-        GenerateBoss(false);
+        GenerateBossFight(false);
     }
 
-    public void GenerateBoss(bool seedNeedsSetting)
+    public void GenerateBossFight(bool seedNeedsSetting)
     {
         if (seedNeedsSetting)
         {
             GenerateSeed();
         }
+
+        Debug.Log("Boss Fight Seed: " + seed);
 
         GenerateSprite(false);
     }
@@ -148,13 +194,21 @@ public class GeneratorScript : MonoBehaviour
                 Texture2D texture = new Texture2D(textureWidth, textureHeight, TextureFormat.ARGB32, false);
                 texture.wrapMode = TextureWrapMode.Clamp;
 
-                //TextureDraw.Clear(texture);
-                for (int y = yOffset; y < maxBossHeight + yOffset; y++)
+                //whether to clear out a the space the sprite can occupy, leaving the border around it
+                //or just clear out the whole background
+                if (ShowSpriteBorder)
                 {
-                    for (int x = xOffset; x < maxBossWidth + xOffset; x++)
+                    for (int y = yOffset; y < maxBossHeight + yOffset; y++)
                     {
-                        texture.SetPixel(x, y, Color.clear);
+                        for (int x = xOffset; x < maxBossWidth + xOffset; x++)
+                        {
+                            texture.SetPixel(x, y, Color.clear);
+                        }
                     }
+                }
+                else
+                {
+                    TextureDraw.Clear(texture);
                 }
 
                 for (int i = 0; i < spriteShapeComplexity; i++)
@@ -166,18 +220,22 @@ public class GeneratorScript : MonoBehaviour
 
                     snapshotSpriteObj.transform.rotation = Quaternion.identity;
 
-                    Shape spriteShape;
+                    Shape spriteShape = Shape.SQUARE;
 
-                    if (shapeSeed < shapeMax / 2)
-                    {
-                        spriteShape = Shape.RECTANGLE;
-                    }
-                    else
+                    if (shapeSeed < shapeMax / 3)
                     {
                         spriteShape = Shape.CIRCLE;
                     }
+                    else if (shapeSeed < shapeMax * 2 / 3)
+                    {
+                        spriteShape = Shape.SQUARE;
+                    }
+                    else
+                    {
+                        spriteShape = Shape.RECT;
+                    }
 
-                    spriteShape = Shape.RECTANGLE;
+                    //spriteShape = Shape.SQUARE;
 
                     int x0 = (textureWidth / 2);
                     int y0 = (textureHeight / 2);
@@ -243,7 +301,7 @@ public class GeneratorScript : MonoBehaviour
                                 float size = sizeSeed / (float)maxBossWidth;
 
                                 int rotSize = (int)(Mathf.Abs(sizeSeed * Mathf.Sin(theta)) + Mathf.Abs(sizeSeed * Mathf.Cos(theta)));
-
+                                
                                 int xMax = maxBossWidth + xOffset - (rotSize / 2);
                                 int xMin = xOffset + (rotSize / 2);
                                 int xSeed = rand.Next(xMin, xMax);
@@ -254,23 +312,23 @@ public class GeneratorScript : MonoBehaviour
                                 
                                 snapshotSpriteObj.transform.localScale = new Vector3(size, size);
 
-                                if (symmetricSeed >= symmetricMax * 0.2)
+                                if (symmetricSeed >= symmetricMax * 0.1)
                                 {
-                                    if (symmetricSeed > symmetricMax * 0.75)
+                                    if (symmetricSeed > symmetricMax * 0.6)
                                     {
                                         //if symmetric type 1, double up shape on both sides
                                         //get opposite xSeed
                                         int x2 = 2 * (textureWidth / 2) - xSeed;
+                                        //mirror rotation
                                         snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, -rotSeed);
                                         DrawShapeFromSnapshot(texture, x2, ySeed);
                                     }
                                     else
                                     {
-                                        Debug.Log("symmetry getting rid of rotation");
                                         //get rid of rotation
-                                        rotSeed = (int)Mathf.Round(rotSeed / 45) * 45;
+                                        rotSeed = (int)(Mathf.Round(rotSeed / 45.0f) * 45 * Mathf.Sign(rotSeed));
                                         
-                                        if (symmetricSeed > symmetricMax * 0.4)
+                                        if (symmetricSeed > symmetricMax * 0.2)
                                         {
                                             //if symmetric type 2, simply put shape in the middle
                                             xSeed = textureWidth / 2;
@@ -289,7 +347,7 @@ public class GeneratorScript : MonoBehaviour
                                 Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
                             }
                             break;
-                        case Shape.RECTANGLE:
+                        case Shape.RECT:
                             {
                                 int index = System.Array.FindIndex(ComponentShapeSprites, s => s.name == "Rect");
                                 snapshotSprite.sprite = ComponentShapeSprites[index];
@@ -319,23 +377,27 @@ public class GeneratorScript : MonoBehaviour
                                 
                                 snapshotSpriteObj.transform.localScale = new Vector3(width, height);
 
-                                if (symmetricSeed >= symmetricMax * 0.2)
+                                if (symmetricSeed >= symmetricMax * 0.3)
                                 {
                                     if (symmetricSeed > symmetricMax * 0.5)
                                     {
                                         //if symmetric type 1, double up shape on both sides
                                         //get opposite xSeed
                                         int x2 = 2 * (textureWidth / 2) - xSeed;
+                                        //mirror rotation
                                         snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, -rotSeed);
                                         DrawShapeFromSnapshot(texture, x2, ySeed);
                                     }
                                     else
                                     {
-                                        //if symmetric type 2, simply put shape in the middle
-                                        xSeed = textureWidth / 2;
-
                                         //additionally get rid of rotation
                                         rotSeed = 0;
+
+                                        if (symmetricSeed > symmetricMax * 0.4)
+                                        {
+                                            //if symmetric type 2, simply put shape in the middle
+                                            xSeed = textureWidth / 2;
+                                        }
                                     }
                                 }
 

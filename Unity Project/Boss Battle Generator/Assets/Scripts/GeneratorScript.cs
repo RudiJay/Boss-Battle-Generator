@@ -194,8 +194,6 @@ public class GeneratorScript : MonoBehaviour
                                 int radiusSeed = rand.Next(radiusMin, radiusMax);
                                 float scale = radiusSeed / (float)radiusMax;
 
-                                snapshotSpriteObj.transform.localScale = new Vector3(scale, scale);
-
                                 int xMax = maxBossWidth + xOffset - radiusSeed;
                                 int xMin = xOffset + radiusSeed;
                                 int xSeed = rand.Next(xMin, xMax);
@@ -203,6 +201,8 @@ public class GeneratorScript : MonoBehaviour
                                 int yMax = maxBossHeight + yOffset - radiusSeed;
                                 int yMin = yOffset + radiusSeed;
                                 int ySeed = rand.Next(yMin, yMax);
+
+                                snapshotSpriteObj.transform.localScale = new Vector3(scale, scale);
 
                                 if (symmetricSeed >= symmetricMax * 0.2)
                                 {
@@ -251,6 +251,8 @@ public class GeneratorScript : MonoBehaviour
                                 int yMax = maxBossHeight + yOffset - (rotSize / 2);
                                 int yMin = yOffset + (rotSize / 2);
                                 int ySeed = rand.Next(yMin, yMax);
+                                
+                                snapshotSpriteObj.transform.localScale = new Vector3(size, size);
 
                                 if (symmetricSeed >= symmetricMax * 0.2)
                                 {
@@ -277,7 +279,6 @@ public class GeneratorScript : MonoBehaviour
                                 }
 
                                 snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, rotSeed);
-                                snapshotSpriteObj.transform.localScale = new Vector3(size, size);
 
                                 x0 = xSeed;
                                 y0 = ySeed;
@@ -315,10 +316,12 @@ public class GeneratorScript : MonoBehaviour
                                 int yMax = maxBossHeight + yOffset - (rotHeight / 2);
                                 int yMin = yOffset + (rotHeight / 2);
                                 int ySeed = rand.Next(yMin, yMax);
+                                
+                                snapshotSpriteObj.transform.localScale = new Vector3(width, height);
 
                                 if (symmetricSeed >= symmetricMax * 0.2)
                                 {
-                                    if (symmetricSeed > symmetricMax * 0.6)
+                                    if (symmetricSeed > symmetricMax * 0.5)
                                     {
                                         //if symmetric type 1, double up shape on both sides
                                         //get opposite xSeed
@@ -337,7 +340,6 @@ public class GeneratorScript : MonoBehaviour
                                 }
 
                                 snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, rotSeed);
-                                snapshotSpriteObj.transform.localScale = new Vector3(width, height);
 
                                 x0 = xSeed;
                                 y0 = ySeed;

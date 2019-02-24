@@ -229,6 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoGeneratorDelay: 0.1
+  ShowSpriteBorder: 0
   seed: 0
   maxBossWidth: 625
   maxBossHeight: 625
@@ -236,15 +237,21 @@ MonoBehaviour:
   shapeMax: 100
   symmetricMax: 100
   spriteShapeComplexity: 1
-  ComponentShapeSprites:
-  - {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
-  - {fileID: 21300000, guid: dedd3342dca55754288c81e2f675120b, type: 3}
-  - {fileID: 21300000, guid: 7ef25fb858242c9458570553f31087a8, type: 3}
-  - {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
-  - {fileID: 21300000, guid: a863e089c739fc443806cd557341ced4, type: 3}
-  - {fileID: 21300000, guid: 157b02681104bdf4eb6a5383b1bba96f, type: 3}
-  - {fileID: 21300000, guid: b222f87a5e688f846999d56a9eb3557f, type: 3}
-  - {fileID: 21300000, guid: 48c94c2e8e3fb6248b1c6132fea221af, type: 3}
-  - {fileID: 21300000, guid: eba78284cdbb423419c2dc55db74cf8a, type: 3}
-  - {fileID: 21300000, guid: 4e2fa0a1ac37783418c02a03d63eae14, type: 3}
-  - {fileID: 21300000, guid: 509b4ad5f8e571b4788c2b508077be0f, type: 3}
+  SpriteGenerationShapes:
+  - shape: 0
+    sprite: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
+    SymmetryProbabilityBoundaries:
+    - 0.2
+    - 0.6
+  - shape: 1
+    sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
+    SymmetryProbabilityBoundaries:
+    - 0.1
+    - 0.2
+    - 0.6
+  - shape: 2
+    sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
+    SymmetryProbabilityBoundaries:
+    - 0.3
+    - 0.4
+    - 0.5

@@ -3,6 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum ShapeType
+{
+    CIRCLE,
+    //RING,
+    //ELLIPSE,
+    //SEMICIRCLE,
+    SQUARE,
+    RECT,
+    //DIAMOND,
+    //RHOMBUS,
+    //EQUITRI,
+    //ISOTRI,
+    //RANGLETRI,
+    //SCALENETRI,
+    //PENT,
+    //HEX
+}
+
+[System.Serializable]
+public struct SpriteShape
+{
+    public ShapeType shape;
+
+    public Sprite sprite;
+
+    [Range(0,1)]
+    public float[] SymmetryProbabilityBoundaries;
+}
+
 public class GeneratorScript : MonoBehaviour
 {
     public static GeneratorScript Instance;
@@ -46,27 +75,7 @@ public class GeneratorScript : MonoBehaviour
     private int spriteShapeComplexity = 3;
 
     [SerializeField][Space(20)]
-    private Sprite[] ComponentShapeSprites;
-
-    
-
-    private enum Shape
-    {
-        CIRCLE,
-        //RING,
-        //ELLIPSE,
-        //SEMICIRCLE,
-        SQUARE,
-        RECT,
-        //DIAMOND,
-        //RHOMBUS,
-        //EQUITRI,
-        //ISOTRI,
-        //RANGLETRI,
-        //SCALENETRI,
-        //PENT,
-        //HEX
-    }
+    private SpriteShape[] SpriteGenerationShapes;
 
     private void Awake()
     {
@@ -183,7 +192,7 @@ public class GeneratorScript : MonoBehaviour
             GenerateSeed();
         }
 
-        if (bossObj && spriteSnapshotCam && snapshotSpriteObj)
+        if (bossObj && spriteSnapshotCam && snapshotSpriteObj && SpriteGenerationShapes.Length > 0)
         {
             SpriteRenderer sprite = bossObj.GetComponentInChildren<SpriteRenderer>();
 
@@ -220,33 +229,19 @@ public class GeneratorScript : MonoBehaviour
 
                     snapshotSpriteObj.transform.rotation = Quaternion.identity;
 
-                    Shape spriteShape = Shape.SQUARE;
+                    SpriteShape spriteShape;
+                    int index = shapeSeed / shapeMax * SpriteGenerationShapes.Length;
+                    spriteShape = SpriteGenerationShapes[index];
 
-                    if (shapeSeed < shapeMax / 3)
-                    {
-                        spriteShape = Shape.CIRCLE;
-                    }
-                    else if (shapeSeed < shapeMax * 2 / 3)
-                    {
-                        spriteShape = Shape.SQUARE;
-                    }
-                    else
-                    {
-                        spriteShape = Shape.RECT;
-                    }
-
-                    //spriteShape = Shape.SQUARE;
+                    snapshotSprite.sprite = spriteShape.sprite;
 
                     int x0 = (textureWidth / 2);
                     int y0 = (textureHeight / 2);
 
-                    switch (spriteShape)
+                    switch (spriteShape.shape)
                     {
-                        case Shape.CIRCLE:
+                        case ShapeType.CIRCLE:
                             {
-                                int index = System.Array.FindIndex(ComponentShapeSprites, s => s.name == "Ellipse");
-                                snapshotSprite.sprite = ComponentShapeSprites[index];
-
                                 int radiusMax = maxBossWidth / 2;
                                 int radiusMin = radiusMax / 10;
                                 int radiusSeed = rand.Next(radiusMin, radiusMax);
@@ -286,22 +281,19 @@ public class GeneratorScript : MonoBehaviour
                                 Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
                             };
                             break;
-                        case Shape.SQUARE:
+                        case ShapeType.SQUARE:
                             {
-                                int index = System.Array.FindIndex(ComponentShapeSprites, s => s.name == "Rect");
-                                snapshotSprite.sprite = ComponentShapeSprites[index];
-
                                 int minSize = maxBossWidth / 10;
 
                                 int rotSeed = rand.Next(-45, 45);
-                                
+
                                 float theta = rotSeed * Mathf.Deg2Rad;
 
                                 int sizeSeed = rand.Next(minSize, (int)(maxBossWidth * shapeSizeLimiter));
                                 float size = sizeSeed / (float)maxBossWidth;
 
                                 int rotSize = (int)(Mathf.Abs(sizeSeed * Mathf.Sin(theta)) + Mathf.Abs(sizeSeed * Mathf.Cos(theta)));
-                                
+
                                 int xMax = maxBossWidth + xOffset - (rotSize / 2);
                                 int xMin = xOffset + (rotSize / 2);
                                 int xSeed = rand.Next(xMin, xMax);
@@ -309,7 +301,7 @@ public class GeneratorScript : MonoBehaviour
                                 int yMax = maxBossHeight + yOffset - (rotSize / 2);
                                 int yMin = yOffset + (rotSize / 2);
                                 int ySeed = rand.Next(yMin, yMax);
-                                
+
                                 snapshotSpriteObj.transform.localScale = new Vector3(size, size);
 
                                 if (symmetricSeed >= symmetricMax * 0.1)
@@ -327,7 +319,7 @@ public class GeneratorScript : MonoBehaviour
                                     {
                                         //get rid of rotation
                                         rotSeed = (int)(Mathf.Round(rotSeed / 45.0f) * 45 * Mathf.Sign(rotSeed));
-                                        
+
                                         if (symmetricSeed > symmetricMax * 0.2)
                                         {
                                             //if symmetric type 2, simply put shape in the middle
@@ -347,11 +339,8 @@ public class GeneratorScript : MonoBehaviour
                                 Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
                             }
                             break;
-                        case Shape.RECT:
+                        case ShapeType.RECT:
                             {
-                                int index = System.Array.FindIndex(ComponentShapeSprites, s => s.name == "Rect");
-                                snapshotSprite.sprite = ComponentShapeSprites[index];
-
                                 int minWidth = maxBossWidth / 10;
                                 int minHeight = maxBossHeight / 10;
 
@@ -363,7 +352,7 @@ public class GeneratorScript : MonoBehaviour
                                 int heightSeed = rand.Next(minHeight, (int)(maxBossHeight * shapeSizeLimiter));
                                 float width = widthSeed / (float)maxBossWidth;
                                 float height = heightSeed / (float)maxBossHeight;
-                                
+
                                 int rotWidth = (int)(Mathf.Abs(heightSeed * Mathf.Sin(theta)) + Mathf.Abs(widthSeed * Mathf.Cos(theta)));
                                 int rotHeight = (int)(Mathf.Abs(widthSeed * Mathf.Sin(theta)) + Mathf.Abs(heightSeed * Mathf.Cos(theta)));
 
@@ -374,7 +363,7 @@ public class GeneratorScript : MonoBehaviour
                                 int yMax = maxBossHeight + yOffset - (rotHeight / 2);
                                 int yMin = yOffset + (rotHeight / 2);
                                 int ySeed = rand.Next(yMin, yMax);
-                                
+
                                 snapshotSpriteObj.transform.localScale = new Vector3(width, height);
 
                                 if (symmetricSeed >= symmetricMax * 0.3)

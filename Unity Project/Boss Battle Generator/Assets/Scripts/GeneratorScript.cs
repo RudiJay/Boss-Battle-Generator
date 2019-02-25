@@ -20,7 +20,11 @@ public enum ShapeType
     RANGLETRI,
     SCALENETRI,
     PENT,
-    HEX
+    IPENT,
+    HEX,
+    IHEX,
+    FIVESTAR,
+    SIXSTAR
 }
 
 [System.Serializable]
@@ -233,7 +237,6 @@ public class GeneratorScript : MonoBehaviour
 
                     SpriteShape spriteShape;
                     int index = (int)(shapeSeed / (float)shapeMax * SpriteGenerationShapes.Length);
-                    index = 13;
                     spriteShape = SpriteGenerationShapes[index];
 
                     snapshotSprite.sprite = spriteShape.sprite;
@@ -288,6 +291,10 @@ public class GeneratorScript : MonoBehaviour
                         case ShapeType.SQUARE:
                         case ShapeType.SEMICIRCLE:
                         case ShapeType.EQUITRI:
+                        case ShapeType.PENT:
+                        case ShapeType.HEX:
+                        case ShapeType.FIVESTAR:
+                        case ShapeType.SIXSTAR:
                             {
                                 int minSize = maxBossWidth / 10;
 
@@ -351,6 +358,8 @@ public class GeneratorScript : MonoBehaviour
                         case ShapeType.SEMIOVAL:
                         case ShapeType.DIAMOND:
                         case ShapeType.ISOTRI:
+                        case ShapeType.IPENT:
+                        case ShapeType.IHEX:
                             {
                                 int minWidth = maxBossWidth / 10;
                                 int minHeight = maxBossHeight / 10;

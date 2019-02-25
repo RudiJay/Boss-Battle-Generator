@@ -7,19 +7,19 @@ public enum ShapeType
 {
     CIRCLE,
     RING,
-    //OVAL,
-    //HALO,
-    //SEMICIRCLE,
+    OVAL,
+    HALO,
+    SEMICIRCLE,
     SQUARE,
     RECT,
-    //DIAMOND,
-    //RHOMBUS,
-    //EQUITRI,
-    //ISOTRI,
-    //RANGLETRI,
-    //SCALENETRI,
-    //PENT,
-    //HEX
+    DIAMOND,
+    RHOMBUS,
+    EQUITRI,
+    ISOTRI,
+    RANGLETRI,
+    SCALENETRI,
+    PENT,
+    HEX
 }
 
 [System.Serializable]
@@ -340,6 +340,8 @@ public class GeneratorScript : MonoBehaviour
                             }
                             break;
                         case ShapeType.RECT:
+                        case ShapeType.OVAL:
+                        case ShapeType.HALO:
                             {
                                 int minWidth = maxBossWidth / 10;
                                 int minHeight = maxBossHeight / 10;

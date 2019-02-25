@@ -233,7 +233,7 @@ public class GeneratorScript : MonoBehaviour
 
                     SpriteShape spriteShape;
                     int index = (int)(shapeSeed / (float)shapeMax * SpriteGenerationShapes.Length);
-                    //index = 9;
+                    index = 13;
                     spriteShape = SpriteGenerationShapes[index];
 
                     snapshotSprite.sprite = spriteShape.sprite;
@@ -243,6 +243,7 @@ public class GeneratorScript : MonoBehaviour
 
                     switch (spriteShape.shape)
                     {
+                        //radius, no rotation
                         case ShapeType.CIRCLE:
                         case ShapeType.RING:
                             {
@@ -283,12 +284,14 @@ public class GeneratorScript : MonoBehaviour
                                 Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
                             };
                             break;
+                        //single dimension size
                         case ShapeType.SQUARE:
                         case ShapeType.SEMICIRCLE:
+                        case ShapeType.EQUITRI:
                             {
                                 int minSize = maxBossWidth / 10;
 
-                                int rotSeed = rand.Next(-45, 45);
+                                int rotSeed = rand.Next(-180, 180);
 
                                 float theta = rotSeed * Mathf.Deg2Rad;
 
@@ -341,16 +344,18 @@ public class GeneratorScript : MonoBehaviour
                                 Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
                             }
                             break;
+                        //width and height
                         case ShapeType.RECT:
                         case ShapeType.OVAL:
                         case ShapeType.HALO:
                         case ShapeType.SEMIOVAL:
                         case ShapeType.DIAMOND:
+                        case ShapeType.ISOTRI:
                             {
                                 int minWidth = maxBossWidth / 10;
                                 int minHeight = maxBossHeight / 10;
 
-                                int rotSeed = rand.Next(-45, 45);
+                                int rotSeed = rand.Next(-180, 180);
 
                                 float theta = rotSeed * Mathf.Deg2Rad;
 
@@ -374,13 +379,13 @@ public class GeneratorScript : MonoBehaviour
 
                                 if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[0])
                                 {
-                                    //get rid of rotation
-                                    rotSeed = 0;
+                                    //aim straight up or straight down
+                                    rotSeed = (int)(Mathf.Round(rotSeed / 180.0f) * 180);
                                 }
                                 else if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[1])
                                 {
-                                    //get rid of rotation
-                                    rotSeed = 0;
+                                    //aim straight up or straight down
+                                    rotSeed = (int)(Mathf.Round(rotSeed / 180.0f) * 180);
                                     //put shape in the middle
                                     xSeed = textureWidth / 2;
                                 }
@@ -406,7 +411,10 @@ public class GeneratorScript : MonoBehaviour
                                 Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
                             };
                             break;
+                        //width and height (sprite needs mirroring for symmetry)
                         case ShapeType.RHOMBUS:
+                        case ShapeType.RANGLETRI:
+                        case ShapeType.SCALENETRI:
                             {
                                 int minWidth = maxBossWidth / 10;
                                 int minHeight = maxBossHeight / 10;
@@ -433,13 +441,13 @@ public class GeneratorScript : MonoBehaviour
 
                                 if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[0])
                                 {
-                                    //get rid of rotation
-                                    rotSeed = 0;
+                                    //aim straight up or straight down
+                                    rotSeed = (int)(Mathf.Round(rotSeed / 180.0f) * 180);
                                 }
                                 else if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[1])
                                 {
-                                    //get rid of rotation
-                                    rotSeed = 0;
+                                    //aim straight up or straight down
+                                    rotSeed = (int)(Mathf.Round(rotSeed / 180.0f) * 180);
                                     //put shape in the middle
                                     xSeed = textureWidth / 2;
                                 }

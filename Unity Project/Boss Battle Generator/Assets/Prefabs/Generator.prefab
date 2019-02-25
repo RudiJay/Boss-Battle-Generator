@@ -241,15 +241,20 @@ MonoBehaviour:
   - shape: 0
     sprite: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
     symmetryProbBounds:
-    - 0.4
-    - 0.8
+    - 0.35
+    - 0.7
   - shape: 1
+    sprite: {fileID: 21300000, guid: b222f87a5e688f846999d56a9eb3557f, type: 3}
+    symmetryProbBounds:
+    - 0.35
+    - 0.7
+  - shape: 2
     sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
     symmetryProbBounds:
     - 0.1
     - 0.5
     - 0.9
-  - shape: 2
+  - shape: 3
     sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
     symmetryProbBounds:
     - 0.1

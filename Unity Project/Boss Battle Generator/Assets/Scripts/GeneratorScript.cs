@@ -6,8 +6,9 @@ using UnityEngine.UI;
 public enum ShapeType
 {
     CIRCLE,
-    //RING,
-    //ELLIPSE,
+    RING,
+    //OVAL,
+    //HALO,
     //SEMICIRCLE,
     SQUARE,
     RECT,
@@ -231,6 +232,7 @@ public class GeneratorScript : MonoBehaviour
 
                     SpriteShape spriteShape;
                     int index = (int)(shapeSeed / (float)shapeMax * SpriteGenerationShapes.Length);
+                    //index = 1;
                     spriteShape = SpriteGenerationShapes[index];
 
                     snapshotSprite.sprite = spriteShape.sprite;
@@ -241,6 +243,7 @@ public class GeneratorScript : MonoBehaviour
                     switch (spriteShape.shape)
                     {
                         case ShapeType.CIRCLE:
+                        case ShapeType.RING:
                             {
                                 int radiusMax = maxBossWidth / 2;
                                 int radiusMin = radiusMax / 10;

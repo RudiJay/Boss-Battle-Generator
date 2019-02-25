@@ -29,7 +29,7 @@ public struct SpriteShape
     public Sprite sprite;
 
     [Range(0,1)]
-    public float[] SymmetryProbabilityBoundaries;
+    public float[] symmetryProbBounds;
 }
 
 public class GeneratorScript : MonoBehaviour
@@ -230,7 +230,7 @@ public class GeneratorScript : MonoBehaviour
                     snapshotSpriteObj.transform.rotation = Quaternion.identity;
 
                     SpriteShape spriteShape;
-                    int index = shapeSeed / shapeMax * SpriteGenerationShapes.Length;
+                    int index = (int)(shapeSeed / (float)shapeMax * SpriteGenerationShapes.Length);
                     spriteShape = SpriteGenerationShapes[index];
 
                     snapshotSprite.sprite = spriteShape.sprite;
@@ -257,21 +257,19 @@ public class GeneratorScript : MonoBehaviour
 
                                 snapshotSpriteObj.transform.localScale = new Vector3(scale, scale);
 
-                                if (symmetricSeed >= symmetricMax * 0.2)
+                                if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[0])
                                 {
-                                    if (symmetricSeed > symmetricMax * 0.6)
-                                    {
-                                        //if symmetric type 1, double up shape on both sides
-                                        //get opposite xSeed
-                                        int x2 = 2 * (textureWidth / 2) - xSeed;
-                                        DrawShapeFromSnapshot(texture, x2, ySeed);
-                                    }
-                                    else
-                                    {
-                                        //if symmetric type 2, simply put shape in the middle
-                                        xSeed = textureWidth / 2;
-                                    }
+                                    //put shape in the middle
+                                    xSeed = textureWidth / 2;
                                 }
+                                else if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[1])
+                                {
+                                    //double up shape on both sides
+                                    //get opposite xSeed
+                                    int x2 = 2 * (textureWidth / 2) - xSeed;
+                                    DrawShapeFromSnapshot(texture, x2, ySeed);
+                                }
+                                //else no symmetry
 
                                 x0 = xSeed;
                                 y0 = ySeed;
@@ -304,29 +302,28 @@ public class GeneratorScript : MonoBehaviour
 
                                 snapshotSpriteObj.transform.localScale = new Vector3(size, size);
 
-                                if (symmetricSeed >= symmetricMax * 0.1)
+                                if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[0])
                                 {
-                                    if (symmetricSeed > symmetricMax * 0.6)
-                                    {
-                                        //if symmetric type 1, double up shape on both sides
-                                        //get opposite xSeed
-                                        int x2 = 2 * (textureWidth / 2) - xSeed;
-                                        //mirror rotation
-                                        snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, -rotSeed);
-                                        DrawShapeFromSnapshot(texture, x2, ySeed);
-                                    }
-                                    else
-                                    {
-                                        //get rid of rotation
-                                        rotSeed = (int)(Mathf.Round(rotSeed / 45.0f) * 45 * Mathf.Sign(rotSeed));
-
-                                        if (symmetricSeed > symmetricMax * 0.2)
-                                        {
-                                            //if symmetric type 2, simply put shape in the middle
-                                            xSeed = textureWidth / 2;
-                                        }
-                                    }
+                                    //get rid of rotation
+                                    rotSeed = (int)(Mathf.Round(rotSeed / 45.0f) * 45 * Mathf.Sign(rotSeed));
                                 }
+                                else if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[1])
+                                {
+                                    //get rid of rotation
+                                    rotSeed = (int)(Mathf.Round(rotSeed / 45.0f) * 45 * Mathf.Sign(rotSeed));
+                                    //put shape in the middle
+                                    xSeed = textureWidth / 2;
+                                }
+                                else if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[2])
+                                {
+                                    //double up shape on both sides
+                                    //get opposite xSeed
+                                    int x2 = 2 * (textureWidth / 2) - xSeed;
+                                    //mirror rotation
+                                    snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, -rotSeed);
+                                    DrawShapeFromSnapshot(texture, x2, ySeed);
+                                }
+                                //else no symmetry
 
                                 snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, rotSeed);
 
@@ -366,28 +363,26 @@ public class GeneratorScript : MonoBehaviour
 
                                 snapshotSpriteObj.transform.localScale = new Vector3(width, height);
 
-                                if (symmetricSeed >= symmetricMax * 0.3)
+                                if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[0])
                                 {
-                                    if (symmetricSeed > symmetricMax * 0.5)
-                                    {
-                                        //if symmetric type 1, double up shape on both sides
-                                        //get opposite xSeed
-                                        int x2 = 2 * (textureWidth / 2) - xSeed;
-                                        //mirror rotation
-                                        snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, -rotSeed);
-                                        DrawShapeFromSnapshot(texture, x2, ySeed);
-                                    }
-                                    else
-                                    {
-                                        //additionally get rid of rotation
-                                        rotSeed = 0;
-
-                                        if (symmetricSeed > symmetricMax * 0.4)
-                                        {
-                                            //if symmetric type 2, simply put shape in the middle
-                                            xSeed = textureWidth / 2;
-                                        }
-                                    }
+                                    //get rid of rotation
+                                    rotSeed = 0;
+                                }
+                                else if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[1])
+                                {
+                                    //get rid of rotation
+                                    rotSeed = 0;
+                                    //put shape in the middle
+                                    xSeed = textureWidth / 2;
+                                }
+                                else if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[2])
+                                {
+                                    //double up shape on both sides
+                                    //get opposite xSeed
+                                    int x2 = 2 * (textureWidth / 2) - xSeed;
+                                    //mirror rotation
+                                    snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, -rotSeed);
+                                    DrawShapeFromSnapshot(texture, x2, ySeed);
                                 }
 
                                 snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, rotSeed);

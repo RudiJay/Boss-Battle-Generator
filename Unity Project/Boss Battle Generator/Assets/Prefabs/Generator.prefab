@@ -240,18 +240,18 @@ MonoBehaviour:
   SpriteGenerationShapes:
   - shape: 0
     sprite: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
-    SymmetryProbabilityBoundaries:
-    - 0.2
-    - 0.6
+    symmetryProbBounds:
+    - 0.4
+    - 0.8
   - shape: 1
     sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
-    SymmetryProbabilityBoundaries:
+    symmetryProbBounds:
     - 0.1
-    - 0.2
-    - 0.6
+    - 0.5
+    - 0.9
   - shape: 2
     sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
-    SymmetryProbabilityBoundaries:
-    - 0.3
-    - 0.4
-    - 0.5
+    symmetryProbBounds:
+    - 0.1
+    - 0.2
+    - 0.7

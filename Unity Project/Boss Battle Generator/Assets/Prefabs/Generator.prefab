@@ -228,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e165a98502e1ec44b9e1816e2d28ef57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoGeneratorDelay: 0.1
+  autoGeneratorDelay: 0.25
   ShowSpriteBorder: 0
   seed: 0
   maxBossWidth: 625
@@ -241,34 +241,58 @@ MonoBehaviour:
   - shape: 0
     sprite: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
     symmetryProbBounds:
-    - 0.35
-    - 0.7
+    - 0.4
+    - 0.8
   - shape: 1
     sprite: {fileID: 21300000, guid: b222f87a5e688f846999d56a9eb3557f, type: 3}
     symmetryProbBounds:
-    - 0.35
-    - 0.7
+    - 0.4
+    - 0.8
   - shape: 2
     sprite: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
     symmetryProbBounds:
-    - 0.1
-    - 0.2
-    - 0.7
+    - 0.15
+    - 0.3
+    - 0.9
   - shape: 3
     sprite: {fileID: 21300000, guid: b222f87a5e688f846999d56a9eb3557f, type: 3}
     symmetryProbBounds:
-    - 0.1
-    - 0.2
-    - 0.7
-  - shape: 5
-    sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
+    - 0.15
+    - 0.3
+    - 0.9
+  - shape: 4
+    sprite: {fileID: 21300000, guid: eba78284cdbb423419c2dc55db74cf8a, type: 3}
     symmetryProbBounds:
     - 0.1
     - 0.5
+    - 0.9
+  - shape: 5
+    sprite: {fileID: 21300000, guid: eba78284cdbb423419c2dc55db74cf8a, type: 3}
+    symmetryProbBounds:
+    - 0.15
+    - 0.3
     - 0.9
   - shape: 6
     sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
     symmetryProbBounds:
     - 0.1
-    - 0.2
-    - 0.7
+    - 0.5
+    - 0.9
+  - shape: 7
+    sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
+    symmetryProbBounds:
+    - 0.15
+    - 0.3
+    - 0.9
+  - shape: 8
+    sprite: {fileID: 21300000, guid: 509b4ad5f8e571b4788c2b508077be0f, type: 3}
+    symmetryProbBounds:
+    - 0.15
+    - 0.3
+    - 0.9
+  - shape: 9
+    sprite: {fileID: 21300000, guid: a863e089c739fc443806cd557341ced4, type: 3}
+    symmetryProbBounds:
+    - 0.15
+    - 0.3
+    - 0.9

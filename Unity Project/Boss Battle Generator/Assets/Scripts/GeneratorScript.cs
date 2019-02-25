@@ -10,6 +10,7 @@ public enum ShapeType
     OVAL,
     HALO,
     SEMICIRCLE,
+    SEMIOVAL,
     SQUARE,
     RECT,
     DIAMOND,
@@ -232,7 +233,7 @@ public class GeneratorScript : MonoBehaviour
 
                     SpriteShape spriteShape;
                     int index = (int)(shapeSeed / (float)shapeMax * SpriteGenerationShapes.Length);
-                    //index = 1;
+                    //index = 9;
                     spriteShape = SpriteGenerationShapes[index];
 
                     snapshotSprite.sprite = spriteShape.sprite;
@@ -283,6 +284,7 @@ public class GeneratorScript : MonoBehaviour
                             };
                             break;
                         case ShapeType.SQUARE:
+                        case ShapeType.SEMICIRCLE:
                             {
                                 int minSize = maxBossWidth / 10;
 
@@ -342,6 +344,8 @@ public class GeneratorScript : MonoBehaviour
                         case ShapeType.RECT:
                         case ShapeType.OVAL:
                         case ShapeType.HALO:
+                        case ShapeType.SEMIOVAL:
+                        case ShapeType.DIAMOND:
                             {
                                 int minWidth = maxBossWidth / 10;
                                 int minHeight = maxBossHeight / 10;
@@ -391,6 +395,67 @@ public class GeneratorScript : MonoBehaviour
                                 }
 
                                 snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, rotSeed);
+
+                                x0 = xSeed;
+                                y0 = ySeed;
+
+                                Debug.Log("Rot seed (" + rotSeed + ")");
+                                Debug.Log("Width seed (" + minWidth + ", " + (int)(maxBossWidth * shapeSizeLimiter) + "): " + widthSeed + " (" + width + "%)");
+                                Debug.Log("Height seed (" + minHeight + ", " + (int)(maxBossHeight * shapeSizeLimiter) + "): " + heightSeed + " (" + height + "%)");
+                                Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
+                                Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
+                            };
+                            break;
+                        case ShapeType.RHOMBUS:
+                            {
+                                int minWidth = maxBossWidth / 10;
+                                int minHeight = maxBossHeight / 10;
+
+                                int rotSeed = rand.Next(-45, 45);
+
+                                float theta = rotSeed * Mathf.Deg2Rad;
+
+                                int widthSeed = rand.Next(minWidth, (int)(maxBossWidth * shapeSizeLimiter));
+                                int heightSeed = rand.Next(minHeight, (int)(maxBossHeight * shapeSizeLimiter));
+                                float width = widthSeed / (float)maxBossWidth;
+                                float height = heightSeed / (float)maxBossHeight;
+
+                                int rotWidth = (int)(Mathf.Abs(heightSeed * Mathf.Sin(theta)) + Mathf.Abs(widthSeed * Mathf.Cos(theta)));
+                                int rotHeight = (int)(Mathf.Abs(widthSeed * Mathf.Sin(theta)) + Mathf.Abs(heightSeed * Mathf.Cos(theta)));
+
+                                int xMax = maxBossWidth + xOffset - (rotWidth / 2);
+                                int xMin = xOffset + (rotWidth / 2);
+                                int xSeed = rand.Next(xMin, xMax);
+
+                                int yMax = maxBossHeight + yOffset - (rotHeight / 2);
+                                int yMin = yOffset + (rotHeight / 2);
+                                int ySeed = rand.Next(yMin, yMax);
+
+                                if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[0])
+                                {
+                                    //get rid of rotation
+                                    rotSeed = 0;
+                                }
+                                else if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[1])
+                                {
+                                    //get rid of rotation
+                                    rotSeed = 0;
+                                    //put shape in the middle
+                                    xSeed = textureWidth / 2;
+                                }
+                                else if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[2])
+                                {
+                                    //double up shape on both sides
+                                    //get opposite xSeed
+                                    int x2 = 2 * (textureWidth / 2) - xSeed;
+                                    //mirror rotation
+                                    snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, -rotSeed);
+                                    snapshotSpriteObj.transform.localScale = new Vector3(-width, height);
+                                    DrawShapeFromSnapshot(texture, x2, ySeed);
+                                }
+
+                                snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, rotSeed);
+                                snapshotSpriteObj.transform.localScale = new Vector3(width, height);
 
                                 x0 = xSeed;
                                 y0 = ySeed;

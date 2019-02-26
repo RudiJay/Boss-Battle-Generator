@@ -3,6 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum BossType
+{
+    RANDOM,
+    ROCKETSHIP,
+    FLYINGSAUCER,
+    STARFIGHTER,
+    SPACEBATTLESHIP,
+    ASTROMONSTER
+}
+
 public enum ShapeType
 {
     CIRCLE,
@@ -28,7 +38,13 @@ public enum ShapeType
 }
 
 [System.Serializable]
-public struct SpriteShape
+public struct BossData
+{
+    public BossType type;
+}
+
+[System.Serializable]
+public struct ShapeData
 {
     public ShapeType shape;
 
@@ -81,7 +97,7 @@ public class GeneratorScript : MonoBehaviour
     private int spriteShapeComplexity = 3;
 
     [SerializeField][Space(20)]
-    private SpriteShape[] SpriteGenerationShapes;
+    private ShapeData[] SpriteGenerationShapes;
 
     private void Awake()
     {
@@ -235,7 +251,7 @@ public class GeneratorScript : MonoBehaviour
 
                     snapshotSpriteObj.transform.rotation = Quaternion.identity;
 
-                    SpriteShape spriteShape;
+                    ShapeData spriteShape;
                     int index = (int)(shapeSeed / (float)shapeMax * SpriteGenerationShapes.Length);
                     spriteShape = SpriteGenerationShapes[index];
 

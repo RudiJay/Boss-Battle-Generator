@@ -34,13 +34,17 @@ public enum ShapeType
     HEX,
     IHEX,
     FIVESTAR,
-    SIXSTAR
+    SIXSTAR,
+    COUNT
 }
 
 [System.Serializable]
 public struct BossData
 {
     public BossType type;
+
+    [Range(0,1)]
+    public float[] shapeProbability;
 }
 
 [System.Serializable]
@@ -52,6 +56,8 @@ public struct ShapeData
 
     [Range(0,1)]
     public float[] symmetryProbBounds;
+
+    public float nearestSymmetricalRot;
 }
 
 public class GeneratorScript : MonoBehaviour
@@ -335,13 +341,13 @@ public class GeneratorScript : MonoBehaviour
 
                                 if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[0])
                                 {
-                                    //get rid of rotation
-                                    rotSeed = (int)(Mathf.Round(rotSeed / 45.0f) * 45 * Mathf.Sign(rotSeed));
+                                    //normalise rotation
+                                    rotSeed = (int)(Mathf.Round(rotSeed / spriteShape.nearestSymmetricalRot) * spriteShape.nearestSymmetricalRot * Mathf.Sign(rotSeed));
                                 }
                                 else if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[1])
                                 {
-                                    //get rid of rotation
-                                    rotSeed = (int)(Mathf.Round(rotSeed / 45.0f) * 45 * Mathf.Sign(rotSeed));
+                                    //normalise rotation
+                                    rotSeed = (int)(Mathf.Round(rotSeed / spriteShape.nearestSymmetricalRot) * spriteShape.nearestSymmetricalRot * Mathf.Sign(rotSeed));
                                     //put shape in the middle
                                     xSeed = textureWidth / 2;
                                 }
@@ -404,13 +410,13 @@ public class GeneratorScript : MonoBehaviour
 
                                 if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[0])
                                 {
-                                    //aim straight up or straight down
-                                    rotSeed = (int)(Mathf.Round(rotSeed / 180.0f) * 180);
+                                    //normalise rotation
+                                    rotSeed = (int)(Mathf.Round(rotSeed / spriteShape.nearestSymmetricalRot) * spriteShape.nearestSymmetricalRot);
                                 }
                                 else if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[1])
                                 {
-                                    //aim straight up or straight down
-                                    rotSeed = (int)(Mathf.Round(rotSeed / 180.0f) * 180);
+                                    //normalise rotation
+                                    rotSeed = (int)(Mathf.Round(rotSeed / spriteShape.nearestSymmetricalRot) * spriteShape.nearestSymmetricalRot);
                                     //put shape in the middle
                                     xSeed = textureWidth / 2;
                                 }
@@ -465,18 +471,6 @@ public class GeneratorScript : MonoBehaviour
                                 int ySeed = rand.Next(yMin, yMax);
 
                                 if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[0])
-                                {
-                                    //aim straight up or straight down
-                                    rotSeed = (int)(Mathf.Round(rotSeed / 180.0f) * 180);
-                                }
-                                else if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[1])
-                                {
-                                    //aim straight up or straight down
-                                    rotSeed = (int)(Mathf.Round(rotSeed / 180.0f) * 180);
-                                    //put shape in the middle
-                                    xSeed = textureWidth / 2;
-                                }
-                                else if (symmetricSeed < symmetricMax * spriteShape.symmetryProbBounds[2])
                                 {
                                     //double up shape on both sides
                                     //get opposite xSeed

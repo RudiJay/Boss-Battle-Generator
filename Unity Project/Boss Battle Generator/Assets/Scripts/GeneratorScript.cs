@@ -39,16 +39,20 @@ public enum ShapeType
 }
 
 [System.Serializable]
-public struct BossData
+public struct BossTypeData
 {
     public BossType type;
+
+    public AnimationCurve complexityProbability;
+
+    public AnimationCurve symmetryProbability;
 
     [Range(0,1)]
     public float[] shapeProbability;
 }
 
 [System.Serializable]
-public struct ShapeData
+public struct ShapeTypeData
 {
     public ShapeType shape;
 
@@ -101,7 +105,10 @@ public class GeneratorScript : MonoBehaviour
     private int spriteShapeComplexity = 3;
 
     [SerializeField][Space(20)]
-    private ShapeData[] SpriteGenerationShapes;
+    private BossTypeData[] BossTypeVariables;
+
+    [SerializeField][Space(20)]
+    private ShapeTypeData[] SpriteGenerationShapes;
 
     private void Awake()
     {
@@ -245,7 +252,7 @@ public class GeneratorScript : MonoBehaviour
 
                     snapshotSpriteObj.transform.rotation = Quaternion.identity;
 
-                    ShapeData spriteShape;
+                    ShapeTypeData spriteShape;
                     int index = (int)(shapeSeed / (float)shapeMax * SpriteGenerationShapes.Length);
                     spriteShape = SpriteGenerationShapes[index];
 

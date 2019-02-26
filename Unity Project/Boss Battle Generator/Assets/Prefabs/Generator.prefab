@@ -237,6 +237,19 @@ MonoBehaviour:
   shapeMax: 100
   symmetricMax: 100
   spriteShapeComplexity: 1
+  BossTypeVariables:
+  - type: 0
+    shapeProbability: []
+  - type: 1
+    shapeProbability: []
+  - type: 2
+    shapeProbability: []
+  - type: 3
+    shapeProbability: []
+  - type: 4
+    shapeProbability: []
+  - type: 5
+    shapeProbability: []
   SpriteGenerationShapes:
   - shape: 0
     sprite: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}

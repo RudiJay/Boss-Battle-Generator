@@ -72,8 +72,6 @@ public class GeneratorScript : MonoBehaviour
 
     private GameObject snapshotSpriteObj;
 
-    private InputField seedInputField;
-
     private IEnumerator autoGenerator;
     private bool isAutoGenerating = false;
 
@@ -121,8 +119,6 @@ public class GeneratorScript : MonoBehaviour
         spriteSnapshotCam = GameObject.FindWithTag("SpriteSnapshotCam").GetComponent<Camera>();
 
         snapshotSpriteObj = GameObject.FindWithTag("SnapshotSpriteObj");
-
-        seedInputField = GameObject.FindWithTag("SeedInputField").GetComponent<InputField>();
 
         textureWidth = (int)(maxBossWidth * 1.25f);
         textureHeight = (int)(maxBossHeight * 1.25f);
@@ -184,42 +180,34 @@ public class GeneratorScript : MonoBehaviour
     {
         seed = System.Environment.TickCount;
 
-        seedInputField.text = seed.ToString();
+        GeneratorUI.Instance.UpdateSeedUI(seed.ToString());
 
         rand = new System.Random(seed);
     }
 
-    public void SetSeed(string inString)
+    public void SetSeed(int inSeed)
     {
-        if (inString.Length > 0 && inString.Length <= 9)
-        {
-            seed = int.Parse(inString);
-        }
+        seed = inSeed;
 
         rand = new System.Random(seed);
 
         GenerateBossFight(false);
     }
 
-    public void GenerateBossFight(bool seedNeedsSetting)
+    public void GenerateBossFight(bool generateNewSeed)
     {
-        if (seedNeedsSetting)
+        if (generateNewSeed)
         {
             GenerateSeed();
         }
 
         Debug.Log("Boss Fight Seed: " + seed);
 
-        GenerateSprite(false);
+        GenerateSprite();
     }
 
-    public void GenerateSprite(bool seedNeedsSetting)
+    public void GenerateSprite()
     {
-        if (seedNeedsSetting)
-        {
-            GenerateSeed();
-        }
-
         if (bossObj && spriteSnapshotCam && snapshotSpriteObj && SpriteGenerationShapes.Length > 0)
         {
             SpriteRenderer sprite = bossObj.GetComponentInChildren<SpriteRenderer>();

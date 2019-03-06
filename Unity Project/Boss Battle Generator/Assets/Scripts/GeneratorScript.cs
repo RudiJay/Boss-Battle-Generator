@@ -112,11 +112,13 @@ public class GeneratorScript : MonoBehaviour
 
     private void Awake()
     {
+        //initialise singleton pattern
         Instance = this;
     }
 
     private void Start()
     {
+        //initialise references
         rand = new System.Random();
 
         autoGenerator = AutoGenerateBossFights();
@@ -127,6 +129,7 @@ public class GeneratorScript : MonoBehaviour
 
         snapshotSpriteObj = GameObject.FindWithTag("SnapshotSpriteObj");
 
+        //calculate determinant sizes
         textureWidth = (int)(maxBossWidth * 1.25f);
         textureHeight = (int)(maxBossHeight * 1.25f);
         xOffset = (textureWidth - maxBossWidth) / 2;
@@ -135,6 +138,7 @@ public class GeneratorScript : MonoBehaviour
 
     private void Update()
     {
+        //Toggle auto generate input
         if (Input.GetButtonDown("ToggleAutoGenerate"))
         {
             if (!isAutoGenerating)
@@ -150,6 +154,9 @@ public class GeneratorScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Generates a new boss repeatedly with a delay
+    /// </summary>
     private IEnumerator AutoGenerateBossFights()
     {
         while (true)
@@ -162,6 +169,12 @@ public class GeneratorScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Takes a snapshot of a camera in the scene pointed at a shape sprite and draws it onto the input texture
+    /// </summary>
+    /// <param name="texture">the texture to snapshot shape draw onto</param>
+    /// <param name="x0"></param>
+    /// <param name="y0"></param>
     private void DrawShapeFromSnapshot(Texture2D texture, int x0, int y0)
     {
         spriteSnapshotCam.targetTexture = RenderTexture.GetTemporary(textureHeight, textureWidth, 16);
@@ -183,6 +196,9 @@ public class GeneratorScript : MonoBehaviour
         TextureDraw.CopyFromTexture(texture, snapshot, x0, y0);
     }
 
+    /// <summary>
+    /// Generates a new seed for the random boss fight generation
+    /// </summary>
     public void GenerateSeed()
     {
         seed = System.Environment.TickCount;
@@ -192,6 +208,10 @@ public class GeneratorScript : MonoBehaviour
         rand = new System.Random(seed);
     }
 
+    /// <summary>
+    /// Sets the seed for the random boss fight generation
+    /// </summary>
+    /// <param name="inSeed">the number to set the seed to</param>
     public void SetSeed(int inSeed)
     {
         seed = inSeed;

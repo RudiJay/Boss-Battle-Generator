@@ -1,11 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum BossType
+/// <summary>
+/// Set up enum flags attribute
+/// </summary>
+public class EnumFlagsAttribute : PropertyAttribute
 {
-    RANDOM,
+    public EnumFlagsAttribute() { }
+}
+
+/// <summary>
+/// Set up enum flags attribute content
+/// </summary>
+[CustomPropertyDrawer(typeof(EnumFlagsAttribute))]
+public class EnumFlagsAttributeDrawer : PropertyDrawer
+{
+    public override void OnGUI(Rect _position, SerializedProperty _property, GUIContent _label)
+    {
+        _property.intValue = EditorGUI.MaskField(_position, _label, _property.intValue, _property.enumNames);
+    }
+}
+
+/// <summary>
+/// Names of each boss type
+/// </summary>
+public enum BossTypeName
+{
     ROCKETSHIP,
     FLYINGSAUCER,
     STARFIGHTER,
@@ -13,7 +36,10 @@ public enum BossType
     ASTROMONSTER
 }
 
-public enum ShapeType
+/// <summary>
+/// Names of each basic shape sprite type
+/// </summary>
+public enum ShapeTypeName
 {
     CIRCLE,
     RING,
@@ -38,10 +64,26 @@ public enum ShapeType
     COUNT
 }
 
-[System.Serializable]
-public struct BossTypeData
+/// <summary>
+/// Bitmask enum of each weapon orientation type
+/// </summary>
+[System.Flags]
+public enum WeaponOrientationMode
 {
-    public BossType type;
+    FIXEDFORWARD = 1 << 0,
+    FIXEDSIDEWAYS = 1 << 1,
+    FIXEDOTHER = 1 << 2,
+    ROTATABLE = 1 << 3,
+    NONORIENTED = 1 << 4
+}
+
+/// <summary>
+/// Serialisable struct containing variables for each boss type
+/// </summary>
+[System.Serializable]
+public struct BossType
+{
+    public BossTypeName typeName;
 
     public AnimationCurve complexityProbability;
 
@@ -51,10 +93,13 @@ public struct BossTypeData
     public float[] shapeProbability;
 }
 
+/// <summary>
+/// Serialisable struct containing variables for each basic shape sprite
+/// </summary>
 [System.Serializable]
-public struct ShapeTypeData
+public struct ShapeType
 {
-    public ShapeType shape;
+    public ShapeTypeName shapeName;
 
     public Sprite sprite;
 
@@ -62,6 +107,26 @@ public struct ShapeTypeData
     public float[] symmetryProbBounds;
 
     public float nearestSymmetricalRot;
+}
+
+/// <summary>
+/// Serialisable struct containing variables for each weapon type
+/// </summary>
+[System.Serializable]
+public struct WeaponType
+{
+    public Sprite sprite;
+
+    [EnumFlags]
+    public WeaponOrientationMode availableWeaponOrientations;
+
+    [EnumFlags]
+    public BossTypeName bossTypesWeaponWieldableBy;
+
+    [Range(0, 1)]
+    public float[] symmetryProbBounds;
+
+    public bool canWeaponFloat;
 }
 
 public class GeneratorScript : MonoBehaviour
@@ -105,10 +170,13 @@ public class GeneratorScript : MonoBehaviour
     private int spriteShapeComplexity = 3;
 
     [SerializeField][Space(20)]
-    private BossTypeData[] BossTypeVariables;
+    private BossType[] BossTypeVariables;
 
     [SerializeField][Space(20)]
-    private ShapeTypeData[] SpriteGenerationShapes;
+    private ShapeType[] SpriteGenerationShapes;
+
+    [SerializeField][Space(20)]
+    private WeaponType[] GeneratableWeapons;
 
     private void Awake()
     {
@@ -221,6 +289,10 @@ public class GeneratorScript : MonoBehaviour
         GenerateBossFight(false);
     }
 
+    /// <summary>
+    /// Generate a new boss fight
+    /// </summary>
+    /// <param name="generateNewSeed">whether the new boss needs to generate a new seed or not</param>
     public void GenerateBossFight(bool generateNewSeed)
     {
         if (generateNewSeed)
@@ -228,12 +300,13 @@ public class GeneratorScript : MonoBehaviour
             GenerateSeed();
         }
 
-        Debug.Log("Boss Fight Seed: " + seed);
-
         GenerateSprite();
     }
 
-    public void GenerateSprite()
+    /// <summary>
+    /// Generates the sprite that makes up the body of the boss
+    /// </summary>
+    private void GenerateSprite()
     {
         if (bossObj && spriteSnapshotCam && snapshotSpriteObj && SpriteGenerationShapes.Length > 0)
         {
@@ -272,7 +345,7 @@ public class GeneratorScript : MonoBehaviour
 
                     snapshotSpriteObj.transform.rotation = Quaternion.identity;
 
-                    ShapeTypeData spriteShape;
+                    ShapeType spriteShape;
                     int index = (int)(shapeSeed / (float)shapeMax * SpriteGenerationShapes.Length);
                     spriteShape = SpriteGenerationShapes[index];
 
@@ -281,11 +354,11 @@ public class GeneratorScript : MonoBehaviour
                     int x0 = (textureWidth / 2);
                     int y0 = (textureHeight / 2);
 
-                    switch (spriteShape.shape)
+                    switch (spriteShape.shapeName)
                     {
                         //radius, no rotation
-                        case ShapeType.CIRCLE:
-                        case ShapeType.RING:
+                        case ShapeTypeName.CIRCLE:
+                        case ShapeTypeName.RING:
                             {
                                 int radiusMax = maxBossWidth / 2;
                                 int radiusMin = radiusMax / 10;
@@ -325,13 +398,13 @@ public class GeneratorScript : MonoBehaviour
                             };
                             break;
                         //single dimension size
-                        case ShapeType.SQUARE:
-                        case ShapeType.SEMICIRCLE:
-                        case ShapeType.EQUITRI:
-                        case ShapeType.PENT:
-                        case ShapeType.HEX:
-                        case ShapeType.FIVESTAR:
-                        case ShapeType.SIXSTAR:
+                        case ShapeTypeName.SQUARE:
+                        case ShapeTypeName.SEMICIRCLE:
+                        case ShapeTypeName.EQUITRI:
+                        case ShapeTypeName.PENT:
+                        case ShapeTypeName.HEX:
+                        case ShapeTypeName.FIVESTAR:
+                        case ShapeTypeName.SIXSTAR:
                             {
                                 int minSize = maxBossWidth / 10;
 
@@ -389,14 +462,14 @@ public class GeneratorScript : MonoBehaviour
                             }
                             break;
                         //width and height
-                        case ShapeType.RECT:
-                        case ShapeType.OVAL:
-                        case ShapeType.HALO:
-                        case ShapeType.SEMIOVAL:
-                        case ShapeType.DIAMOND:
-                        case ShapeType.ISOTRI:
-                        case ShapeType.IPENT:
-                        case ShapeType.IHEX:
+                        case ShapeTypeName.RECT:
+                        case ShapeTypeName.OVAL:
+                        case ShapeTypeName.HALO:
+                        case ShapeTypeName.SEMIOVAL:
+                        case ShapeTypeName.DIAMOND:
+                        case ShapeTypeName.ISOTRI:
+                        case ShapeTypeName.IPENT:
+                        case ShapeTypeName.IHEX:
                             {
                                 int minWidth = maxBossWidth / 10;
                                 int minHeight = maxBossHeight / 10;
@@ -458,9 +531,9 @@ public class GeneratorScript : MonoBehaviour
                             };
                             break;
                         //width and height (sprite needs mirroring for symmetry)
-                        case ShapeType.RHOMBUS:
-                        case ShapeType.RANGLETRI:
-                        case ShapeType.SCALENETRI:
+                        case ShapeTypeName.RHOMBUS:
+                        case ShapeTypeName.RANGLETRI:
+                        case ShapeTypeName.SCALENETRI:
                             {
                                 int minWidth = maxBossWidth / 10;
                                 int minHeight = maxBossHeight / 10;
@@ -521,5 +594,13 @@ public class GeneratorScript : MonoBehaviour
                 sprite.enabled = true;
             }
         }
+    }
+
+    /// <summary>
+    /// Randomly select the weapons that will be attached to the boss
+    /// </summary>
+    private void GenerateWeapons()
+    {
+
     }
 }

@@ -228,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e165a98502e1ec44b9e1816e2d28ef57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoGeneratorDelay: 0.25
+  autoGeneratorDelay: 2
   ShowSpriteBorder: 0
   seed: 0
   maxBossWidth: 625
@@ -238,7 +238,7 @@ MonoBehaviour:
   symmetricMax: 100
   spriteShapeComplexity: 1
   BossTypeVariables:
-  - type: 0
+  - typeName: 0
     complexityProbability:
       serializedVersion: 2
       m_Curve: []
@@ -252,7 +252,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
-  - type: 1
+  - typeName: 1
     complexityProbability:
       serializedVersion: 2
       m_Curve: []
@@ -266,7 +266,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
-  - type: 2
+  - typeName: 2
     complexityProbability:
       serializedVersion: 2
       m_Curve: []
@@ -280,7 +280,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
-  - type: 3
+  - typeName: 3
     complexityProbability:
       serializedVersion: 2
       m_Curve: []
@@ -294,7 +294,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
-  - type: 4
+  - typeName: 3
     complexityProbability:
       serializedVersion: 2
       m_Curve: []
@@ -308,7 +308,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
-  - type: 5
+  - typeName: 4
     complexityProbability:
       serializedVersion: 2
       m_Curve: []
@@ -323,135 +323,141 @@ MonoBehaviour:
       m_RotationOrder: 4
     shapeProbability: []
   SpriteGenerationShapes:
-  - shape: 0
+  - shapeName: 0
     sprite: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
     symmetryProbBounds:
     - 0.45
     - 0.95
     nearestSymmetricalRot: 0
-  - shape: 1
+  - shapeName: 1
     sprite: {fileID: 21300000, guid: b222f87a5e688f846999d56a9eb3557f, type: 3}
     symmetryProbBounds:
     - 0.45
     - 0.95
     nearestSymmetricalRot: 0
-  - shape: 2
+  - shapeName: 2
     sprite: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
     symmetryProbBounds:
     - 0.05
     - 0.3
     - 0.95
     nearestSymmetricalRot: 90
-  - shape: 3
+  - shapeName: 3
     sprite: {fileID: 21300000, guid: b222f87a5e688f846999d56a9eb3557f, type: 3}
     symmetryProbBounds:
     - 0.05
     - 0.3
     - 0.95
     nearestSymmetricalRot: 90
-  - shape: 4
+  - shapeName: 4
     sprite: {fileID: 21300000, guid: eba78284cdbb423419c2dc55db74cf8a, type: 3}
     symmetryProbBounds:
     - 0.05
     - 0.5
     - 0.95
     nearestSymmetricalRot: 180
-  - shape: 5
+  - shapeName: 5
     sprite: {fileID: 21300000, guid: eba78284cdbb423419c2dc55db74cf8a, type: 3}
     symmetryProbBounds:
     - 0.05
     - 0.3
     - 0.95
     nearestSymmetricalRot: 180
-  - shape: 6
+  - shapeName: 6
     sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
     symmetryProbBounds:
     - 0.05
     - 0.5
     - 0.95
     nearestSymmetricalRot: 45
-  - shape: 7
+  - shapeName: 7
     sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
     symmetryProbBounds:
     - 0.05
     - 0.3
     - 0.95
     nearestSymmetricalRot: 90
-  - shape: 8
+  - shapeName: 8
     sprite: {fileID: 21300000, guid: 509b4ad5f8e571b4788c2b508077be0f, type: 3}
     symmetryProbBounds:
     - 0.05
     - 0.3
     - 0.95
     nearestSymmetricalRot: 90
-  - shape: 9
+  - shapeName: 9
     sprite: {fileID: 21300000, guid: a863e089c739fc443806cd557341ced4, type: 3}
     symmetryProbBounds:
     - 0.95
     nearestSymmetricalRot: 0
-  - shape: 10
+  - shapeName: 10
     sprite: {fileID: 21300000, guid: 4e2fa0a1ac37783418c02a03d63eae14, type: 3}
     symmetryProbBounds:
     - 0.05
     - 0.5
     - 0.95
     nearestSymmetricalRot: 180
-  - shape: 11
+  - shapeName: 11
     sprite: {fileID: 21300000, guid: 4e2fa0a1ac37783418c02a03d63eae14, type: 3}
     symmetryProbBounds:
     - 0.05
     - 0.3
     - 0.95
     nearestSymmetricalRot: 180
-  - shape: 12
+  - shapeName: 12
     sprite: {fileID: 21300000, guid: 157b02681104bdf4eb6a5383b1bba96f, type: 3}
     symmetryProbBounds:
     - 0.95
     nearestSymmetricalRot: 0
-  - shape: 13
+  - shapeName: 13
     sprite: {fileID: 21300000, guid: 48c94c2e8e3fb6248b1c6132fea221af, type: 3}
     symmetryProbBounds:
     - 0.95
     nearestSymmetricalRot: 0
-  - shape: 14
+  - shapeName: 14
     sprite: {fileID: 21300000, guid: 7ef25fb858242c9458570553f31087a8, type: 3}
     symmetryProbBounds:
     - 0.05
     - 0.5
     - 0.95
     nearestSymmetricalRot: 180
-  - shape: 15
+  - shapeName: 15
     sprite: {fileID: 21300000, guid: 7ef25fb858242c9458570553f31087a8, type: 3}
     symmetryProbBounds:
     - 0.05
     - 0.3
     - 0.95
     nearestSymmetricalRot: 180
-  - shape: 16
+  - shapeName: 16
     sprite: {fileID: 21300000, guid: dedd3342dca55754288c81e2f675120b, type: 3}
     symmetryProbBounds:
     - 0.05
     - 0.5
     - 0.95
     nearestSymmetricalRot: 90
-  - shape: 17
+  - shapeName: 17
     sprite: {fileID: 21300000, guid: dedd3342dca55754288c81e2f675120b, type: 3}
     symmetryProbBounds:
     - 0.05
     - 0.3
     - 0.95
     nearestSymmetricalRot: 90
-  - shape: 18
+  - shapeName: 18
     sprite: {fileID: 21300000, guid: 559626ac368b0a64b9b12a35f00ba3c3, type: 3}
     symmetryProbBounds:
     - 0.05
     - 0.5
     - 0.95
     nearestSymmetricalRot: 180
-  - shape: 19
+  - shapeName: 19
     sprite: {fileID: 21300000, guid: 8b5745ae10fced147aa86b3571a427ec, type: 3}
     symmetryProbBounds:
     - 0.05
     - 0.5
     - 0.95
     nearestSymmetricalRot: 90
+  GeneratableWeapons:
+  - sprite: {fileID: 0}
+    availableWeaponOrientations: -1
+    bossTypesWeaponWieldableBy: 0
+    symmetryProbBounds: []
+    canWeaponFloat: 0

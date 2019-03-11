@@ -7,6 +7,9 @@ public class GeneratorUI : MonoBehaviour
 {
     public static GeneratorUI Instance;
 
+    [SerializeField]
+    private Text generatingInProgress;
+    [SerializeField]
     private InputField seedInputField;
 
     public void Awake()
@@ -14,9 +17,9 @@ public class GeneratorUI : MonoBehaviour
         Instance = this;
     }
 
-    public void Start()
+    public void ToggleGeneratingInProgressLabel(bool value)
     {
-        seedInputField = GameObject.FindWithTag("SeedInputField").GetComponent<InputField>();
+        generatingInProgress.enabled = value;
     }
 
     public void UpdateSeedUI(string inSeed)

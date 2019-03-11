@@ -155,6 +155,7 @@ public class GeneratorScript : MonoBehaviour
     [Header("Generation Variables")]
     [SerializeField]
     private int seed;
+    private int symmetricSeed;
 
     [SerializeField]
     private int maxBossWidth = 500, maxBossHeight = 500;
@@ -165,10 +166,10 @@ public class GeneratorScript : MonoBehaviour
 
     //Random values
     [SerializeField]
-    private int shapeMax = 20, symmetricMax = 4;
+    private int shapeMax = 100, symmetricMax = 100, weaponTypeMax = 100;
 
     [SerializeField]
-    private int spriteShapeComplexity = 3;
+    private int spriteShapeComplexity = 3, numberOfWeapons = 2;
 
     [SerializeField][Space(20)]
     private BossType[] BossTypeVariables;
@@ -305,16 +306,23 @@ public class GeneratorScript : MonoBehaviour
     {
         if (bossSprite)
         {
+            GeneratorUI.Instance.ToggleGeneratingInProgressLabel(true);
+
             if (generateNewSeed)
             {
                 GenerateSeed();
             }
+
+            symmetricSeed = rand.Next(0, symmetricMax);
+            Debug.Log("Symmetric seed (0, " + symmetricMax + "): " + symmetricSeed);
 
             GenerateSprite();
 
             GenerateColliders();
 
             GenerateWeapons();
+
+            GeneratorUI.Instance.ToggleGeneratingInProgressLabel(false);
         }
     }
 
@@ -349,11 +357,9 @@ public class GeneratorScript : MonoBehaviour
 
             for (int i = 0; i < spriteShapeComplexity; i++)
             {
-                int shapeSeed = rand.Next(0, shapeMax);
-                int symmetricSeed = rand.Next(0, symmetricMax);
+                int shapeSeed = rand.Next(0, shapeMax);                
                 Debug.Log("Shape seed (0, " + shapeMax + "): " + shapeSeed);
-                Debug.Log("Symmetric seed (0, " + symmetricMax + "): " + symmetricSeed);
-
+                
                 snapshotSpriteObj.transform.rotation = Quaternion.identity;
 
                 ShapeType spriteShape;
@@ -621,5 +627,19 @@ public class GeneratorScript : MonoBehaviour
     /// </summary>
     private void GenerateWeapons()
     {
+        //TODO: randomise number of weapons
+
+        for (int i = 0; i < numberOfWeapons; i++)
+        {
+            int weaponTypeSeed = rand.Next(0, weaponTypeMax);
+
+            WeaponType weaponType;
+            int index = (int)(weaponTypeSeed / (float)weaponTypeMax * GeneratableWeapons.Length);
+            weaponType = GeneratableWeapons[index];
+
+            //bossObj
+        }
+
+        //bossSprite.sprite.texture.GetPixel()
     }
 }

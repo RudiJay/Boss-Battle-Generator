@@ -7,7 +7,6 @@ TagManager:
   - Boss
   - SpriteSnapshotCam
   - SnapshotSpriteObj
-  - SeedInputField
   layers:
   - Default
   - TransparentFX

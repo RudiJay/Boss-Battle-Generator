@@ -435,11 +435,6 @@ PrefabInstance:
       propertyPath: shapeCurve.m_Curve.Array.data[4].inWeight
       value: 0.33333334
       objectReference: {fileID: 0}
-    - target: {fileID: 3559644559656656188, guid: 34b138ede5f3c84438d98468f6950130,
-        type: 3}
-      propertyPath: spriteShapeComplexity
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 3171035057347631511, guid: 34b138ede5f3c84438d98468f6950130,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -234,9 +234,11 @@ MonoBehaviour:
   maxBossWidth: 625
   maxBossHeight: 625
   shapeSizeLimiter: 0.7
-  shapeMax: 100
+  weaponPosMaxRange: 6
+  bossTypeMax: 100
   symmetricMax: 100
-  spriteShapeComplexity: 1
+  shapeMax: 100
+  weaponTypeMax: 100
   BossTypeVariables:
   - typeName: 0
     complexityProbability:
@@ -322,6 +324,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
+  spriteShapeComplexity: 3
   SpriteGenerationShapes:
   - shapeName: 0
     sprite: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
@@ -455,9 +458,12 @@ MonoBehaviour:
     - 0.5
     - 0.95
     nearestSymmetricalRot: 90
+  numberOfWeapons: 1
+  WeaponPrefab: {fileID: 6663881351590808801, guid: 907643923dc0e2644b1d692852f2fed4,
+    type: 3}
   GeneratableWeapons:
   - sprite: {fileID: 21300000, guid: ad2f841557ea64f4e9e59ea0b8a23bdd, type: 3}
     availableWeaponOrientations: 15
-    bossTypesWeaponWieldableBy: 15
+    bossTypesWeaponWieldableBy: 30
     symmetryProbBounds: []
     canWeaponFloat: 0

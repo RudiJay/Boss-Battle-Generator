@@ -29,11 +29,13 @@ public class EnumFlagsAttributeDrawer : PropertyDrawer
 /// </summary>
 public enum BossTypeName
 {
+    RANDOM,
     ROCKETSHIP,
     FLYINGSAUCER,
     STARFIGHTER,
     SPACEBATTLESHIP,
-    ASTROMONSTER
+    ASTROMONSTER,
+    COUNT
 }
 
 /// <summary>
@@ -153,7 +155,7 @@ public class GeneratorScript : MonoBehaviour
 
     
     [Header("Generation Variables")]
-    [SerializeField]
+    [SerializeField][Space(10)]
     private int seed;
     private int symmetricSeed;
 
@@ -163,21 +165,32 @@ public class GeneratorScript : MonoBehaviour
     private int xOffset, yOffset;
     [SerializeField][Range(0,1)]
     private float shapeSizeLimiter = 0.75f;
-
-    //Random values
     [SerializeField]
-    private int shapeMax = 100, symmetricMax = 100, weaponTypeMax = 100;
+    private float weaponPosMaxRange = 6;
 
+    [Header("Randomisation Scales")]
+    [SerializeField][Space(10)]
+    private int bossTypeMax = 100;
     [SerializeField]
-    private int spriteShapeComplexity = 3, numberOfWeapons = 2;
+    private int symmetricMax = 100, shapeMax = 100, weaponTypeMax = 100;
 
-    [SerializeField][Space(20)]
+    [Header("Boss Type")]
+    [SerializeField][Space(10)]
     private BossType[] BossTypeVariables;
+    private BossType bossType;
 
-    [SerializeField][Space(20)]
+    [Header("Sprite Shapes")]
+    [SerializeField][Space(10)]
+    private int spriteShapeComplexity = 3;
+    [SerializeField]
     private ShapeType[] SpriteGenerationShapes;
 
-    [SerializeField][Space(20)]
+    [Header("Weapons")]
+    [SerializeField][Space(10)]
+    private int numberOfWeapons = 2;
+    [SerializeField]
+    private GameObject WeaponPrefab;
+    [SerializeField]
     private WeaponType[] GeneratableWeapons;
 
     private void Awake()
@@ -313,8 +326,9 @@ public class GeneratorScript : MonoBehaviour
                 GenerateSeed();
             }
 
-            symmetricSeed = rand.Next(0, symmetricMax);
-            Debug.Log("Symmetric seed (0, " + symmetricMax + "): " + symmetricSeed);
+            SetBossType();
+
+            GenerateSymmetrySeed();
 
             GenerateSprite();
 
@@ -324,6 +338,28 @@ public class GeneratorScript : MonoBehaviour
 
             GeneratorUI.Instance.ToggleGeneratingInProgressLabel(false);
         }
+    }
+
+    private void SetBossType()
+    {
+        BossTypeName typeName;
+        typeName = GeneratorUI.Instance.GetBossTypeName();
+
+        if (typeName == BossTypeName.RANDOM)
+        {
+            int typeSeed = rand.Next(0, bossTypeMax);
+            int index = (int)(typeSeed / (float)bossTypeMax * ((int)BossTypeName.COUNT - 1)) + 1; //+1 to avoid setting boss type to RANDOM again
+            typeName = (BossTypeName)index;
+            Debug.Log("Random Boss Type: " + typeName);
+        }
+
+        bossType = System.Array.Find<BossType>(BossTypeVariables, BossTypeVariables => BossTypeVariables.typeName == typeName);
+    }
+
+    private void GenerateSymmetrySeed()
+    {
+        symmetricSeed = rand.Next(0, symmetricMax);
+        Debug.Log("Symmetric seed (0, " + symmetricMax + "): " + symmetricSeed);
     }
 
     /// <summary>
@@ -627,19 +663,62 @@ public class GeneratorScript : MonoBehaviour
     /// </summary>
     private void GenerateWeapons()
     {
+        //clear previous weapons
+        Weapon[] weapons = bossObj.GetComponentsInChildren<Weapon>();
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            Destroy(weapons[i].gameObject);
+        }
+
         //TODO: randomise number of weapons
 
         for (int i = 0; i < numberOfWeapons; i++)
         {
-            int weaponTypeSeed = rand.Next(0, weaponTypeMax);
-
+            //pick random weapon type
             WeaponType weaponType;
-            int index = (int)(weaponTypeSeed / (float)weaponTypeMax * GeneratableWeapons.Length);
-            weaponType = GeneratableWeapons[index];
+            bool weaponPicked = false;
 
-            //bossObj
+            int count = 0;
+            do
+            {
+                int weaponTypeSeed = rand.Next(0, weaponTypeMax);
+                int index = (int)(weaponTypeSeed / (float)weaponTypeMax * GeneratableWeapons.Length);
+                weaponType = GeneratableWeapons[index];
+
+                int mask = 1 << (int)bossType.typeName;
+
+                if (((int)weaponType.bossTypesWeaponWieldableBy & mask) == mask)
+                {
+                    weaponPicked = true;
+                }
+                count++;
+                if (count > 10)
+                {
+                    Debug.Log("Couldn't pick weapon for this boss type");
+                    break;
+                }
+            } while (!weaponPicked);
+
+            //skip this weapon if a weapon can't be found
+            if (!weaponPicked)
+            {
+                continue;
+            }
+
+            //create weapon gameobject
+            GameObject weapon = Instantiate(WeaponPrefab, bossObj.transform);
+
+            //set up weapon
+            weapon.GetComponentInChildren<SpriteRenderer>().sprite = weaponType.sprite;
+
+            //bool for whether weapon is placed on sprite correctly
+            //if weapon can float ignore process and just pick first
+            bool foundPosition = weaponType.canWeaponFloat;
+
+            do
+            {
+                foundPosition = true;
+            } while (!foundPosition);
         }
-
-        //bossSprite.sprite.texture.GetPixel()
     }
 }

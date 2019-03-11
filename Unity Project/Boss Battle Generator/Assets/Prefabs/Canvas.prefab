@@ -434,7 +434,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7509067259593439605
 RectTransform:
   m_ObjectHideFlags: 0
@@ -950,16 +950,6 @@ MonoBehaviour:
   m_Options:
     m_Options:
     - m_Text: Random
-      m_Image: {fileID: 0}
-    - m_Text: Rocketship
-      m_Image: {fileID: 0}
-    - m_Text: Flying Saucer
-      m_Image: {fileID: 0}
-    - m_Text: Starfighter
-      m_Image: {fileID: 0}
-    - m_Text: Space Battleship
-      m_Image: {fileID: 0}
-    - m_Text: Astro Monster
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:

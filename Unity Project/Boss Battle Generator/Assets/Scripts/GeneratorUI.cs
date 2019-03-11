@@ -17,6 +17,11 @@ public class GeneratorUI : MonoBehaviour
         Instance = this;
     }
 
+    public BossTypeName GetBossTypeName()
+    {
+        return BossTypeName.RANDOM;
+    }
+
     public void ToggleGeneratingInProgressLabel(bool value)
     {
         generatingInProgress.enabled = value;

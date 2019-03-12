@@ -164,9 +164,9 @@ public class GeneratorScript : MonoBehaviour
     private int textureWidth, textureHeight;
     private int xOffset, yOffset;
     [SerializeField][Range(0,1)]
-    private float shapeSizeLimiter = 0.75f;
+    private float shapeSizeLimiter = 0.75f; 
     [SerializeField]
-    private float weaponPosMaxRange = 6;
+    private float weaponXMaxRange = 6, weaponYMaxRange = 6;
 
     [Header("Randomisation Scales")]
     [SerializeField][Space(10)]
@@ -679,13 +679,17 @@ public class GeneratorScript : MonoBehaviour
             bool weaponPicked = false;
 
             int count = 0;
+            int weaponTypeSeed;
+            int index;
+            int mask;
+
             do
             {
-                int weaponTypeSeed = rand.Next(0, weaponTypeMax);
-                int index = (int)(weaponTypeSeed / (float)weaponTypeMax * GeneratableWeapons.Length);
+                weaponTypeSeed = rand.Next(0, weaponTypeMax);
+                index = (int)(weaponTypeSeed / (float)weaponTypeMax * GeneratableWeapons.Length);
                 weaponType = GeneratableWeapons[index];
 
-                int mask = 1 << (int)bossType.typeName;
+                mask = 1 << (int)bossType.typeName;
 
                 if (((int)weaponType.bossTypesWeaponWieldableBy & mask) == mask)
                 {
@@ -708,16 +712,81 @@ public class GeneratorScript : MonoBehaviour
             //create weapon gameobject
             GameObject weapon = Instantiate(WeaponPrefab, bossObj.transform);
 
-            //set up weapon
-            weapon.GetComponentInChildren<SpriteRenderer>().sprite = weaponType.sprite;
+            //set up weapon sprite
+            SpriteRenderer sr = weapon.GetComponentInChildren<SpriteRenderer>();
+            sr.sprite = weaponType.sprite;
+            //add collider
+            sr.gameObject.AddComponent<PolygonCollider2D>();
+
+            GameObject weaponMirror = null;
+            //if (symmetricSeed > weaponType.symmetryProbBounds[0] && symmetricSeed <= weaponType.symmetryProbBounds[1])
+            //{
+            //    weaponMirror = Instantiate(WeaponPrefab, weapon.transform);
+
+            //    //set up weapon sprite
+            //    SpriteRenderer srm = weaponMirror.GetComponentInChildren<SpriteRenderer>();
+            //    srm.sprite = weaponType.sprite;
+            //    //add collider
+            //    srm.gameObject.AddComponent<PolygonCollider2D>();
+            //}
 
             //bool for whether weapon is placed on sprite correctly
             //if weapon can float ignore process and just pick first
             bool foundPosition = weaponType.canWeaponFloat;
 
+            count = 0;
+            int xSeed;
+            int ySeed;
+            int mirrorXSeed;
+
             do
             {
-                foundPosition = true;
+                
+
+                xSeed = rand.Next((int)(-weaponXMaxRange * 100 / 2), (int)(weaponXMaxRange * 100 / 2));
+                ySeed = rand.Next((int)(-weaponYMaxRange * 100 / 2), (int)(weaponYMaxRange * 100 / 2));
+
+                weapon.transform.position = new Vector3(xSeed / 100.0f, ySeed / 100.0f, -1f);
+
+                //if a raycast does not hit the boss sprite collider from this weapon position, try again
+                if (!Physics.Raycast(weapon.transform.position, weapon.transform.TransformDirection(Vector3.forward) * 1000, LayerMask.NameToLayer("BossSprite")))
+                {
+                    
+                    Debug.Log("Raycast missed");
+                    //continue;
+                }
+                else
+                {
+                    Debug.Log("Raycast hit");
+                    foundPosition = true;
+                }
+               
+
+                count++;
+                if (count > 10)
+                {
+                    Debug.Log("Could not find position for this weapon");
+                    //Destroy(weapon);
+                    //break;
+                    foundPosition = true;
+                    Debug.DrawLine(weapon.transform.position, weapon.transform.TransformDirection(Vector3.forward) * 1000, Color.red, 100.0f);
+                    break;
+                }
+
+                ////if weapon is symmetrically mirrored, do the same check for mirror weapon
+                //if (weaponMirror != null)
+                //{
+                //    mirrorXSeed = (int)(2 * (weaponXMaxRange * 100 / 2) - xSeed);
+
+                //    weaponMirror.transform.position = new Vector3(mirrorXSeed / 100.0f, ySeed / 100.0f, -1f);
+
+                //    if (!Physics.Raycast(weaponMirror.transform.position, weapon.transform.TransformDirection(Vector3.forward), LayerMask.NameToLayer("BossSprite")))
+                //    {
+                //        continue;
+                //    }
+                //}
+
+                //foundPosition = true;
             } while (!foundPosition);
         }
     }

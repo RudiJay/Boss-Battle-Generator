@@ -282,6 +282,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3559644559656656188, guid: 34b138ede5f3c84438d98468f6950130,
         type: 3}
+      propertyPath: GeneratableWeapons.Array.data[0].symmetryProbBounds.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3559644559656656188, guid: 34b138ede5f3c84438d98468f6950130,
+        type: 3}
       propertyPath: shapeCurve.m_Curve.Array.data[0].value
       value: 0.498415
       objectReference: {fileID: 0}

@@ -191,6 +191,8 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField]
     private GameObject WeaponPrefab;
     [SerializeField]
+    private LayerMask bossSpriteLayer;
+    [SerializeField]
     private WeaponType[] GeneratableWeapons;
 
     private void Awake()
@@ -739,39 +741,41 @@ public class GeneratorScript : MonoBehaviour
             int ySeed;
             int mirrorXSeed;
 
-            do
-            {
-                
+            //do
+            //{
 
-                xSeed = rand.Next((int)(-weaponXMaxRange * 100 / 2), (int)(weaponXMaxRange * 100 / 2));
-                ySeed = rand.Next((int)(-weaponYMaxRange * 100 / 2), (int)(weaponYMaxRange * 100 / 2));
 
-                weapon.transform.position = new Vector3(xSeed / 100.0f, ySeed / 100.0f, -1f);
+                //xSeed = rand.Next((int)(-weaponXMaxRange * 100 / 2), (int)(weaponXMaxRange * 100 / 2));
+                //ySeed = rand.Next((int)(-weaponYMaxRange * 100 / 2), (int)(weaponYMaxRange * 100 / 2));
+
+                weapon.transform.position = new Vector3(0, 0, -1f);//xSeed / 100.0f, ySeed / 100.0f, -1f);
 
                 //if a raycast does not hit the boss sprite collider from this weapon position, try again
-                if (!Physics.Raycast(weapon.transform.position, weapon.transform.TransformDirection(Vector3.forward) * 1000, LayerMask.NameToLayer("BossSprite")))
+                //TODO use raycast 2d
+                if (Physics.Raycast(weapon.transform.position, weapon.transform.forward, 1000, bossSpriteLayer))
                 {
                     
-                    Debug.Log("Raycast missed");
+                    Debug.Log("Raycast hit");
+                    //foundPosition = true;
                     //continue;
                 }
                 else
                 {
-                    Debug.Log("Raycast hit");
-                    foundPosition = true;
+                    Debug.Log("Raycast missed");
+                    
                 }
                
 
-                count++;
-                if (count > 10)
-                {
-                    Debug.Log("Could not find position for this weapon");
+                //count++;
+                //if (count > 10)
+                //{
+                    //Debug.Log("Could not find position for this weapon");
                     //Destroy(weapon);
                     //break;
-                    foundPosition = true;
-                    Debug.DrawLine(weapon.transform.position, weapon.transform.TransformDirection(Vector3.forward) * 1000, Color.red, 100.0f);
-                    break;
-                }
+                    //foundPosition = true;
+                    Debug.DrawRay(weapon.transform.position, weapon.transform.forward * 1000, Color.red, 100.0f);
+                   // break;
+                //}
 
                 ////if weapon is symmetrically mirrored, do the same check for mirror weapon
                 //if (weaponMirror != null)
@@ -787,7 +791,7 @@ public class GeneratorScript : MonoBehaviour
                 //}
 
                 //foundPosition = true;
-            } while (!foundPosition);
+            //} while (!foundPosition);
         }
     }
 }

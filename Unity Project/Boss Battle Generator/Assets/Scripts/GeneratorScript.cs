@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,12 +30,12 @@ public class EnumFlagsAttributeDrawer : PropertyDrawer
 /// </summary>
 public enum BossTypeName
 {
-    RANDOM,
-    ROCKETSHIP,
-    FLYINGSAUCER,
-    STARFIGHTER,
-    SPACEBATTLESHIP,
-    ASTROMONSTER,
+    Random,
+    Rocketship,
+    FlyingSaucer,
+    Starfighter,
+    SpaceBattleship,
+    AstroMonster,
     COUNT
 }
 
@@ -305,14 +306,11 @@ public class GeneratorScript : MonoBehaviour
     /// <param name="inSeed">the number to set the seed to</param>
     public void SetSeed(int inSeed)
     {
-        if (inSeed != seed)
-        {
-            seed = inSeed;
+        seed = inSeed;
 
-            rand = new System.Random(seed);
+        rand = new System.Random(seed);
 
-            GenerateBossFight(false);
-        }
+        GenerateBossFight(false);
     }
 
     /// <summary>
@@ -349,7 +347,7 @@ public class GeneratorScript : MonoBehaviour
         BossTypeName typeName;
         typeName = GeneratorUI.Instance.GetBossTypeName();
 
-        if (typeName == BossTypeName.RANDOM)
+        if (typeName == BossTypeName.Random)
         {
             int typeSeed = rand.Next(0, bossTypeMax);
             int index = (int)(typeSeed / (float)bossTypeMax * ((int)BossTypeName.COUNT - 1)) + 1; //+1 to avoid setting boss type to RANDOM again
@@ -738,10 +736,10 @@ public class GeneratorScript : MonoBehaviour
                 weaponMirror = Instantiate(WeaponPrefab, weapon.transform);
 
                 //set up weapon sprite
-                SpriteRenderer srm = weaponMirror.GetComponentInChildren<SpriteRenderer>();
-                srm.sprite = weaponType.sprite;
+                SpriteRenderer mirrorsr = weaponMirror.GetComponentInChildren<SpriteRenderer>();
+                mirrorsr.sprite = weaponType.sprite;
                 //add collider
-                srm.gameObject.AddComponent<PolygonCollider2D>();
+                mirrorsr.gameObject.AddComponent<PolygonCollider2D>();
             }
 
             //bool for whether weapon is placed on sprite correctly
@@ -785,10 +783,8 @@ public class GeneratorScript : MonoBehaviour
                 if (weaponMirror != null)
                 {
                     mirrorXSeed = -xSeed;
-                    Debug.Log(mirrorXSeed);
 
                     weaponMirror.transform.position = new Vector3(mirrorXSeed / 100.0f, ySeed / 100.0f, -1f) + bossObj.transform.position;
-                    Debug.Log(weaponMirror.transform.localPosition);
 
                     if (!Physics2D.Raycast(weaponMirror.transform.position, weapon.transform.forward, 1000, bossSpriteLayer))
                     {
@@ -798,6 +794,8 @@ public class GeneratorScript : MonoBehaviour
 
                 foundPosition = true;
             } while (!foundPosition);
+
+
         }
     }
 }

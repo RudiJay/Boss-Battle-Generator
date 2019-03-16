@@ -11,15 +11,34 @@ public class GeneratorUI : MonoBehaviour
     private Text generatingInProgress;
     [SerializeField]
     private InputField seedInputField;
+    [SerializeField]
+    private Dropdown bossTypeDropdown;
 
     private void Awake()
     {
         Instance = this;
     }
 
+    private void Start()
+    {
+        PopulateBossTypeDropdown();
+    }
+
+    public void PopulateBossTypeDropdown()
+    {
+        List<string> dropdownOptions = new List<string>();
+
+        for (int i = 0; i < (int)BossTypeName.COUNT; i++)
+        {
+            dropdownOptions.Add(((BossTypeName)i).ToString());
+        }
+
+        bossTypeDropdown.AddOptions(dropdownOptions);
+    }
+
     public BossTypeName GetBossTypeName()
     {
-        return BossTypeName.RANDOM;
+        return (BossTypeName)bossTypeDropdown.value;
     }
 
     public void ToggleGeneratingInProgressLabel(bool value)
@@ -40,8 +59,15 @@ public class GeneratorUI : MonoBehaviour
         }
     }
 
-    public void GenerateBossFight()
+    public void GenerateBossFight(bool useNewSeed)
     {
-        GeneratorScript.Instance.GenerateBossFight(true);
+        if (useNewSeed)
+        {
+            GeneratorScript.Instance.GenerateBossFight(true);
+        }
+        else
+        {
+            SetSeed(seedInputField.text);
+        }
     }
 }

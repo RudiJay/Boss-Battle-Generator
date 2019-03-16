@@ -228,14 +228,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e165a98502e1ec44b9e1816e2d28ef57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoGeneratorDelay: 2
-  ShowSpriteBorder: 0
+  autoGeneratorDelay: 1
+  DebugShowSpriteBorder: 0
   seed: 0
   maxBossWidth: 625
   maxBossHeight: 625
   shapeSizeLimiter: 0.7
-  weaponXMaxRange: 6
-  weaponYMaxRange: 6
+  weaponXLimit: 3
+  weaponYLimit: 3
   bossTypeMax: 100
   symmetricMax: 100
   shapeMax: 100

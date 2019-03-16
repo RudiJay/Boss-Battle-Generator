@@ -150,8 +150,8 @@ public class GeneratorScript : MonoBehaviour
     [Header("Interface")]
     [SerializeField]
     private float autoGeneratorDelay = 2.0f;
-    [SerializeField]
-    private bool ShowSpriteBorder = false;
+    [SerializeField][Tooltip("CAUTION: do not use unless testing sprite creation")]
+    private bool DebugShowSpriteBorder = false;
 
     
     [Header("Generation Variables")]
@@ -166,7 +166,7 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField][Range(0,1)]
     private float shapeSizeLimiter = 0.75f; 
     [SerializeField]
-    private float weaponXMaxRange = 6, weaponYMaxRange = 6;
+    private float weaponXLimit = 3, weaponYLimit = 3;
 
     [Header("Randomisation Scales")]
     [SerializeField][Space(10)]
@@ -378,7 +378,7 @@ public class GeneratorScript : MonoBehaviour
 
             //whether to clear out a the space the sprite can occupy, leaving the border around it
             //or just clear out the whole background
-            if (ShowSpriteBorder)
+            if (DebugShowSpriteBorder)
             {
                 for (int y = yOffset; y < maxBossHeight + yOffset; y++)
                 {
@@ -751,10 +751,10 @@ public class GeneratorScript : MonoBehaviour
                     break;
                 }
 
-                //xSeed = rand.Next((int)(-weaponXMaxRange * 100 / 2), (int)(weaponXMaxRange * 100 / 2));
-                //ySeed = rand.Next((int)(-weaponYMaxRange * 100 / 2), (int)(weaponYMaxRange * 100 / 2));
+                xSeed = rand.Next((int)(-weaponXLimit * 100), (int)(weaponXLimit * 100));
+                ySeed = rand.Next((int)(-weaponYLimit * 100), (int)(weaponYLimit * 100));
 
-                weapon.transform.position = new Vector3(0, 0, -1f);//xSeed / 100.0f, ySeed / 100.0f, -1f);
+                weapon.transform.position = new Vector3(xSeed / 100.0f, ySeed / 100.0f, -1f) + bossObj.transform.position;
 
                 //if a raycast does not hit the boss sprite collider from this weapon position, try again
                 if (!Physics2D.Raycast(weapon.transform.position, weapon.transform.forward, 1000, bossSpriteLayer))

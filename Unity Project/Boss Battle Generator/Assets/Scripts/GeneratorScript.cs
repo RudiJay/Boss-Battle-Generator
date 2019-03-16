@@ -193,6 +193,8 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField]
     private LayerMask bossSpriteLayer;
     [SerializeField]
+    private int maxWeaponTypeAttempts = 10, maxWeaponPosAttempts = 15;
+    [SerializeField]
     private WeaponType[] GeneratableWeapons;
 
     private void Awake()
@@ -378,6 +380,7 @@ public class GeneratorScript : MonoBehaviour
 
             //whether to clear out a the space the sprite can occupy, leaving the border around it
             //or just clear out the whole background
+            //CAUTION: this border is included in polygon collider generated later on, so do not use unless debugging sprite creation
             if (DebugShowSpriteBorder)
             {
                 for (int y = yOffset; y < maxBossHeight + yOffset; y++)
@@ -439,7 +442,7 @@ public class GeneratorScript : MonoBehaviour
                             {
                                 //double up shape on both sides
                                 //get opposite xSeed
-                                int x2 = 2 * (textureWidth / 2) - xSeed;
+                                int x2 = textureWidth - xSeed;
                                 DrawShapeFromSnapshot(texture, x2, ySeed);
                             }
                             //else no symmetry
@@ -447,9 +450,11 @@ public class GeneratorScript : MonoBehaviour
                             x0 = xSeed;
                             y0 = ySeed;
 
+                            /*
                             Debug.Log("Radius seed (" + radiusMin + ", " + radiusMax + "): " + radiusSeed + " (" + scale + "%)");
                             Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
                             Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
+                            */
                         };
                         break;
                     //single dimension size
@@ -498,7 +503,7 @@ public class GeneratorScript : MonoBehaviour
                             {
                                 //double up shape on both sides
                                 //get opposite xSeed
-                                int x2 = 2 * (textureWidth / 2) - xSeed;
+                                int x2 = textureWidth - xSeed;
                                 //mirror rotation
                                 snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, -rotSeed);
                                 DrawShapeFromSnapshot(texture, x2, ySeed);
@@ -510,10 +515,12 @@ public class GeneratorScript : MonoBehaviour
                             x0 = xSeed;
                             y0 = ySeed;
 
+                            /*
                             Debug.Log("Rot seed (" + rotSeed + ")");
                             Debug.Log("Size seed (" + minSize + ", " + (int)(maxBossWidth * shapeSizeLimiter) + "): " + sizeSeed + " (" + size + "%)");
                             Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
                             Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
+                            */
                         }
                         break;
                     //width and height
@@ -567,7 +574,7 @@ public class GeneratorScript : MonoBehaviour
                             {
                                 //double up shape on both sides
                                 //get opposite xSeed
-                                int x2 = 2 * (textureWidth / 2) - xSeed;
+                                int x2 = textureWidth - xSeed;
                                 //mirror rotation
                                 snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, -rotSeed);
                                 DrawShapeFromSnapshot(texture, x2, ySeed);
@@ -578,11 +585,13 @@ public class GeneratorScript : MonoBehaviour
                             x0 = xSeed;
                             y0 = ySeed;
 
+                            /*
                             Debug.Log("Rot seed (" + rotSeed + ")");
                             Debug.Log("Width seed (" + minWidth + ", " + (int)(maxBossWidth * shapeSizeLimiter) + "): " + widthSeed + " (" + width + "%)");
                             Debug.Log("Height seed (" + minHeight + ", " + (int)(maxBossHeight * shapeSizeLimiter) + "): " + heightSeed + " (" + height + "%)");
                             Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
                             Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
+                            */
                         };
                         break;
                     //width and height (sprite needs mirroring for symmetry)
@@ -617,7 +626,7 @@ public class GeneratorScript : MonoBehaviour
                             {
                                 //double up shape on both sides
                                 //get opposite xSeed
-                                int x2 = 2 * (textureWidth / 2) - xSeed;
+                                int x2 = textureWidth - xSeed;
                                 //mirror rotation
                                 snapshotSpriteObj.transform.rotation = Quaternion.Euler(0, 0, -rotSeed);
                                 snapshotSpriteObj.transform.localScale = new Vector3(-width, height);
@@ -630,11 +639,13 @@ public class GeneratorScript : MonoBehaviour
                             x0 = xSeed;
                             y0 = ySeed;
 
+                            /*
                             Debug.Log("Rot seed (" + rotSeed + ")");
                             Debug.Log("Width seed (" + minWidth + ", " + (int)(maxBossWidth * shapeSizeLimiter) + "): " + widthSeed + " (" + width + "%)");
                             Debug.Log("Height seed (" + minHeight + ", " + (int)(maxBossHeight * shapeSizeLimiter) + "): " + heightSeed + " (" + height + "%)");
                             Debug.Log("X Origin seed (" + xMin + ", " + xMax + "): " + xSeed);
                             Debug.Log("Y Origin seed (" + yMin + ", " + yMax + "): " + ySeed);
+                            */
                         };
                         break;
                 }
@@ -698,7 +709,7 @@ public class GeneratorScript : MonoBehaviour
                     weaponPicked = true;
                 }
                 count++;
-                if (count > 10)
+                if (count > maxWeaponTypeAttempts)
                 {
                     Debug.Log("Couldn't pick weapon for this boss type");
                     break;
@@ -720,23 +731,24 @@ public class GeneratorScript : MonoBehaviour
             //add collider
             sr.gameObject.AddComponent<PolygonCollider2D>();
 
+            //if symmetric type 2, instantiate a mirror of the weapon
             GameObject weaponMirror = null;
-            //if (symmetricSeed > weaponType.symmetryProbBounds[0] && symmetricSeed <= weaponType.symmetryProbBounds[1])
-            //{
-            //    weaponMirror = Instantiate(WeaponPrefab, weapon.transform);
+            if (symmetricSeed >= symmetricMax * weaponType.symmetryProbBounds[0] && symmetricSeed < symmetricMax * weaponType.symmetryProbBounds[1])
+            {
+                weaponMirror = Instantiate(WeaponPrefab, weapon.transform);
 
-            //    //set up weapon sprite
-            //    SpriteRenderer srm = weaponMirror.GetComponentInChildren<SpriteRenderer>();
-            //    srm.sprite = weaponType.sprite;
-            //    //add collider
-            //    srm.gameObject.AddComponent<PolygonCollider2D>();
-            //}
+                //set up weapon sprite
+                SpriteRenderer srm = weaponMirror.GetComponentInChildren<SpriteRenderer>();
+                srm.sprite = weaponType.sprite;
+                //add collider
+                srm.gameObject.AddComponent<PolygonCollider2D>();
+            }
 
             //bool for whether weapon is placed on sprite correctly
             //if weapon can float ignore process and just pick first
             bool foundPosition = weaponType.canWeaponFloat;
 
-            count = 0;
+            count = -1;
             int xSeed;
             int ySeed;
             int mirrorXSeed;
@@ -744,14 +756,21 @@ public class GeneratorScript : MonoBehaviour
             do
             {
                 count++;
-                if (count > 10)
+                if (count > maxWeaponPosAttempts)
                 {
                     Debug.Log("Could not find position for this weapon");
-                    Destroy(weapon);
                     break;
                 }
 
-                xSeed = rand.Next((int)(-weaponXLimit * 100), (int)(weaponXLimit * 100));
+                if (symmetricSeed < symmetricMax * weaponType.symmetryProbBounds[0])
+                {
+                    xSeed = 0;
+                }
+                else
+                {
+                    xSeed = rand.Next((int)(-weaponXLimit * 100), (int)(weaponXLimit * 100));
+                }
+
                 ySeed = rand.Next((int)(-weaponYLimit * 100), (int)(weaponYLimit * 100));
 
                 weapon.transform.position = new Vector3(xSeed / 100.0f, ySeed / 100.0f, -1f) + bossObj.transform.position;
@@ -762,18 +781,20 @@ public class GeneratorScript : MonoBehaviour
                     continue;
                 }
 
-                ////if weapon is symmetrically mirrored, do the same check for mirror weapon
-                //if (weaponMirror != null)
-                //{
-                //    mirrorXSeed = (int)(2 * (weaponXMaxRange * 100 / 2) - xSeed);
+                //if weapon is symmetrically mirrored, do the same check for mirror weapon
+                if (weaponMirror != null)
+                {
+                    mirrorXSeed = -xSeed;
+                    Debug.Log(mirrorXSeed);
 
-                //    weaponMirror.transform.position = new Vector3(mirrorXSeed / 100.0f, ySeed / 100.0f, -1f);
+                    weaponMirror.transform.position = new Vector3(mirrorXSeed / 100.0f, ySeed / 100.0f, -1f) + bossObj.transform.position;
+                    Debug.Log(weaponMirror.transform.localPosition);
 
-                //    if (!Physics.Raycast(weaponMirror.transform.position, weapon.transform.TransformDirection(Vector3.forward), LayerMask.NameToLayer("BossSprite")))
-                //    {
-                //        continue;
-                //    }
-                //}
+                    if (!Physics2D.Raycast(weaponMirror.transform.position, weapon.transform.forward, 1000, bossSpriteLayer))
+                    {
+                        continue;
+                    }
+                }
 
                 foundPosition = true;
             } while (!foundPosition);

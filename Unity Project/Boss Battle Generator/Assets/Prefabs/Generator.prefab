@@ -470,6 +470,6 @@ MonoBehaviour:
     availableWeaponOrientations: 15
     bossTypesWeaponWieldableBy: 30
     symmetryProbBounds:
-    - 0
-    - 0
+    - 0.55
+    - 0.95
     canWeaponFloat: 0

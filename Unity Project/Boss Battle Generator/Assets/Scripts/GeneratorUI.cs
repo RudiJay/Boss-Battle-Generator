@@ -12,7 +12,7 @@ public class GeneratorUI : MonoBehaviour
     [SerializeField]
     private InputField seedInputField;
 
-    public void Awake()
+    private void Awake()
     {
         Instance = this;
     }

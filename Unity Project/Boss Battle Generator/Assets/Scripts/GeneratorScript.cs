@@ -35,8 +35,7 @@ public enum BossTypeName
     FlyingSaucer,
     Starfighter,
     SpaceBattleship,
-    AstroMonster,
-    COUNT
+    AstroMonster
 }
 
 /// <summary>
@@ -63,8 +62,7 @@ public enum ShapeTypeName
     HEX,
     IHEX,
     FIVESTAR,
-    SIXSTAR,
-    COUNT
+    SIXSTAR
 }
 
 /// <summary>
@@ -73,11 +71,11 @@ public enum ShapeTypeName
 [System.Flags]
 public enum WeaponOrientationMode
 {
-    FIXEDFORWARD = 1 << 0,
-    FIXEDSIDEWAYS = 1 << 1,
-    FIXEDOTHER = 1 << 2,
-    ROTATABLE = 1 << 3,
-    NONORIENTED = 1 << 4
+    FIXEDFORWARD,
+    FIXEDSIDEWAYS,
+    FIXEDOTHER,
+    ROTATABLE,
+    NONORIENTED
 }
 
 /// <summary>
@@ -173,7 +171,7 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField][Space(10)]
     private int bossTypeMax = 100;
     [SerializeField]
-    private int symmetricMax = 100, shapeMax = 100, weaponTypeMax = 100;
+    private int symmetricMax = 100, shapeMax = 100, weaponTypeMax = 100, weaponOrientationMax = 100;
 
     [Header("Boss Type")]
     [SerializeField][Space(10)]
@@ -194,7 +192,7 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField]
     private LayerMask bossSpriteLayer;
     [SerializeField]
-    private int maxWeaponTypeAttempts = 10, maxWeaponPosAttempts = 15;
+    private int maxWeaponTypeAttempts = 10, maxWeaponOrientationAttempts = 10, maxWeaponPosAttempts = 15;
     [SerializeField]
     private WeaponType[] GeneratableWeapons;
 
@@ -350,7 +348,7 @@ public class GeneratorScript : MonoBehaviour
         if (typeName == BossTypeName.Random)
         {
             int typeSeed = rand.Next(0, bossTypeMax);
-            int index = (int)(typeSeed / (float)bossTypeMax * ((int)BossTypeName.COUNT - 1)) + 1; //+1 to avoid setting boss type to RANDOM again
+            int index = (int)(typeSeed / (float)bossTypeMax * (System.Enum.GetNames(typeof(BossTypeName)).Length - 1)) + 1; //-1 and +1 to avoid setting boss type to RANDOM again
             typeName = (BossTypeName)index;
             Debug.Log("Random Boss Type: " + typeName);
         }
@@ -687,27 +685,27 @@ public class GeneratorScript : MonoBehaviour
         {
             //pick random weapon type
             WeaponType weaponType;
-            bool weaponPicked = false;
 
+            bool weaponPicked = false;
             int count = 0;
             int weaponTypeSeed;
-            int index;
-            int mask;
+            int weaponTypeIndex;
+            int bossTypeMask;
 
             do
             {
                 weaponTypeSeed = rand.Next(0, weaponTypeMax);
-                index = (int)(weaponTypeSeed / (float)weaponTypeMax * GeneratableWeapons.Length);
-                weaponType = GeneratableWeapons[index];
+                weaponTypeIndex = (int)(weaponTypeSeed / (float)weaponTypeMax * GeneratableWeapons.Length);
+                weaponType = GeneratableWeapons[weaponTypeIndex];
 
-                mask = 1 << (int)bossType.typeName;
+                bossTypeMask = 1 << (int)bossType.typeName;
 
-                if (((int)weaponType.bossTypesWeaponWieldableBy & mask) == mask)
+                count++;
+                if (((int)weaponType.bossTypesWeaponWieldableBy & bossTypeMask) == bossTypeMask)
                 {
                     weaponPicked = true;
                 }
-                count++;
-                if (count > maxWeaponTypeAttempts)
+                else if (count > maxWeaponTypeAttempts)
                 {
                     Debug.Log("Couldn't pick weapon for this boss type");
                     break;
@@ -729,6 +727,39 @@ public class GeneratorScript : MonoBehaviour
             //add collider
             sr.gameObject.AddComponent<PolygonCollider2D>();
 
+
+            //set weapon orientation mode
+            WeaponOrientationMode orientationMode;
+
+            bool orientationPicked = false;
+            int weaponOrientationSeed;
+            int orientationIndex;
+            int orientationMask;
+            count = 0;
+
+            do
+            {
+                weaponOrientationSeed = rand.Next(0, weaponOrientationMax);
+                orientationIndex = (int)(weaponOrientationSeed / (float)weaponOrientationMax * System.Enum.GetNames(typeof(WeaponOrientationMode)).Length);
+                orientationMode = (WeaponOrientationMode)orientationIndex;
+
+                orientationMask = 1 << (int)orientationMode;
+
+                count++;
+                if (((int)weaponType.availableWeaponOrientations & orientationMask) == orientationMask)
+                {
+                    orientationPicked = true;
+                }
+                else if (count > maxWeaponOrientationAttempts)
+                {
+                    Debug.Log("Couldn't pick orientation for this weapon");
+                    break;
+                }
+            } while (!orientationPicked);
+            
+            weapon.GetComponent<Weapon>().SetOrientationMode(orientationMode);
+
+
             //if symmetric type 2, instantiate a mirror of the weapon
             GameObject weaponMirror = null;
             if (symmetricSeed >= symmetricMax * weaponType.symmetryProbBounds[0] && symmetricSeed < symmetricMax * weaponType.symmetryProbBounds[1])
@@ -740,6 +771,8 @@ public class GeneratorScript : MonoBehaviour
                 mirrorsr.sprite = weaponType.sprite;
                 //add collider
                 mirrorsr.gameObject.AddComponent<PolygonCollider2D>();
+                //set weapon orientation mode
+                weaponMirror.GetComponent<Weapon>().SetOrientationMode(orientationMode);
             }
 
             //bool for whether weapon is placed on sprite correctly
@@ -794,8 +827,6 @@ public class GeneratorScript : MonoBehaviour
 
                 foundPosition = true;
             } while (!foundPosition);
-
-
         }
     }
 }

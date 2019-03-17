@@ -28,7 +28,7 @@ public class GeneratorUI : MonoBehaviour
     {
         List<string> dropdownOptions = new List<string>();
 
-        for (int i = 0; i < (int)BossTypeName.COUNT; i++)
+        for (int i = 0; i < System.Enum.GetNames(typeof(BossTypeName)).Length; i++)
         {
             dropdownOptions.Add(((BossTypeName)i).ToString());
         }

@@ -73,6 +73,7 @@ public enum WeaponOrientationMode
 {
     FIXEDFORWARD,
     FIXEDSIDEWAYS,
+    FIXEDOTHERFORWARDS,
     FIXEDOTHER,
     ROTATABLE,
     NONORIENTED
@@ -667,6 +668,144 @@ public class GeneratorScript : MonoBehaviour
         bossSprite.gameObject.AddComponent<PolygonCollider2D>();
     }
 
+    private int GenerateWeaponTypeIndex()
+    {
+        WeaponType weaponType;
+
+        bool weaponPicked = false;
+        int count = 0;
+        int weaponTypeSeed;
+        int weaponTypeIndex;
+        int bossTypeMask;
+
+        do
+        {
+            weaponTypeSeed = rand.Next(0, weaponTypeMax);
+            weaponTypeIndex = (int)(weaponTypeSeed / (float)weaponTypeMax * GeneratableWeapons.Length);
+            weaponType = GeneratableWeapons[weaponTypeIndex];
+
+            bossTypeMask = 1 << (int)bossType.typeName;
+
+            count++;
+            if (((int)weaponType.bossTypesWeaponWieldableBy & bossTypeMask) == bossTypeMask)
+            {
+                return weaponTypeIndex;
+            }
+            else if (count > maxWeaponTypeAttempts)
+            {
+                Debug.Log("Couldn't pick weapon for this boss type");
+                break;
+            }
+        } while (!weaponPicked);
+
+        return -1;
+    }
+
+    private int GenerateWeaponOrientationModeIndex(WeaponType weaponType)
+    {
+        WeaponOrientationMode orientationMode;
+
+        bool orientationPicked = false;
+        int weaponOrientationSeed;
+        int orientationIndex;
+        int orientationMask;
+        int count = 0;
+
+        do
+        {
+            weaponOrientationSeed = rand.Next(0, weaponOrientationMax);
+            orientationIndex = (int)(weaponOrientationSeed / (float)weaponOrientationMax * System.Enum.GetNames(typeof(WeaponOrientationMode)).Length);
+            orientationMode = (WeaponOrientationMode)orientationIndex;
+
+            orientationMask = 1 << (int)orientationMode;
+
+            count++;
+            if (((int)weaponType.availableWeaponOrientations & orientationMask) == orientationMask)
+            {
+                //if symmetry is centred, do not allow non symmetrical orientation modes
+                if (symmetricSeed < symmetricMax * weaponType.symmetryProbBounds[0])
+                {
+                    if (orientationIndex != (int)WeaponOrientationMode.FIXEDSIDEWAYS &&
+                        orientationIndex != (int)WeaponOrientationMode.FIXEDOTHERFORWARDS &&
+                        orientationIndex != (int)WeaponOrientationMode.FIXEDOTHER)
+                    {
+                        return orientationIndex;
+                    }
+                }
+                else
+                {
+                    return orientationIndex;
+                }
+            }
+            else if (count > maxWeaponOrientationAttempts)
+            {
+                Debug.Log("Couldn't pick orientation for this weapon");
+                break;
+            }
+        } while (!orientationPicked);
+
+        return -1;
+    }
+
+    private bool GenerateWeaponPosition(WeaponType weaponType, Transform weaponTransform, Transform mirrorWeaponTransform = null)
+    {
+        //bool for whether weapon is placed on sprite correctly
+        //if weapon can float ignore process and just pick first
+        bool foundPosition = weaponType.canWeaponFloat;
+
+        int count = -1;
+        int xSeed;
+        int ySeed;
+        int mirrorXSeed;
+
+        do
+        {
+            count++;
+            if (count > maxWeaponPosAttempts)
+            {
+                Debug.Log("Could not find position for this weapon");
+                break;
+            }
+
+            //if symmetry is within the first symmetry band
+            if (symmetricSeed < symmetricMax * weaponType.symmetryProbBounds[0])
+            {
+                xSeed = 0;
+            }
+            else
+            {
+                xSeed = rand.Next((int)(-weaponXLimit * 100), (int)(weaponXLimit * 100));
+            }
+
+            ySeed = rand.Next((int)(-weaponYLimit * 100), (int)(weaponYLimit * 100));
+
+            weaponTransform.position = new Vector3(xSeed / 100.0f, ySeed / 100.0f, -1f) + bossObj.transform.position;
+
+            //if a raycast does not hit the boss sprite collider from this weapon position, try again
+            if (!Physics2D.Raycast(weaponTransform.position, weaponTransform.forward, 1000, bossSpriteLayer))
+            {
+                continue;
+            }
+
+            //if weapon is symmetrically mirrored, do the same check for mirror weapon
+            if (mirrorWeaponTransform != null)
+            {
+                mirrorXSeed = -xSeed;
+
+                mirrorWeaponTransform.position = new Vector3(mirrorXSeed / 100.0f, ySeed / 100.0f, -1f) + bossObj.transform.position;
+
+                if (!Physics2D.Raycast(mirrorWeaponTransform.position, mirrorWeaponTransform.forward, 1000, bossSpriteLayer))
+                {
+                    continue;
+                }
+            }
+
+            return true;
+        } while (!foundPosition);
+
+        return false;
+    }
+
     /// <summary>
     /// Randomly select the weapons that will be attached to the boss
     /// </summary>
@@ -684,42 +823,18 @@ public class GeneratorScript : MonoBehaviour
         for (int i = 0; i < numberOfWeapons; i++)
         {
             //pick random weapon type
-            WeaponType weaponType;
-
-            bool weaponPicked = false;
-            int count = 0;
-            int weaponTypeSeed;
-            int weaponTypeIndex;
-            int bossTypeMask;
-
-            do
-            {
-                weaponTypeSeed = rand.Next(0, weaponTypeMax);
-                weaponTypeIndex = (int)(weaponTypeSeed / (float)weaponTypeMax * GeneratableWeapons.Length);
-                weaponType = GeneratableWeapons[weaponTypeIndex];
-
-                bossTypeMask = 1 << (int)bossType.typeName;
-
-                count++;
-                if (((int)weaponType.bossTypesWeaponWieldableBy & bossTypeMask) == bossTypeMask)
-                {
-                    weaponPicked = true;
-                }
-                else if (count > maxWeaponTypeAttempts)
-                {
-                    Debug.Log("Couldn't pick weapon for this boss type");
-                    break;
-                }
-            } while (!weaponPicked);
+            int weaponTypeIndex = GenerateWeaponTypeIndex();
 
             //skip this weapon if a weapon can't be found
-            if (!weaponPicked)
+            if (weaponTypeIndex == -1)
             {
                 continue;
             }
+            WeaponType weaponType = GeneratableWeapons[weaponTypeIndex];            
 
             //create weapon gameobject
             GameObject weapon = Instantiate(WeaponPrefab, bossObj.transform);
+            Weapon weaponComponent = weapon.GetComponent<Weapon>();
 
             //set up weapon sprite
             SpriteRenderer sr = weapon.GetComponentInChildren<SpriteRenderer>();
@@ -727,106 +842,87 @@ public class GeneratorScript : MonoBehaviour
             //add collider
             sr.gameObject.AddComponent<PolygonCollider2D>();
 
-
             //set weapon orientation mode
-            WeaponOrientationMode orientationMode;
+            int orientationModeIndex = GenerateWeaponOrientationModeIndex(weaponType);
 
-            bool orientationPicked = false;
-            int weaponOrientationSeed;
-            int orientationIndex;
-            int orientationMask;
-            count = 0;
-
-            do
+            //if setting orientation mode failed, destroy weapon and move on
+            if (orientationModeIndex == -1)
             {
-                weaponOrientationSeed = rand.Next(0, weaponOrientationMax);
-                orientationIndex = (int)(weaponOrientationSeed / (float)weaponOrientationMax * System.Enum.GetNames(typeof(WeaponOrientationMode)).Length);
-                orientationMode = (WeaponOrientationMode)orientationIndex;
-
-                orientationMask = 1 << (int)orientationMode;
-
-                count++;
-                if (((int)weaponType.availableWeaponOrientations & orientationMask) == orientationMask)
-                {
-                    orientationPicked = true;
-                }
-                else if (count > maxWeaponOrientationAttempts)
-                {
-                    Debug.Log("Couldn't pick orientation for this weapon");
-                    break;
-                }
-            } while (!orientationPicked);
-            
-            weapon.GetComponent<Weapon>().SetOrientationMode(orientationMode);
-
+                Destroy(weapon);
+                continue;
+            }
+            WeaponOrientationMode orientationMode = (WeaponOrientationMode)orientationModeIndex;
+            Debug.Log(orientationMode);
+            weaponComponent.currentOrientationMode = orientationMode;
 
             //if symmetric type 2, instantiate a mirror of the weapon
-            GameObject weaponMirror = null;
+            GameObject mirrorWeapon = null;
+            Weapon mirrorWeaponComponent = null;
             if (symmetricSeed >= symmetricMax * weaponType.symmetryProbBounds[0] && symmetricSeed < symmetricMax * weaponType.symmetryProbBounds[1])
             {
-                weaponMirror = Instantiate(WeaponPrefab, weapon.transform);
+                mirrorWeapon = Instantiate(WeaponPrefab, bossObj.transform);
+                mirrorWeaponComponent = mirrorWeapon.GetComponent<Weapon>();
 
                 //set up weapon sprite
-                SpriteRenderer mirrorsr = weaponMirror.GetComponentInChildren<SpriteRenderer>();
+                SpriteRenderer mirrorsr = mirrorWeapon.GetComponentInChildren<SpriteRenderer>();
                 mirrorsr.sprite = weaponType.sprite;
                 //add collider
                 mirrorsr.gameObject.AddComponent<PolygonCollider2D>();
                 //set weapon orientation mode
-                weaponMirror.GetComponent<Weapon>().SetOrientationMode(orientationMode);
+                mirrorWeaponComponent.currentOrientationMode = orientationMode;
             }
 
-            //bool for whether weapon is placed on sprite correctly
-            //if weapon can float ignore process and just pick first
-            bool foundPosition = weaponType.canWeaponFloat;
+            //position weapon on boss sprite 
+            bool weaponPlaced = (mirrorWeapon == null) ? GenerateWeaponPosition(weaponType, weapon.transform) : GenerateWeaponPosition(weaponType, weapon.transform, mirrorWeapon.transform);
 
-            count = -1;
-            int xSeed;
-            int ySeed;
-            int mirrorXSeed;
-
-            do
+            //if weapon could not find a position, destroy weapons
+            if (!weaponPlaced)
             {
-                count++;
-                if (count > maxWeaponPosAttempts)
-                {
-                    Debug.Log("Could not find position for this weapon");
+                Destroy(weapon);
+                Destroy(mirrorWeapon);
+                continue;
+            }
+
+            //set weapon rotation according to orientationMode
+            switch (orientationMode)
+            {
+                case WeaponOrientationMode.FIXEDFORWARD:
+                case WeaponOrientationMode.NONORIENTED:
+                case WeaponOrientationMode.ROTATABLE:
                     break;
-                }
-
-                if (symmetricSeed < symmetricMax * weaponType.symmetryProbBounds[0])
-                {
-                    xSeed = 0;
-                }
-                else
-                {
-                    xSeed = rand.Next((int)(-weaponXLimit * 100), (int)(weaponXLimit * 100));
-                }
-
-                ySeed = rand.Next((int)(-weaponYLimit * 100), (int)(weaponYLimit * 100));
-
-                weapon.transform.position = new Vector3(xSeed / 100.0f, ySeed / 100.0f, -1f) + bossObj.transform.position;
-
-                //if a raycast does not hit the boss sprite collider from this weapon position, try again
-                if (!Physics2D.Raycast(weapon.transform.position, weapon.transform.forward, 1000, bossSpriteLayer))
-                {
-                    continue;
-                }
-
-                //if weapon is symmetrically mirrored, do the same check for mirror weapon
-                if (weaponMirror != null)
-                {
-                    mirrorXSeed = -xSeed;
-
-                    weaponMirror.transform.position = new Vector3(mirrorXSeed / 100.0f, ySeed / 100.0f, -1f) + bossObj.transform.position;
-
-                    if (!Physics2D.Raycast(weaponMirror.transform.position, weapon.transform.forward, 1000, bossSpriteLayer))
+                case WeaponOrientationMode.FIXEDSIDEWAYS:
                     {
-                        continue;
-                    }
-                }
+                        weaponComponent.SetWeaponRotation(90 * Mathf.Sign(weapon.transform.position.x));
 
-                foundPosition = true;
-            } while (!foundPosition);
+                        if (mirrorWeaponComponent != null)
+                        {
+                            mirrorWeaponComponent.SetWeaponRotation(90 * Mathf.Sign(mirrorWeapon.transform.position.x));
+                        }
+                    }
+                    break;
+                case WeaponOrientationMode.FIXEDOTHERFORWARDS:
+                    {
+                        int randomOrientation = rand.Next(0, 90);
+                        weaponComponent.SetWeaponRotation(randomOrientation * Mathf.Sign(weapon.transform.position.x));
+
+                        if (mirrorWeaponComponent != null)
+                        {
+                            mirrorWeaponComponent.SetWeaponRotation(randomOrientation * Mathf.Sign(mirrorWeapon.transform.position.x));
+                        }
+                    }
+                    break;
+                case WeaponOrientationMode.FIXEDOTHER:
+                    {
+                        int randomOrientation = rand.Next(0, 180);
+                        weaponComponent.SetWeaponRotation(randomOrientation * Mathf.Sign(weapon.transform.position.x));
+
+                        if (mirrorWeaponComponent != null)
+                        {
+                            mirrorWeaponComponent.SetWeaponRotation(randomOrientation * Mathf.Sign(mirrorWeapon.transform.position.x));
+                        }
+                    }
+                    break;
+            }
         }
     }
 }

@@ -5,10 +5,10 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [SerializeField]
-    private WeaponOrientationMode currentOrientationMode;
+    public WeaponOrientationMode currentOrientationMode { get; set; }
 
-    public void SetOrientationMode(WeaponOrientationMode weaponOrientationMode)
+    public void SetWeaponRotation(float rot)
     {
-        currentOrientationMode = weaponOrientationMode;
+        transform.rotation = Quaternion.Euler(0, 0, rot);
     }
 }

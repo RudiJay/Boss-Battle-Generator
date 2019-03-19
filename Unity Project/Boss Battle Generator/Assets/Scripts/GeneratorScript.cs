@@ -144,6 +144,8 @@ public class GeneratorScript : MonoBehaviour
 
     private GameObject snapshotSpriteObj;
 
+    private GameObject background;
+
     private IEnumerator autoGenerator;
     private bool isAutoGenerating = false;
 
@@ -219,6 +221,8 @@ public class GeneratorScript : MonoBehaviour
         spriteSnapshotCam = GameObject.FindWithTag("SpriteSnapshotCam").GetComponent<Camera>();
 
         snapshotSpriteObj = GameObject.FindWithTag("SnapshotSpriteObj");
+
+        background = GameObject.FindWithTag("Background");
 
         //calculate determinant sizes
         textureWidth = (int)(maxBossWidth * 1.25f);
@@ -331,6 +335,8 @@ public class GeneratorScript : MonoBehaviour
 
             GenerateSymmetrySeed();
 
+            GenerateBackground();
+
             GenerateSprite();
 
             GenerateColliders();
@@ -361,6 +367,27 @@ public class GeneratorScript : MonoBehaviour
     {
         symmetricSeed = rand.Next(0, symmetricMax);
         Debug.Log("Symmetric seed (0, " + symmetricMax + "): " + symmetricSeed);
+    }
+
+    public void GenerateBackground()
+    {
+        if (background)
+        {
+            Material mat = background.GetComponent<Renderer>().material;
+
+            int redSeed = rand.Next(0, 255);
+            int greenSeed = rand.Next(0, 255);
+            int blueSeed = rand.Next(0, 255);
+
+            Color newColor = new Color(redSeed / 255f, greenSeed / 255f, blueSeed / 255f);
+
+            mat.SetColor("_Color", newColor);
+
+            int xSeed = rand.Next(-100, 100);
+            int ySeed = rand.Next(-100, 100);
+
+            mat.mainTextureOffset = new Vector2(xSeed / 100f, ySeed / 100f);
+        }
     }
 
     /// <summary>

@@ -317,7 +317,7 @@ public class GeneratorScript : MonoBehaviour
 
             SetBossType();
 
-            GenerateSymmetrySeed();
+            GenerateRandomSymmetryScore();
 
             GenerateBackground();
 
@@ -347,7 +347,7 @@ public class GeneratorScript : MonoBehaviour
         bossType = System.Array.Find<BossType>(BossTypeVariables, BossTypeVariables => BossTypeVariables.typeName == typeName);
     }
 
-    private void GenerateSymmetrySeed()
+    private void GenerateRandomSymmetryScore()
     {
         symmetricSeed = rand.Next(0, symmetricMax);
         Debug.Log("Symmetric seed (0, " + symmetricMax + "): " + symmetricSeed);
@@ -406,6 +406,8 @@ public class GeneratorScript : MonoBehaviour
 
             for (int i = 0; i < spriteShapeComplexity; i++)
             {
+                GenerateRandomSymmetryScore(); //symmetry score must be calculated again for every shape so they don't all do the same thing
+
                 int shapeSeed = rand.Next(0, shapeMax);                
                 Debug.Log("Shape seed (0, " + shapeMax + "): " + shapeSeed);
                 
@@ -833,6 +835,8 @@ public class GeneratorScript : MonoBehaviour
 
         for (int i = 0; i < numberOfWeapons; i++)
         {
+            GenerateRandomSymmetryScore(); //symmetry score must be calculated again for each new weapon so they don't all do the same thing.
+
             //pick random weapon type
             int weaponTypeIndex = GenerateWeaponTypeIndex();
 

@@ -331,134 +331,134 @@ MonoBehaviour:
   - shapeName: 0
     sprite: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
     symmetryProbBounds:
-    - 0.45
-    - 0.95
+    - 0.47
+    - 0.99
     nearestSymmetricalRot: 0
   - shapeName: 1
     sprite: {fileID: 21300000, guid: b222f87a5e688f846999d56a9eb3557f, type: 3}
     symmetryProbBounds:
-    - 0.45
-    - 0.95
+    - 0.47
+    - 0.99
     nearestSymmetricalRot: 0
   - shapeName: 2
     sprite: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
     symmetryProbBounds:
-    - 0.05
-    - 0.3
-    - 0.95
+    - 0.01
+    - 0.35
+    - 0.99
     nearestSymmetricalRot: 90
   - shapeName: 3
     sprite: {fileID: 21300000, guid: b222f87a5e688f846999d56a9eb3557f, type: 3}
     symmetryProbBounds:
-    - 0.05
-    - 0.3
-    - 0.95
+    - 0.01
+    - 0.35
+    - 0.99
     nearestSymmetricalRot: 90
   - shapeName: 4
     sprite: {fileID: 21300000, guid: eba78284cdbb423419c2dc55db74cf8a, type: 3}
     symmetryProbBounds:
-    - 0.05
+    - 0.01
     - 0.5
-    - 0.95
+    - 0.99
     nearestSymmetricalRot: 180
   - shapeName: 5
     sprite: {fileID: 21300000, guid: eba78284cdbb423419c2dc55db74cf8a, type: 3}
     symmetryProbBounds:
-    - 0.05
-    - 0.3
-    - 0.95
+    - 0.01
+    - 0.35
+    - 0.99
     nearestSymmetricalRot: 180
   - shapeName: 6
     sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
     symmetryProbBounds:
-    - 0.05
+    - 0.01
     - 0.5
-    - 0.95
+    - 0.99
     nearestSymmetricalRot: 45
   - shapeName: 7
     sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
     symmetryProbBounds:
-    - 0.05
-    - 0.3
-    - 0.95
+    - 0.01
+    - 0.35
+    - 0.99
     nearestSymmetricalRot: 90
   - shapeName: 8
     sprite: {fileID: 21300000, guid: 509b4ad5f8e571b4788c2b508077be0f, type: 3}
     symmetryProbBounds:
-    - 0.05
-    - 0.3
-    - 0.95
+    - 0.01
+    - 0.35
+    - 0.99
     nearestSymmetricalRot: 90
   - shapeName: 9
     sprite: {fileID: 21300000, guid: a863e089c739fc443806cd557341ced4, type: 3}
     symmetryProbBounds:
-    - 0.95
+    - 0.99
     nearestSymmetricalRot: 0
   - shapeName: 10
     sprite: {fileID: 21300000, guid: 4e2fa0a1ac37783418c02a03d63eae14, type: 3}
     symmetryProbBounds:
-    - 0.05
+    - 0.01
     - 0.5
-    - 0.95
+    - 0.99
     nearestSymmetricalRot: 180
   - shapeName: 11
     sprite: {fileID: 21300000, guid: 4e2fa0a1ac37783418c02a03d63eae14, type: 3}
     symmetryProbBounds:
-    - 0.05
-    - 0.3
-    - 0.95
+    - 0.01
+    - 0.35
+    - 0.99
     nearestSymmetricalRot: 180
   - shapeName: 12
     sprite: {fileID: 21300000, guid: 157b02681104bdf4eb6a5383b1bba96f, type: 3}
     symmetryProbBounds:
-    - 0.95
+    - 0.99
     nearestSymmetricalRot: 0
   - shapeName: 13
     sprite: {fileID: 21300000, guid: 48c94c2e8e3fb6248b1c6132fea221af, type: 3}
     symmetryProbBounds:
-    - 0.95
+    - 0.99
     nearestSymmetricalRot: 0
   - shapeName: 14
     sprite: {fileID: 21300000, guid: 7ef25fb858242c9458570553f31087a8, type: 3}
     symmetryProbBounds:
-    - 0.05
+    - 0.01
     - 0.5
-    - 0.95
+    - 0.99
     nearestSymmetricalRot: 180
   - shapeName: 15
     sprite: {fileID: 21300000, guid: 7ef25fb858242c9458570553f31087a8, type: 3}
     symmetryProbBounds:
-    - 0.05
-    - 0.3
-    - 0.95
+    - 0.01
+    - 0.35
+    - 0.99
     nearestSymmetricalRot: 180
   - shapeName: 16
     sprite: {fileID: 21300000, guid: dedd3342dca55754288c81e2f675120b, type: 3}
     symmetryProbBounds:
-    - 0.05
+    - 0.01
     - 0.5
-    - 0.95
+    - 0.99
     nearestSymmetricalRot: 90
   - shapeName: 17
     sprite: {fileID: 21300000, guid: dedd3342dca55754288c81e2f675120b, type: 3}
     symmetryProbBounds:
-    - 0.05
-    - 0.3
-    - 0.95
+    - 0.01
+    - 0.35
+    - 0.99
     nearestSymmetricalRot: 90
   - shapeName: 18
     sprite: {fileID: 21300000, guid: 559626ac368b0a64b9b12a35f00ba3c3, type: 3}
     symmetryProbBounds:
-    - 0.05
+    - 0.01
     - 0.5
-    - 0.95
+    - 0.99
     nearestSymmetricalRot: 180
   - shapeName: 19
     sprite: {fileID: 21300000, guid: 8b5745ae10fced147aa86b3571a427ec, type: 3}
     symmetryProbBounds:
-    - 0.05
+    - 0.01
     - 0.5
-    - 0.95
+    - 0.99
     nearestSymmetricalRot: 90
   numberOfWeapons: 1
   WeaponPrefab: {fileID: 6663881351590808801, guid: 907643923dc0e2644b1d692852f2fed4,
@@ -474,6 +474,6 @@ MonoBehaviour:
     availableWeaponOrientations: 31
     bossTypesWeaponWieldableBy: 30
     symmetryProbBounds:
-    - 0.55
-    - 0.95
+    - 0.47
+    - 0.99
     canWeaponFloat: 0

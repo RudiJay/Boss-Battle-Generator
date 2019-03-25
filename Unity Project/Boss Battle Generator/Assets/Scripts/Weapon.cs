@@ -1,5 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿/* 
+ * Copyright (C) 2018 Rudi Jay Prentice - All right reserved
+ */
+
 using UnityEngine;
 
 public class Weapon : MonoBehaviour

@@ -1,0 +1,1108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 250319
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: e165a98502e1ec44b9e1816e2d28ef57,
+      type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: autoGeneratorDelay
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: DebugShowSpriteBorder
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: seed
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: maxBossWidth
+    value: 625
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: maxBossHeight
+    value: 625
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: shapeSizeLimiter
+    value: 0.7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: weaponXLimit
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: weaponYLimit
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bossTypeMax
+    value: 100
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: symmetryMax
+    value: 100
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: shapeMax
+    value: 100
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: weaponTypeMax
+    value: 100
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: weaponOrientationMax
+    value: 100
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.size
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[0].typeName
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[0].complexityProbability.m_Curve.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[0].complexityProbability.m_PreInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[0].complexityProbability.m_PostInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[0].complexityProbability.m_RotationOrder
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[0].symmetryProbability.m_Curve.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[0].symmetryProbability.m_PreInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[0].symmetryProbability.m_PostInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[0].symmetryProbability.m_RotationOrder
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[0].shapeProbability.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[1].typeName
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[1].complexityProbability.m_Curve.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[1].complexityProbability.m_PreInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[1].complexityProbability.m_PostInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[1].complexityProbability.m_RotationOrder
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[1].symmetryProbability.m_Curve.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[1].symmetryProbability.m_PreInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[1].symmetryProbability.m_PostInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[1].symmetryProbability.m_RotationOrder
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[1].shapeProbability.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[2].typeName
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[2].complexityProbability.m_Curve.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[2].complexityProbability.m_PreInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[2].complexityProbability.m_PostInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[2].complexityProbability.m_RotationOrder
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[2].symmetryProbability.m_Curve.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[2].symmetryProbability.m_PreInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[2].symmetryProbability.m_PostInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[2].symmetryProbability.m_RotationOrder
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[2].shapeProbability.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[3].typeName
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[3].complexityProbability.m_Curve.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[3].complexityProbability.m_PreInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[3].complexityProbability.m_PostInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[3].complexityProbability.m_RotationOrder
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[3].symmetryProbability.m_Curve.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[3].symmetryProbability.m_PreInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[3].symmetryProbability.m_PostInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[3].symmetryProbability.m_RotationOrder
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[3].shapeProbability.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[4].typeName
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[4].complexityProbability.m_Curve.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[4].complexityProbability.m_PreInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[4].complexityProbability.m_PostInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[4].complexityProbability.m_RotationOrder
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[4].symmetryProbability.m_Curve.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[4].symmetryProbability.m_PreInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[4].symmetryProbability.m_PostInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[4].symmetryProbability.m_RotationOrder
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[4].shapeProbability.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[5].typeName
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[5].complexityProbability.m_Curve.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[5].complexityProbability.m_PreInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[5].complexityProbability.m_PostInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[5].complexityProbability.m_RotationOrder
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[5].symmetryProbability.m_Curve.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[5].symmetryProbability.m_PreInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[5].symmetryProbability.m_PostInfinity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[5].symmetryProbability.m_RotationOrder
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: BossTypeVariables.Array.data[5].shapeProbability.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: spriteShapeComplexity
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.size
+    value: 20
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[0].shapeName
+    value: Circle
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[0].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[0].twoDimensionSizeGeneration
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[0].generateRotation
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[0].nearestSymmetricalRot
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[0].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[0].NormaliseRotProbability
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[0].CentreXAndNormaliseRotProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[0].MirrorProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[1].shapeName
+    value: Ring
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[1].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: b222f87a5e688f846999d56a9eb3557f, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[1].twoDimensionSizeGeneration
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[1].generateRotation
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[1].nearestSymmetricalRot
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[1].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[1].NormaliseRotProbability
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[1].CentreXAndNormaliseRotProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[1].MirrorProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[2].shapeName
+    value: Oval
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[2].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[2].twoDimensionSizeGeneration
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[2].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[2].nearestSymmetricalRot
+    value: 90
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[2].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[2].NormaliseRotProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[2].CentreXAndNormaliseRotProbability
+    value: 0.35
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[2].MirrorProbability
+    value: 0.65
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[3].shapeName
+    value: Halo
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[3].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: b222f87a5e688f846999d56a9eb3557f, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[3].twoDimensionSizeGeneration
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[3].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[3].nearestSymmetricalRot
+    value: 90
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[3].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[3].NormaliseRotProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[3].CentreXAndNormaliseRotProbability
+    value: 0.35
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[3].MirrorProbability
+    value: 0.65
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[4].shapeName
+    value: Semi-Circle
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[4].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: eba78284cdbb423419c2dc55db74cf8a, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[4].twoDimensionSizeGeneration
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[4].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[4].nearestSymmetricalRot
+    value: 180
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[4].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[4].NormaliseRotProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[4].CentreXAndNormaliseRotProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[4].MirrorProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[5].shapeName
+    value: Semi-Oval
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[5].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: eba78284cdbb423419c2dc55db74cf8a, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[5].twoDimensionSizeGeneration
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[5].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[5].nearestSymmetricalRot
+    value: 180
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[5].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[5].NormaliseRotProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[5].CentreXAndNormaliseRotProbability
+    value: 0.35
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[5].MirrorProbability
+    value: 0.65
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[6].shapeName
+    value: Square
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[6].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[6].twoDimensionSizeGeneration
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[6].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[6].nearestSymmetricalRot
+    value: 45
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[6].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[6].NormaliseRotProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[6].CentreXAndNormaliseRotProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[6].MirrorProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[7].shapeName
+    value: Rectangle
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[7].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[7].twoDimensionSizeGeneration
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[7].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[7].nearestSymmetricalRot
+    value: 90
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[7].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[7].NormaliseRotProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[7].CentreXAndNormaliseRotProbability
+    value: 0.35
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[7].MirrorProbability
+    value: 0.65
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[8].shapeName
+    value: Diamond
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[8].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: 509b4ad5f8e571b4788c2b508077be0f, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[8].twoDimensionSizeGeneration
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[8].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[8].nearestSymmetricalRot
+    value: 90
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[8].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[8].NormaliseRotProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[8].CentreXAndNormaliseRotProbability
+    value: 0.35
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[8].MirrorProbability
+    value: 0.65
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[9].shapeName
+    value: Rhombus
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[9].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: a863e089c739fc443806cd557341ced4, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[9].twoDimensionSizeGeneration
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[9].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[9].nearestSymmetricalRot
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[9].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[9].NormaliseRotProbability
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[9].CentreXAndNormaliseRotProbability
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[9].MirrorProbability
+    value: 0.99
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[10].shapeName
+    value: Equilateral Triangle
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[10].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: 4e2fa0a1ac37783418c02a03d63eae14, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[10].twoDimensionSizeGeneration
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[10].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[10].nearestSymmetricalRot
+    value: 180
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[10].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[10].NormaliseRotProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[10].CentreXAndNormaliseRotProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[10].MirrorProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[11].shapeName
+    value: Isoceles Triangle
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[11].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: 4e2fa0a1ac37783418c02a03d63eae14, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[11].twoDimensionSizeGeneration
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[11].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[11].nearestSymmetricalRot
+    value: 180
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[11].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[11].NormaliseRotProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[11].CentreXAndNormaliseRotProbability
+    value: 0.35
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[11].MirrorProbability
+    value: 0.65
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[12].shapeName
+    value: Right-Angle Triangle
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[12].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: 157b02681104bdf4eb6a5383b1bba96f, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[12].twoDimensionSizeGeneration
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[12].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[12].nearestSymmetricalRot
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[12].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[12].NormaliseRotProbability
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[12].CentreXAndNormaliseRotProbability
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[12].MirrorProbability
+    value: 0.99
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[13].shapeName
+    value: Scalene Triangle
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[13].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: 48c94c2e8e3fb6248b1c6132fea221af, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[13].twoDimensionSizeGeneration
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[13].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[13].nearestSymmetricalRot
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[13].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[13].NormaliseRotProbability
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[13].CentreXAndNormaliseRotProbability
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[13].MirrorProbability
+    value: 0.99
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[14].shapeName
+    value: Pentagon
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[14].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: 7ef25fb858242c9458570553f31087a8, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[14].twoDimensionSizeGeneration
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[14].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[14].nearestSymmetricalRot
+    value: 180
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[14].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[14].NormaliseRotProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[14].CentreXAndNormaliseRotProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[14].MirrorProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[15].shapeName
+    value: Irregular Pentagon
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[15].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: 7ef25fb858242c9458570553f31087a8, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[15].twoDimensionSizeGeneration
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[15].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[15].nearestSymmetricalRot
+    value: 180
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[15].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[15].NormaliseRotProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[15].CentreXAndNormaliseRotProbability
+    value: 0.35
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[15].MirrorProbability
+    value: 0.65
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[16].shapeName
+    value: Hexagon
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[16].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: dedd3342dca55754288c81e2f675120b, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[16].twoDimensionSizeGeneration
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[16].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[16].nearestSymmetricalRot
+    value: 90
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[16].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[16].NormaliseRotProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[16].CentreXAndNormaliseRotProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[16].MirrorProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[17].shapeName
+    value: Irregular Hexagon
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[17].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: dedd3342dca55754288c81e2f675120b, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[17].twoDimensionSizeGeneration
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[17].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[17].nearestSymmetricalRot
+    value: 90
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[17].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[17].NormaliseRotProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[17].CentreXAndNormaliseRotProbability
+    value: 0.35
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[17].MirrorProbability
+    value: 0.65
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[18].shapeName
+    value: 5 Pointed Star
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[18].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: 559626ac368b0a64b9b12a35f00ba3c3, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[18].twoDimensionSizeGeneration
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[18].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[18].nearestSymmetricalRot
+    value: 180
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[18].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[18].NormaliseRotProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[18].CentreXAndNormaliseRotProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[18].MirrorProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[19].shapeName
+    value: 6 Pointed Star
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[19].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: 8b5745ae10fced147aa86b3571a427ec, type: 3}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[19].twoDimensionSizeGeneration
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[19].generateRotation
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[19].nearestSymmetricalRot
+    value: 90
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[19].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[19].NormaliseRotProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[19].CentreXAndNormaliseRotProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SpriteGenerationShapes.Array.data[19].MirrorProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: numberOfWeapons
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: WeaponPrefab
+    value: 
+    objectReference: {fileID: 6663881351590808801, guid: 907643923dc0e2644b1d692852f2fed4,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: bossSpriteLayer.m_Bits
+    value: 1024
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: maxWeaponTypeAttempts
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: maxWeaponOrientationAttempts
+    value: 15
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: maxWeaponPosAttempts
+    value: 15
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GeneratableWeapons.Array.size
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GeneratableWeapons.Array.data[0].sprite
+    value: 
+    objectReference: {fileID: 21300000, guid: ad2f841557ea64f4e9e59ea0b8a23bdd, type: 3}
+  - target: {fileID: 0}
+    propertyPath: GeneratableWeapons.Array.data[0].availableWeaponOrientations
+    value: 31
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GeneratableWeapons.Array.data[0].bossTypesWeaponWieldableBy
+    value: 30
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GeneratableWeapons.Array.data[0].canWeaponFloat
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GeneratableWeapons.Array.data[0].AsymmetricProbability
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GeneratableWeapons.Array.data[0].CentreXProbability
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GeneratableWeapons.Array.data[0].MirrorProbability
+    value: 0.5
+    objectReference: {fileID: 0}

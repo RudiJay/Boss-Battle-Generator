@@ -237,7 +237,7 @@ MonoBehaviour:
   weaponXLimit: 3
   weaponYLimit: 3
   bossTypeMax: 100
-  symmetricMax: 100
+  symmetryMax: 100
   shapeMax: 100
   weaponTypeMax: 100
   weaponOrientationMax: 100
@@ -328,138 +328,186 @@ MonoBehaviour:
     shapeProbability: []
   spriteShapeComplexity: 3
   SpriteGenerationShapes:
-  - shapeName: 0
+  - shapeName: Circle
     sprite: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
-    symmetryProbBounds:
-    - 0.47
-    - 0.99
+    twoDimensionSizeGeneration: 0
+    generateRotation: 0
     nearestSymmetricalRot: 0
-  - shapeName: 1
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0
+    CentreXAndNormaliseRotProbability: 0.5
+    MirrorProbability: 0.5
+  - shapeName: Ring
     sprite: {fileID: 21300000, guid: b222f87a5e688f846999d56a9eb3557f, type: 3}
-    symmetryProbBounds:
-    - 0.47
-    - 0.99
+    twoDimensionSizeGeneration: 0
+    generateRotation: 0
     nearestSymmetricalRot: 0
-  - shapeName: 2
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0
+    CentreXAndNormaliseRotProbability: 0.5
+    MirrorProbability: 0.5
+  - shapeName: Oval
     sprite: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
-    symmetryProbBounds:
-    - 0.01
-    - 0.35
-    - 0.99
+    twoDimensionSizeGeneration: 1
+    generateRotation: 1
     nearestSymmetricalRot: 90
-  - shapeName: 3
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0.01
+    CentreXAndNormaliseRotProbability: 0.35
+    MirrorProbability: 0.65
+  - shapeName: Halo
     sprite: {fileID: 21300000, guid: b222f87a5e688f846999d56a9eb3557f, type: 3}
-    symmetryProbBounds:
-    - 0.01
-    - 0.35
-    - 0.99
+    twoDimensionSizeGeneration: 1
+    generateRotation: 1
     nearestSymmetricalRot: 90
-  - shapeName: 4
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0.01
+    CentreXAndNormaliseRotProbability: 0.35
+    MirrorProbability: 0.65
+  - shapeName: Semi-Circle
     sprite: {fileID: 21300000, guid: eba78284cdbb423419c2dc55db74cf8a, type: 3}
-    symmetryProbBounds:
-    - 0.01
-    - 0.5
-    - 0.99
+    twoDimensionSizeGeneration: 0
+    generateRotation: 1
     nearestSymmetricalRot: 180
-  - shapeName: 5
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0.01
+    CentreXAndNormaliseRotProbability: 0.5
+    MirrorProbability: 0.5
+  - shapeName: Semi-Oval
     sprite: {fileID: 21300000, guid: eba78284cdbb423419c2dc55db74cf8a, type: 3}
-    symmetryProbBounds:
-    - 0.01
-    - 0.35
-    - 0.99
+    twoDimensionSizeGeneration: 1
+    generateRotation: 1
     nearestSymmetricalRot: 180
-  - shapeName: 6
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0.01
+    CentreXAndNormaliseRotProbability: 0.35
+    MirrorProbability: 0.65
+  - shapeName: Square
     sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
-    symmetryProbBounds:
-    - 0.01
-    - 0.5
-    - 0.99
+    twoDimensionSizeGeneration: 0
+    generateRotation: 1
     nearestSymmetricalRot: 45
-  - shapeName: 7
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0.01
+    CentreXAndNormaliseRotProbability: 0.5
+    MirrorProbability: 0.5
+  - shapeName: Rectangle
     sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
-    symmetryProbBounds:
-    - 0.01
-    - 0.35
-    - 0.99
+    twoDimensionSizeGeneration: 1
+    generateRotation: 1
     nearestSymmetricalRot: 90
-  - shapeName: 8
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0.01
+    CentreXAndNormaliseRotProbability: 0.35
+    MirrorProbability: 0.65
+  - shapeName: Diamond
     sprite: {fileID: 21300000, guid: 509b4ad5f8e571b4788c2b508077be0f, type: 3}
-    symmetryProbBounds:
-    - 0.01
-    - 0.35
-    - 0.99
+    twoDimensionSizeGeneration: 1
+    generateRotation: 1
     nearestSymmetricalRot: 90
-  - shapeName: 9
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0.01
+    CentreXAndNormaliseRotProbability: 0.35
+    MirrorProbability: 0.65
+  - shapeName: Rhombus
     sprite: {fileID: 21300000, guid: a863e089c739fc443806cd557341ced4, type: 3}
-    symmetryProbBounds:
-    - 0.99
+    twoDimensionSizeGeneration: 1
+    generateRotation: 1
     nearestSymmetricalRot: 0
-  - shapeName: 10
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0
+    CentreXAndNormaliseRotProbability: 0
+    MirrorProbability: 0.99
+  - shapeName: Equilateral Triangle
     sprite: {fileID: 21300000, guid: 4e2fa0a1ac37783418c02a03d63eae14, type: 3}
-    symmetryProbBounds:
-    - 0.01
-    - 0.5
-    - 0.99
+    twoDimensionSizeGeneration: 0
+    generateRotation: 1
     nearestSymmetricalRot: 180
-  - shapeName: 11
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0.01
+    CentreXAndNormaliseRotProbability: 0.5
+    MirrorProbability: 0.5
+  - shapeName: Isoceles Triangle
     sprite: {fileID: 21300000, guid: 4e2fa0a1ac37783418c02a03d63eae14, type: 3}
-    symmetryProbBounds:
-    - 0.01
-    - 0.35
-    - 0.99
+    twoDimensionSizeGeneration: 1
+    generateRotation: 1
     nearestSymmetricalRot: 180
-  - shapeName: 12
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0.01
+    CentreXAndNormaliseRotProbability: 0.35
+    MirrorProbability: 0.65
+  - shapeName: Right-Angle Triangle
     sprite: {fileID: 21300000, guid: 157b02681104bdf4eb6a5383b1bba96f, type: 3}
-    symmetryProbBounds:
-    - 0.99
+    twoDimensionSizeGeneration: 1
+    generateRotation: 1
     nearestSymmetricalRot: 0
-  - shapeName: 13
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0
+    CentreXAndNormaliseRotProbability: 0
+    MirrorProbability: 0.99
+  - shapeName: Scalene Triangle
     sprite: {fileID: 21300000, guid: 48c94c2e8e3fb6248b1c6132fea221af, type: 3}
-    symmetryProbBounds:
-    - 0.99
+    twoDimensionSizeGeneration: 1
+    generateRotation: 1
     nearestSymmetricalRot: 0
-  - shapeName: 14
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0
+    CentreXAndNormaliseRotProbability: 0
+    MirrorProbability: 0.99
+  - shapeName: Pentagon
     sprite: {fileID: 21300000, guid: 7ef25fb858242c9458570553f31087a8, type: 3}
-    symmetryProbBounds:
-    - 0.01
-    - 0.5
-    - 0.99
+    twoDimensionSizeGeneration: 0
+    generateRotation: 1
     nearestSymmetricalRot: 180
-  - shapeName: 15
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0.01
+    CentreXAndNormaliseRotProbability: 0.5
+    MirrorProbability: 0.5
+  - shapeName: Irregular Pentagon
     sprite: {fileID: 21300000, guid: 7ef25fb858242c9458570553f31087a8, type: 3}
-    symmetryProbBounds:
-    - 0.01
-    - 0.35
-    - 0.99
+    twoDimensionSizeGeneration: 1
+    generateRotation: 1
     nearestSymmetricalRot: 180
-  - shapeName: 16
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0.01
+    CentreXAndNormaliseRotProbability: 0.35
+    MirrorProbability: 0.65
+  - shapeName: Hexagon
     sprite: {fileID: 21300000, guid: dedd3342dca55754288c81e2f675120b, type: 3}
-    symmetryProbBounds:
-    - 0.01
-    - 0.5
-    - 0.99
+    twoDimensionSizeGeneration: 0
+    generateRotation: 1
     nearestSymmetricalRot: 90
-  - shapeName: 17
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0.01
+    CentreXAndNormaliseRotProbability: 0.5
+    MirrorProbability: 0.5
+  - shapeName: Irregular Hexagon
     sprite: {fileID: 21300000, guid: dedd3342dca55754288c81e2f675120b, type: 3}
-    symmetryProbBounds:
-    - 0.01
-    - 0.35
-    - 0.99
+    twoDimensionSizeGeneration: 1
+    generateRotation: 1
     nearestSymmetricalRot: 90
-  - shapeName: 18
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0.01
+    CentreXAndNormaliseRotProbability: 0.35
+    MirrorProbability: 0.65
+  - shapeName: 5 Pointed Star
     sprite: {fileID: 21300000, guid: 559626ac368b0a64b9b12a35f00ba3c3, type: 3}
-    symmetryProbBounds:
-    - 0.01
-    - 0.5
-    - 0.99
+    twoDimensionSizeGeneration: 0
+    generateRotation: 1
     nearestSymmetricalRot: 180
-  - shapeName: 19
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0.01
+    CentreXAndNormaliseRotProbability: 0.5
+    MirrorProbability: 0.5
+  - shapeName: 6 Pointed Star
     sprite: {fileID: 21300000, guid: 8b5745ae10fced147aa86b3571a427ec, type: 3}
-    symmetryProbBounds:
-    - 0.01
-    - 0.5
-    - 0.99
+    twoDimensionSizeGeneration: 0
+    generateRotation: 1
     nearestSymmetricalRot: 90
+    AsymmetricProbability: 0.01
+    NormaliseRotProbability: 0.01
+    CentreXAndNormaliseRotProbability: 0.5
+    MirrorProbability: 0.5
   numberOfWeapons: 1
   WeaponPrefab: {fileID: 6663881351590808801, guid: 907643923dc0e2644b1d692852f2fed4,
     type: 3}
@@ -473,7 +521,7 @@ MonoBehaviour:
   - sprite: {fileID: 21300000, guid: ad2f841557ea64f4e9e59ea0b8a23bdd, type: 3}
     availableWeaponOrientations: 31
     bossTypesWeaponWieldableBy: 30
-    symmetryProbBounds:
-    - 0.47
-    - 0.99
     canWeaponFloat: 0
+    AsymmetricProbability: 0.01
+    CentreXProbability: 0.5
+    MirrorProbability: 0.5

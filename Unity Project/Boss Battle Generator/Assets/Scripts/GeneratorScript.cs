@@ -89,7 +89,7 @@ public struct BossType
 [System.Serializable]
 public struct ShapeType
 {
-    public string shapeName;
+    public ShapeTypeName shapeName;
 
     public Sprite sprite;
 

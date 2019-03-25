@@ -331,7 +331,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[0].shapeName
-    value: Circle
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[0].sprite
@@ -367,7 +367,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[1].shapeName
-    value: Ring
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[1].sprite
@@ -403,7 +403,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[2].shapeName
-    value: Oval
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[2].sprite
@@ -439,7 +439,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[3].shapeName
-    value: Halo
+    value: 3
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[3].sprite
@@ -475,7 +475,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[4].shapeName
-    value: Semi-Circle
+    value: 4
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[4].sprite
@@ -511,7 +511,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[5].shapeName
-    value: Semi-Oval
+    value: 5
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[5].sprite
@@ -547,7 +547,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[6].shapeName
-    value: Square
+    value: 6
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[6].sprite
@@ -583,7 +583,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[7].shapeName
-    value: Rectangle
+    value: 7
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[7].sprite
@@ -619,7 +619,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[8].shapeName
-    value: Diamond
+    value: 8
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[8].sprite
@@ -655,7 +655,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[9].shapeName
-    value: Rhombus
+    value: 9
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[9].sprite
@@ -691,7 +691,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[10].shapeName
-    value: Equilateral Triangle
+    value: 10
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[10].sprite
@@ -727,7 +727,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[11].shapeName
-    value: Isoceles Triangle
+    value: 11
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[11].sprite
@@ -763,7 +763,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[12].shapeName
-    value: Right-Angle Triangle
+    value: 12
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[12].sprite
@@ -799,7 +799,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[13].shapeName
-    value: Scalene Triangle
+    value: 13
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[13].sprite
@@ -835,7 +835,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[14].shapeName
-    value: Pentagon
+    value: 14
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[14].sprite
@@ -871,7 +871,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[15].shapeName
-    value: Irregular Pentagon
+    value: 15
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[15].sprite
@@ -907,7 +907,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[16].shapeName
-    value: Hexagon
+    value: 16
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[16].sprite
@@ -943,7 +943,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[17].shapeName
-    value: Irregular Hexagon
+    value: 17
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[17].sprite
@@ -979,7 +979,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[18].shapeName
-    value: 5 Pointed Star
+    value: 18
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[18].sprite
@@ -1015,7 +1015,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[19].shapeName
-    value: 6 Pointed Star
+    value: 19
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: SpriteGenerationShapes.Array.data[19].sprite

@@ -328,7 +328,7 @@ MonoBehaviour:
     shapeProbability: []
   spriteShapeComplexity: 3
   SpriteGenerationShapes:
-  - shapeName: Circle
+  - shapeName: 0
     sprite: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
     twoDimensionSizeGeneration: 0
     generateRotation: 0
@@ -337,7 +337,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0
     CentreXAndNormaliseRotProbability: 0.5
     MirrorProbability: 0.5
-  - shapeName: Ring
+  - shapeName: 1
     sprite: {fileID: 21300000, guid: b222f87a5e688f846999d56a9eb3557f, type: 3}
     twoDimensionSizeGeneration: 0
     generateRotation: 0
@@ -346,7 +346,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0
     CentreXAndNormaliseRotProbability: 0.5
     MirrorProbability: 0.5
-  - shapeName: Oval
+  - shapeName: 2
     sprite: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}
     twoDimensionSizeGeneration: 1
     generateRotation: 1
@@ -355,7 +355,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.35
     MirrorProbability: 0.65
-  - shapeName: Halo
+  - shapeName: 3
     sprite: {fileID: 21300000, guid: b222f87a5e688f846999d56a9eb3557f, type: 3}
     twoDimensionSizeGeneration: 1
     generateRotation: 1
@@ -364,7 +364,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.35
     MirrorProbability: 0.65
-  - shapeName: Semi-Circle
+  - shapeName: 4
     sprite: {fileID: 21300000, guid: eba78284cdbb423419c2dc55db74cf8a, type: 3}
     twoDimensionSizeGeneration: 0
     generateRotation: 1
@@ -373,7 +373,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.5
     MirrorProbability: 0.5
-  - shapeName: Semi-Oval
+  - shapeName: 5
     sprite: {fileID: 21300000, guid: eba78284cdbb423419c2dc55db74cf8a, type: 3}
     twoDimensionSizeGeneration: 1
     generateRotation: 1
@@ -382,7 +382,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.35
     MirrorProbability: 0.65
-  - shapeName: Square
+  - shapeName: 6
     sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
     twoDimensionSizeGeneration: 0
     generateRotation: 1
@@ -391,7 +391,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.5
     MirrorProbability: 0.5
-  - shapeName: Rectangle
+  - shapeName: 7
     sprite: {fileID: 21300000, guid: 563f95fbada603c49876c4c4d4c85cbf, type: 3}
     twoDimensionSizeGeneration: 1
     generateRotation: 1
@@ -400,7 +400,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.35
     MirrorProbability: 0.65
-  - shapeName: Diamond
+  - shapeName: 8
     sprite: {fileID: 21300000, guid: 509b4ad5f8e571b4788c2b508077be0f, type: 3}
     twoDimensionSizeGeneration: 1
     generateRotation: 1
@@ -409,7 +409,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.35
     MirrorProbability: 0.65
-  - shapeName: Rhombus
+  - shapeName: 9
     sprite: {fileID: 21300000, guid: a863e089c739fc443806cd557341ced4, type: 3}
     twoDimensionSizeGeneration: 1
     generateRotation: 1
@@ -418,7 +418,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0
     CentreXAndNormaliseRotProbability: 0
     MirrorProbability: 0.99
-  - shapeName: Equilateral Triangle
+  - shapeName: 10
     sprite: {fileID: 21300000, guid: 4e2fa0a1ac37783418c02a03d63eae14, type: 3}
     twoDimensionSizeGeneration: 0
     generateRotation: 1
@@ -427,7 +427,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.5
     MirrorProbability: 0.5
-  - shapeName: Isoceles Triangle
+  - shapeName: 11
     sprite: {fileID: 21300000, guid: 4e2fa0a1ac37783418c02a03d63eae14, type: 3}
     twoDimensionSizeGeneration: 1
     generateRotation: 1
@@ -436,7 +436,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.35
     MirrorProbability: 0.65
-  - shapeName: Right-Angle Triangle
+  - shapeName: 12
     sprite: {fileID: 21300000, guid: 157b02681104bdf4eb6a5383b1bba96f, type: 3}
     twoDimensionSizeGeneration: 1
     generateRotation: 1
@@ -445,7 +445,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0
     CentreXAndNormaliseRotProbability: 0
     MirrorProbability: 0.99
-  - shapeName: Scalene Triangle
+  - shapeName: 13
     sprite: {fileID: 21300000, guid: 48c94c2e8e3fb6248b1c6132fea221af, type: 3}
     twoDimensionSizeGeneration: 1
     generateRotation: 1
@@ -454,7 +454,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0
     CentreXAndNormaliseRotProbability: 0
     MirrorProbability: 0.99
-  - shapeName: Pentagon
+  - shapeName: 14
     sprite: {fileID: 21300000, guid: 7ef25fb858242c9458570553f31087a8, type: 3}
     twoDimensionSizeGeneration: 0
     generateRotation: 1
@@ -463,7 +463,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.5
     MirrorProbability: 0.5
-  - shapeName: Irregular Pentagon
+  - shapeName: 15
     sprite: {fileID: 21300000, guid: 7ef25fb858242c9458570553f31087a8, type: 3}
     twoDimensionSizeGeneration: 1
     generateRotation: 1
@@ -472,7 +472,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.35
     MirrorProbability: 0.65
-  - shapeName: Hexagon
+  - shapeName: 16
     sprite: {fileID: 21300000, guid: dedd3342dca55754288c81e2f675120b, type: 3}
     twoDimensionSizeGeneration: 0
     generateRotation: 1
@@ -481,7 +481,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.5
     MirrorProbability: 0.5
-  - shapeName: Irregular Hexagon
+  - shapeName: 17
     sprite: {fileID: 21300000, guid: dedd3342dca55754288c81e2f675120b, type: 3}
     twoDimensionSizeGeneration: 1
     generateRotation: 1
@@ -490,7 +490,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.35
     MirrorProbability: 0.65
-  - shapeName: 5 Pointed Star
+  - shapeName: 18
     sprite: {fileID: 21300000, guid: 559626ac368b0a64b9b12a35f00ba3c3, type: 3}
     twoDimensionSizeGeneration: 0
     generateRotation: 1
@@ -499,7 +499,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.5
     MirrorProbability: 0.5
-  - shapeName: 6 Pointed Star
+  - shapeName: 19
     sprite: {fileID: 21300000, guid: 8b5745ae10fced147aa86b3571a427ec, type: 3}
     twoDimensionSizeGeneration: 0
     generateRotation: 1

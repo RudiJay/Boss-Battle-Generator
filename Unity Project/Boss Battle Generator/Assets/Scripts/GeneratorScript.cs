@@ -115,6 +115,8 @@ public struct WeaponType
 {
     public Sprite sprite;
 
+    public float size;
+
     [EnumFlags]
     public WeaponOrientationMode availableWeaponOrientations;
 
@@ -726,6 +728,8 @@ public class GeneratorScript : MonoBehaviour
             //set up weapon sprite
             SpriteRenderer sr = weapon.GetComponentInChildren<SpriteRenderer>();
             sr.sprite = weaponType.sprite;
+            //set weapon size
+            weapon.transform.localScale = new Vector3(weaponType.size, weaponType.size);
             //add collider
             sr.gameObject.AddComponent<PolygonCollider2D>();
 
@@ -759,6 +763,8 @@ public class GeneratorScript : MonoBehaviour
                 //set up weapon sprite
                 SpriteRenderer mirrorsr = mirrorWeapon.GetComponentInChildren<SpriteRenderer>();
                 mirrorsr.sprite = weaponType.sprite;
+                //set weapon size
+                mirrorWeapon.transform.localScale = new Vector3(weaponType.size, weaponType.size);
                 //add collider
                 mirrorsr.gameObject.AddComponent<PolygonCollider2D>();
                 //set weapon orientation mode

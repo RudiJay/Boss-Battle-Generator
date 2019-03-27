@@ -40,6 +40,11 @@ public class GeneratorUI : MonoBehaviour
         bossTypeDropdown.AddOptions(dropdownOptions);
     }
 
+    public void ShowRandomBossType(string bossType)
+    {
+        bossTypeDropdown.captionText.text = "Random: " + bossType;
+    }
+
     public BossTypeName GetBossTypeName()
     {
         return (BossTypeName)bossTypeDropdown.value;

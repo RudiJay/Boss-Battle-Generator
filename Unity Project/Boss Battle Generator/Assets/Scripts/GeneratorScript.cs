@@ -356,7 +356,7 @@ public class GeneratorScript : MonoBehaviour
             int typeSeed = rand.Next(0, bossTypeMax);
             int index = (int)(typeSeed / (float)bossTypeMax * (System.Enum.GetNames(typeof(BossTypeName)).Length - 1)) + 1; //-1 and +1 to avoid setting boss type to RANDOM again
             typeName = (BossTypeName)index;
-            Debug.Log("Random Boss Type: " + typeName);
+            GeneratorUI.Instance.ShowRandomBossType(typeName.ToString());
         }
 
         bossType = System.Array.Find<BossType>(BossTypeVariables, BossTypeVariables => BossTypeVariables.typeName == typeName);

@@ -534,3 +534,19 @@ MonoBehaviour:
     AsymmetricProbability: 0.5
     CentreXProbability: 0.75
     MirrorProbability: 0.2
+  - sprite: {fileID: 21300000, guid: 6bdfda9274d7e964492d889a17a12b74, type: 3}
+    size: 0.9
+    availableWeaponOrientations: 31
+    bossTypesWeaponWieldableBy: 30
+    canWeaponFloat: 0
+    AsymmetricProbability: 0.01
+    CentreXProbability: 0.35
+    MirrorProbability: 0.65
+  - sprite: {fileID: 21300000, guid: a818c143344cd664e9dc297bf35f9f5d, type: 3}
+    size: 0.9
+    availableWeaponOrientations: 45
+    bossTypesWeaponWieldableBy: 32
+    canWeaponFloat: 0
+    AsymmetricProbability: 0.01
+    CentreXProbability: 0.5
+    MirrorProbability: 0.5

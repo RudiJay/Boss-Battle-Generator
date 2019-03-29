@@ -315,6 +315,7 @@ GameObject:
   - component: {fileID: 1997497983297384651}
   - component: {fileID: 1997497983297384652}
   - component: {fileID: 1997497983297384653}
+  - component: {fileID: 3154294326601135163}
   - component: {fileID: 1997497983297384654}
   - component: {fileID: 7895236773470555464}
   m_Layer: 5
@@ -388,6 +389,18 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!225 &3154294326601135163
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997497983297384655}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &1997497983297384654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,6 +430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6115308b242f68a478e151f57d1ad22a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 3154294326601135163}
   generatingInProgress: {fileID: 8620519834159041389}
   seedInputField: {fileID: 7634551186174344537}
   bossTypeDropdown: {fileID: 7110540268013162496}

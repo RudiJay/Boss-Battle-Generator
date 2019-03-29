@@ -11,6 +11,11 @@ public class GeneratorUI : MonoBehaviour
 {
     public static GeneratorUI Instance;
 
+    private bool uiVisible = true;
+
+    [SerializeField]
+    private CanvasGroup canvasGroup;
+
     [SerializeField]
     private Text generatingInProgress;
     [SerializeField]
@@ -26,6 +31,32 @@ public class GeneratorUI : MonoBehaviour
     private void Start()
     {
         PopulateBossTypeDropdown();
+    }
+
+    public void ToggleUI()
+    {
+        uiVisible = !uiVisible;
+
+        if (!uiVisible)
+        {
+            HideUI();
+        }
+        else
+        {
+            ShowUI();
+        }
+    }
+
+    public void HideUI()
+    {
+        canvasGroup.alpha = 0.0f;
+        canvasGroup.blocksRaycasts = false;
+    }
+
+    public void ShowUI()
+    {
+        canvasGroup.alpha = 1.0f;
+        canvasGroup.blocksRaycasts = true;
     }
 
     public void PopulateBossTypeDropdown()

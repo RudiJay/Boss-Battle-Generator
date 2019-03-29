@@ -234,6 +234,16 @@ public class GeneratorScript : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetButtonDown("GenerateBoss"))
+        {
+            GenerateBossFight(true);
+        }
+
+        if (Input.GetButtonDown("ToggleUI"))
+        {
+            GeneratorUI.Instance.ToggleUI();
+        }
+
         //Toggle auto generate input
         if (Input.GetButtonDown("ToggleAutoGenerate"))
         {

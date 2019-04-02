@@ -108,10 +108,10 @@ public struct ShapeType
 
     [Header("Symmetry")]
     [Space(5)]
-    public float asymmetricProbability;
-    public float normaliseRotProbability;
-    public float centreXAndNormaliseRotProbability;
-    public float mirrorProbability;
+    public float AsymmetricProbability;
+    public float NormaliseRotProbability;
+    public float CentreXAndNormaliseRotProbability;
+    public float MirrorProbability;
 }
 
 /// <summary>
@@ -134,9 +134,9 @@ public struct WeaponType
 
     [Header("Symmetry")]
     [Space(5)]
-    public float asymmetricProbability;
-    public float centreXProbability;
-    public float mirrorProbability;
+    public float AsymmetricProbability;
+    public float CentreXProbability;
+    public float MirrorProbability;
 }
 
 public class GeneratorScript : MonoBehaviour
@@ -526,10 +526,10 @@ public class GeneratorScript : MonoBehaviour
                 snapshotSpriteObj.transform.localScale = new Vector3(objWidth, objHeight);
 
                 //calculate probability bounds of each symmetry type
-                float asymmetric = spriteShape.asymmetricProbability * bossType.asymmetricProbabilityMultiplier;
-                float normaliseRot = spriteShape.normaliseRotProbability * bossType.normaliseRotProbabilityMultiplier;
-                float centreX = spriteShape.centreXAndNormaliseRotProbability * bossType.centreXProbabilityMultiplier;
-                float mirror = spriteShape.mirrorProbability * bossType.mirrorProbabilityMultiplier;
+                float asymmetric = spriteShape.AsymmetricProbability * bossType.asymmetricProbabilityMultiplier;
+                float normaliseRot = spriteShape.NormaliseRotProbability * bossType.normaliseRotProbabilityMultiplier;
+                float centreX = spriteShape.CentreXAndNormaliseRotProbability * bossType.centreXProbabilityMultiplier;
+                float mirror = spriteShape.MirrorProbability * bossType.mirrorProbabilityMultiplier;
                 float symmetryProbabilityTotal = asymmetric + normaliseRot + centreX + mirror;
                 float asymmetricMax = asymmetric / symmetryProbabilityTotal;
                 float normaliseRotMax = asymmetricMax + (normaliseRot / symmetryProbabilityTotal);
@@ -641,9 +641,9 @@ public class GeneratorScript : MonoBehaviour
             if (((int)weaponType.availableWeaponOrientations & orientationMask) == orientationMask)
             {
                 //calculate probability boundaries of current weapon centring in X-axis for symmetry
-                float asymmetric = weaponType.asymmetricProbability * bossType.asymmetricProbabilityMultiplier;
-                float centreX = weaponType.centreXProbability * bossType.centreXProbabilityMultiplier;
-                float mirror = weaponType.mirrorProbability * bossType.mirrorProbabilityMultiplier;
+                float asymmetric = weaponType.AsymmetricProbability * bossType.asymmetricProbabilityMultiplier;
+                float centreX = weaponType.CentreXProbability * bossType.centreXProbabilityMultiplier;
+                float mirror = weaponType.MirrorProbability * bossType.mirrorProbabilityMultiplier;
                 float symmetryProbabilityTotal = asymmetric + centreX + mirror;
                 float centreXMin = asymmetric / symmetryProbabilityTotal;
                 float centreXMax = (asymmetric + centreX) / symmetryProbabilityTotal;
@@ -694,9 +694,9 @@ public class GeneratorScript : MonoBehaviour
             }
 
             //calculate probability bounds for centring the current weapon in X-axis
-            float asymmetric = weaponType.asymmetricProbability * bossType.asymmetricProbabilityMultiplier;
-            float centreX = weaponType.centreXProbability * bossType.centreXProbabilityMultiplier;
-            float mirror = weaponType.mirrorProbability * bossType.mirrorProbabilityMultiplier;
+            float asymmetric = weaponType.AsymmetricProbability * bossType.asymmetricProbabilityMultiplier;
+            float centreX = weaponType.CentreXProbability * bossType.centreXProbabilityMultiplier;
+            float mirror = weaponType.MirrorProbability * bossType.mirrorProbabilityMultiplier;
             float symmetryProbabilityTotal = asymmetric + centreX + mirror;
             float centreXMin = asymmetric / symmetryProbabilityTotal;
             float centreXMax = (asymmetric + centreX) / symmetryProbabilityTotal;
@@ -807,9 +807,9 @@ public class GeneratorScript : MonoBehaviour
             Weapon mirrorWeaponComponent = null;
 
             //calculate probability bounds for weapon being mirrored symmetrically
-            float asymmetric = weaponType.asymmetricProbability * bossType.asymmetricProbabilityMultiplier;
-            float centreX = weaponType.centreXProbability * bossType.centreXProbabilityMultiplier;
-            float mirror = weaponType.mirrorProbability * bossType.mirrorProbabilityMultiplier;
+            float asymmetric = weaponType.AsymmetricProbability * bossType.asymmetricProbabilityMultiplier;
+            float centreX = weaponType.CentreXProbability * bossType.centreXProbabilityMultiplier;
+            float mirror = weaponType.MirrorProbability * bossType.mirrorProbabilityMultiplier;
             float symmetryProbabilitiesTotal = asymmetric + centreX + mirror;
             float mirrorSymmetryMin = (asymmetric + centreX) / symmetryProbabilitiesTotal;
             float mirrorSymmetryMax = 1.0f;

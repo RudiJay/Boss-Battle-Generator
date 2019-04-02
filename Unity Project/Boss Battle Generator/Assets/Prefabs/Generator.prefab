@@ -609,7 +609,7 @@ MonoBehaviour:
     canWeaponFloat: 0
     AsymmetricProbability: 0.5
     CentreXProbability: 0.75
-    MirrorProbability: 0.2
+    MirrorProbability: 0.15
   - sprite: {fileID: 21300000, guid: 6bdfda9274d7e964492d889a17a12b74, type: 3}
     size: 0.9
     availableWeaponOrientations: 31

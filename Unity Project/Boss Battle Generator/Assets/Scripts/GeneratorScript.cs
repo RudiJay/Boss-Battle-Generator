@@ -75,9 +75,11 @@ public struct BossType
 {
     public BossTypeName typeName;
 
+    public AnimationCurve symmetryProbabilityCurve;
+
     public AnimationCurve spriteComplexityCurve;
 
-    public AnimationCurve symmetryProbability;
+    public AnimationCurve weaponQuantityCurve;
 
     [Range(0,1)]
     public float[] shapeProbability;
@@ -175,7 +177,7 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField][Space(10)]
     private int bossTypeMax = 100;
     [SerializeField]
-    private int symmetryMax = 100, shapeComplexityMax = 100, shapeMax = 100, weaponTypeMax = 100, weaponOrientationMax = 100;
+    private int symmetryMax = 100, shapeComplexityMax = 100, shapeMax = 100, weaponQuantityMax = 100, weaponTypeMax = 100, weaponOrientationMax = 100;
 
     [Header("Boss Type")]
     [SerializeField][Space(10)]
@@ -189,7 +191,7 @@ public class GeneratorScript : MonoBehaviour
 
     [Header("Weapons")]
     [SerializeField][Space(10)]
-    private int numberOfWeapons = 2;
+    private int weaponQuantity = 2;
     [SerializeField]
     private GameObject WeaponPrefab;
     [SerializeField]
@@ -736,9 +738,18 @@ public class GeneratorScript : MonoBehaviour
             Destroy(weapons[i].gameObject);
         }
 
-        //TODO: randomise number of weapons
+        //make sure there is a complexity curve
+        if (bossType.weaponQuantityCurve.length == 0)
+        {
+            Debug.Log("ERROR: Missing weapon quantity curve");
+            return;
+        }
 
-        for (int i = 0; i < numberOfWeapons; i++)
+        //generate number of weapons
+        weaponQuantity = Mathf.RoundToInt(bossType.weaponQuantityCurve.Evaluate(rand.Next(0, weaponQuantityMax) / (float)weaponQuantityMax));
+        Debug.Log("Number of weapons: " + weaponQuantity);
+
+        for (int i = 0; i < weaponQuantity; i++)
         {
             GenerateRandomSymmetryScore(); //symmetry score must be calculated again for each new weapon so they don't all do the same thing.
 

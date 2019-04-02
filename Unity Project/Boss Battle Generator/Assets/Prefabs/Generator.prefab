@@ -240,10 +240,17 @@ MonoBehaviour:
   symmetryMax: 100
   shapeComplexityMax: 100
   shapeMax: 100
+  weaponQuantityMax: 100
   weaponTypeMax: 100
   weaponOrientationMax: 100
   BossTypeVariables:
   - typeName: 1
+    symmetryProbabilityCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
     spriteComplexityCurve:
       serializedVersion: 2
       m_Curve:
@@ -268,14 +275,38 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    symmetryProbability:
+    weaponQuantityCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 5.4865456
+        outSlope: 5.4865456
+        tangentMode: 0
+        weightedMode: 3
+        inWeight: 0
+        outWeight: 0.2875817
+      - serializedVersion: 3
+        time: 1
+        value: 2
+        inSlope: 8.293412
+        outSlope: 8.293412
+        tangentMode: 0
+        weightedMode: 3
+        inWeight: 0.09640521
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
   - typeName: 2
+    symmetryProbabilityCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
     spriteComplexityCurve:
       serializedVersion: 2
       m_Curve:
@@ -300,14 +331,38 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    symmetryProbability:
+    weaponQuantityCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 265.58493
+        outSlope: 265.58493
+        tangentMode: 0
+        weightedMode: 3
+        inWeight: 0
+        outWeight: 0.014705882
+      - serializedVersion: 3
+        time: 1
+        value: 4
+        inSlope: 7.0209637
+        outSlope: 7.0209637
+        tangentMode: 0
+        weightedMode: 3
+        inWeight: 0.2647059
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
   - typeName: 3
+    symmetryProbabilityCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
     spriteComplexityCurve:
       serializedVersion: 2
       m_Curve:
@@ -332,14 +387,38 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    symmetryProbability:
+    weaponQuantityCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 7.1555595
+        outSlope: 7.1555595
+        tangentMode: 0
+        weightedMode: 3
+        inWeight: 0
+        outWeight: 0.23039216
+      - serializedVersion: 3
+        time: 1
+        value: 3
+        inSlope: 6.888559
+        outSlope: 6.888559
+        tangentMode: 0
+        weightedMode: 3
+        inWeight: 0.23692548
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
   - typeName: 4
+    symmetryProbabilityCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
     spriteComplexityCurve:
       serializedVersion: 2
       m_Curve:
@@ -364,14 +443,38 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    symmetryProbability:
+    weaponQuantityCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 2
+        inSlope: 16.93585
+        outSlope: 16.93585
+        tangentMode: 0
+        weightedMode: 3
+        inWeight: 0
+        outWeight: 0.12254902
+      - serializedVersion: 3
+        time: 1
+        value: 6
+        inSlope: 1.9278408
+        outSlope: 1.9278408
+        tangentMode: 0
+        weightedMode: 3
+        inWeight: 0.9493464
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
   - typeName: 5
+    symmetryProbabilityCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
     spriteComplexityCurve:
       serializedVersion: 2
       m_Curve:
@@ -396,9 +499,27 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    symmetryProbability:
+    weaponQuantityCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 15.187382
+        outSlope: 15.187382
+        tangentMode: 0
+        weightedMode: 3
+        inWeight: 0
+        outWeight: 0.29738563
+      - serializedVersion: 3
+        time: 1
+        value: 5
+        inSlope: 64.05071
+        outSlope: 64.05071
+        tangentMode: 0
+        weightedMode: 3
+        inWeight: 0.05228758
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -584,7 +705,7 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.5
     MirrorProbability: 0.5
-  numberOfWeapons: 1
+  weaponQuantity: 2
   WeaponPrefab: {fileID: 6663881351590808801, guid: 907643923dc0e2644b1d692852f2fed4,
     type: 3}
   bossSpriteLayer:

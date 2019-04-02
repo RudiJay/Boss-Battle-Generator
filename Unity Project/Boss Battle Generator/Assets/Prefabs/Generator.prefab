@@ -245,12 +245,6 @@ MonoBehaviour:
   weaponOrientationMax: 100
   BossTypeVariables:
   - typeName: 1
-    symmetryProbabilityCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
     spriteComplexityCurve:
       serializedVersion: 2
       m_Curve:
@@ -300,13 +294,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
+    asymmetricProbabilityMultiplier: 1
+    normaliseRotProbabilityMultiplier: 1
+    centreXProbabilityMultiplier: 1
+    mirrorProbabilityMultiplier: 1
   - typeName: 2
-    symmetryProbabilityCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
     spriteComplexityCurve:
       serializedVersion: 2
       m_Curve:
@@ -356,13 +348,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
+    asymmetricProbabilityMultiplier: 1
+    normaliseRotProbabilityMultiplier: 1
+    centreXProbabilityMultiplier: 1
+    mirrorProbabilityMultiplier: 1
   - typeName: 3
-    symmetryProbabilityCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
     spriteComplexityCurve:
       serializedVersion: 2
       m_Curve:
@@ -412,13 +402,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
+    asymmetricProbabilityMultiplier: 1
+    normaliseRotProbabilityMultiplier: 1
+    centreXProbabilityMultiplier: 1
+    mirrorProbabilityMultiplier: 1
   - typeName: 4
-    symmetryProbabilityCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
     spriteComplexityCurve:
       serializedVersion: 2
       m_Curve:
@@ -468,13 +456,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
+    asymmetricProbabilityMultiplier: 1
+    normaliseRotProbabilityMultiplier: 1
+    centreXProbabilityMultiplier: 1
+    mirrorProbabilityMultiplier: 1
   - typeName: 5
-    symmetryProbabilityCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
     spriteComplexityCurve:
       serializedVersion: 2
       m_Curve:
@@ -524,6 +510,10 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
+    asymmetricProbabilityMultiplier: 1
+    normaliseRotProbabilityMultiplier: 1
+    centreXProbabilityMultiplier: 1
+    mirrorProbabilityMultiplier: 1
   SpriteGenerationShapes:
   - shapeName: 0
     sprite: {fileID: 21300000, guid: 524f4a4dbaa68654fae116b53b1fce0e, type: 3}

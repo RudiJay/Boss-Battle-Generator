@@ -75,7 +75,7 @@ public struct BossType
 {
     public BossTypeName typeName;
 
-    public AnimationCurve complexityProbability;
+    public AnimationCurve spriteComplexityCurve;
 
     public AnimationCurve symmetryProbability;
 
@@ -175,7 +175,7 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField][Space(10)]
     private int bossTypeMax = 100;
     [SerializeField]
-    private int symmetryMax = 100, shapeMax = 100, weaponTypeMax = 100, weaponOrientationMax = 100;
+    private int symmetryMax = 100, shapeComplexityMax = 100, shapeMax = 100, weaponTypeMax = 100, weaponOrientationMax = 100;
 
     [Header("Boss Type")]
     [SerializeField][Space(10)]
@@ -184,9 +184,8 @@ public class GeneratorScript : MonoBehaviour
 
     [Header("Sprite Shapes")]
     [SerializeField][Space(10)]
-    private int spriteShapeComplexity = 3;
-    [SerializeField]
     private ShapeType[] SpriteGenerationShapes;
+    private int spriteShapeComplexity = 3;    
 
     [Header("Weapons")]
     [SerializeField][Space(10)]
@@ -358,6 +357,9 @@ public class GeneratorScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Assigns the value of the Boss Type from the UI, and randomises it if set to "Random"
+    /// </summary>
     private void SetBossType()
     {
         BossTypeName typeName;
@@ -374,12 +376,18 @@ public class GeneratorScript : MonoBehaviour
         bossType = System.Array.Find<BossType>(BossTypeVariables, BossTypeVariables => BossTypeVariables.typeName == typeName);
     }
 
+    /// <summary>
+    /// Randomly assigns a new symmetry score
+    /// </summary>
     private void GenerateRandomSymmetryScore()
     {
         symmetryValue = rand.Next(0, symmetryMax);
-        Debug.Log("Symmetric seed (0, " + symmetryMax + "): " + symmetryValue);
+        //Debug.Log("Symmetric seed (0, " + symmetryMax + "): " + symmetryValue);
     }
 
+    /// <summary>
+    /// Applies a randomly generated transformation to the background image
+    /// </summary>
     public void GenerateBackground()
     {
         if (background)
@@ -430,6 +438,19 @@ public class GeneratorScript : MonoBehaviour
             {
                 TextureDraw.Clear(texture);
             }
+
+            //make sure there is a complexity curve
+            if (bossType.spriteComplexityCurve.length == 0)
+            {
+                Debug.Log("ERROR: Missing complexity curve");
+                return;
+            }
+
+            //generate sprite complexity
+            spriteShapeComplexity = Mathf.RoundToInt(bossType.spriteComplexityCurve.Evaluate(rand.Next(0, shapeComplexityMax) / (float)shapeComplexityMax));
+            //Debug.Log("Sprite Shape Complexity: " + spriteShapeComplexity);
+            //make sure there is at least one shape
+            spriteShapeComplexity = Mathf.Max(spriteShapeComplexity, 1);
 
             for (int i = 0; i < spriteShapeComplexity; i++)
             {

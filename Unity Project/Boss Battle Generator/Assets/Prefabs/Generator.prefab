@@ -298,7 +298,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
-  - typeName: 3
+  - typeName: 4
     complexityProbability:
       serializedVersion: 2
       m_Curve: []
@@ -312,7 +312,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     shapeProbability: []
-  - typeName: 4
+  - typeName: 5
     complexityProbability:
       serializedVersion: 2
       m_Curve: []

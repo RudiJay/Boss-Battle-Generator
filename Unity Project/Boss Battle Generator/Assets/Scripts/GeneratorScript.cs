@@ -193,13 +193,15 @@ public class GeneratorScript : MonoBehaviour
     private BossType[] BossTypeVariables;
     private BossType bossType;
 
-    [Header("Sprite Shapes")]
+    [Header("Appearance")]
     [SerializeField][Space(10)]
     private ShapeType[] SpriteGenerationShapes;
     private int spriteShapeComplexity = 3;
 
-    //[Header("Appearance")]
+    private int colorQuantity = 3;
     private Color[] colorPalette;
+    [SerializeField]
+    private bool useColorSchemeForBackground = false;
 
     [Header("Weapons")]
     [SerializeField][Space(10)]
@@ -359,10 +361,12 @@ public class GeneratorScript : MonoBehaviour
 
             GenerateRandomSymmetryScore();
 
+            GenerateColorScheme();
+
             GenerateBackground();
 
             GenerateSprite();
-
+            
             GenerateColliders();
 
             GenerateWeapons();
@@ -400,32 +404,11 @@ public class GeneratorScript : MonoBehaviour
     }
 
     /// <summary>
-    /// Applies a randomly generated transformation to the background image
+    /// Randomly generates the color scheme that will be used for the boss
     /// </summary>
-    public void GenerateBackground()
+    private void GenerateColorScheme()
     {
-        if (background)
-        {
-            Material mat = background.GetComponent<Renderer>().material;
-
-            int redSeed = rand.Next(0, 255);
-            int greenSeed = rand.Next(0, 255);
-            int blueSeed = rand.Next(0, 255);
-
-            Color newColor = new Color(redSeed / 255f, greenSeed / 255f, blueSeed / 255f);
-
-            mat.SetColor("_Color", newColor);
-
-            int xSeed = rand.Next(-100, 100);
-            int ySeed = rand.Next(-100, 100);
-
-            mat.mainTextureOffset = new Vector2(xSeed / 100f, ySeed / 100f);
-        }
-    }
-
-    private void GenerateSpriteColor(Texture2D texture)
-    {
-        int colorQuantity = rand.Next(1, 4);
+        colorQuantity = rand.Next(1, 5);
         colorPalette = new Color[colorQuantity];
 
         float hue = rand.Next(0, 100) / 100.0f;
@@ -436,10 +419,11 @@ public class GeneratorScript : MonoBehaviour
 
         GenerateRandomSymmetryScore();
         bool useComplementaryColors = symmetryValue / (float)symmetryMax > nonComplementaryColorChance;
-        float offset;
+        float offset = 0;
         for (int i = 1; i < colorQuantity; i++)
         {
-            if (useComplementaryColors)
+            //fourth color is always random
+            if (useComplementaryColors && i < 3)
             {
                 //determine which color offset to use 
                 //(using split complementary for three colours)
@@ -456,7 +440,7 @@ public class GeneratorScript : MonoBehaviour
                         offset = 5f / 12f;
                     }
                 }
-                else
+                else if (i == 2)
                 {
                     //second split complementary
                     offset = 7f / 12f;
@@ -473,7 +457,46 @@ public class GeneratorScript : MonoBehaviour
 
             colorPalette[i] = Color.HSVToRGB(hue, saturation, brightness);
         }
+    }
 
+    /// <summary>
+    /// Applies a randomly generated transformation to the background image
+    /// </summary>
+    public void GenerateBackground()
+    {
+        if (background)
+        {
+            Material mat = background.GetComponent<Renderer>().material;
+            Color bgColor;
+
+            if (useColorSchemeForBackground)
+            {
+                bgColor = colorPalette[rand.Next(0, colorQuantity)];
+            }
+            else
+            {
+                int redSeed = rand.Next(0, 255);
+                int greenSeed = rand.Next(0, 255);
+                int blueSeed = rand.Next(0, 255);
+
+                bgColor = new Color(redSeed / 255f, greenSeed / 255f, blueSeed / 255f);
+            }
+
+            mat.SetColor("_Color", bgColor);
+
+            int xSeed = rand.Next(-100, 100);
+            int ySeed = rand.Next(-100, 100);
+
+            mat.mainTextureOffset = new Vector2(xSeed / 100f, ySeed / 100f);
+        }
+    }
+
+    /// <summary>
+    /// Takes in the sprite shape generated and applies the color scheme to it
+    /// </summary>
+    /// <param name="texture"></param>
+    private void PaintSpriteColor(Texture2D texture)
+    {
         float scaleX = rand.Next(perlinColorScaleMin, perlinColorScaleMax);
         float scaleY = rand.Next(perlinColorScaleMin, perlinColorScaleMax);
 
@@ -485,8 +508,6 @@ public class GeneratorScript : MonoBehaviour
         }
 
         float noiseColorBoundaryWidth = 1 / (float)colorQuantity;
-
-
         for (int y = 0; y < texture.height; y++)
         {
             for (int x = 0; x < texture.width; x++)
@@ -661,7 +682,7 @@ public class GeneratorScript : MonoBehaviour
                 DrawShapeFromSnapshot(texture, xValue, yValue);
             }
 
-            GenerateSpriteColor(texture);
+            PaintSpriteColor(texture);
 
             texture.Apply();
 

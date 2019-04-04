@@ -178,11 +178,15 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField]
     private float weaponXLimit = 3, weaponYLimit = 3;
 
+    [SerializeField][Range(0, 1)]
+    private float nonComplementaryColorChance = 0.5f, asymmetricColorChance = 0.25f;
+
     [Header("Randomisation Scales")]
     [SerializeField][Space(10)]
     private int bossTypeMax = 100;
     [SerializeField]
-    private int symmetryMax = 100, shapeComplexityMax = 100, shapeMax = 100, weaponQuantityMax = 100, weaponTypeMax = 100, weaponOrientationMax = 100;
+    private int symmetryMax = 100, shapeComplexityMax = 100, shapeMax = 100, perlinColorScaleMin = 100, perlinColorScaleMax = 100, 
+        weaponQuantityMax = 100, weaponTypeMax = 100, weaponOrientationMax = 100;
 
     [Header("Boss Type")]
     [SerializeField][Space(10)]
@@ -192,7 +196,10 @@ public class GeneratorScript : MonoBehaviour
     [Header("Sprite Shapes")]
     [SerializeField][Space(10)]
     private ShapeType[] SpriteGenerationShapes;
-    private int spriteShapeComplexity = 3;    
+    private int spriteShapeComplexity = 3;
+
+    //[Header("Appearance")]
+    private Color[] colorPalette;
 
     [Header("Weapons")]
     [SerializeField][Space(10)]
@@ -200,7 +207,7 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField]
     private GameObject WeaponPrefab;
     [SerializeField]
-    private LayerMask bossSpriteLayer;
+    private LayerMask bossSpriteLayer, weaponSpriteLayer;
     [SerializeField]
     private int maxWeaponTypeAttempts = 10, maxWeaponOrientationAttempts = 10, maxWeaponPosAttempts = 15;
     [SerializeField]
@@ -416,6 +423,92 @@ public class GeneratorScript : MonoBehaviour
         }
     }
 
+    private void GenerateSpriteColor(Texture2D texture)
+    {
+        int colorQuantity = rand.Next(1, 4);
+        colorPalette = new Color[colorQuantity];
+
+        float hue = rand.Next(0, 100) / 100.0f;
+        float saturation = rand.Next(0, 100) / 100.0f;
+        float brightness = rand.Next(0, 100) / 100.0f;
+
+        colorPalette[0] = Color.HSVToRGB(hue, saturation, brightness);
+
+        GenerateRandomSymmetryScore();
+        bool useComplementaryColors = symmetryValue / (float)symmetryMax > nonComplementaryColorChance;
+        float offset;
+        for (int i = 1; i < colorQuantity; i++)
+        {
+            if (useComplementaryColors)
+            {
+                //determine which color offset to use 
+                //(using split complementary for three colours)
+                if (i == 1)
+                {
+                    if (colorQuantity == 2)
+                    {
+                        //complementary
+                        offset = 0.5f;
+                    }
+                    else
+                    {
+                        //first split complementary
+                        offset = 5f / 12f;
+                    }
+                }
+                else
+                {
+                    //second split complementary
+                    offset = 7f / 12f;
+                }
+
+                hue = Mathf.Abs(hue + offset - 1);
+            }
+            else
+            {
+                hue = rand.Next(0, 100) / 100.0f;
+                saturation = rand.Next(0, 100) / 100.0f;
+                brightness = rand.Next(0, 100) / 100.0f;
+            }
+
+            colorPalette[i] = Color.HSVToRGB(hue, saturation, brightness);
+        }
+
+        float scaleX = rand.Next(perlinColorScaleMin, perlinColorScaleMax);
+        float scaleY = rand.Next(perlinColorScaleMin, perlinColorScaleMax);
+
+        bool symmetricColor = false;
+        GenerateRandomSymmetryScore();
+        if (symmetryValue / (float)symmetryMax > asymmetricColorChance)
+        {
+            symmetricColor = true;
+        }
+
+        float noiseColorBoundaryWidth = 1 / (float)colorQuantity;
+
+
+        for (int y = 0; y < texture.height; y++)
+        {
+            for (int x = 0; x < texture.width; x++)
+            {
+                if (texture.GetPixel(x, y) == Color.white)
+                {
+                    float xCoord = x;
+                    float yCoord = y;
+
+                    if (symmetricColor)
+                    {
+                        xCoord = Mathf.Abs(x - texture.width / 2.0f);
+                    }
+
+                    float noise = Mathf.PerlinNoise(xCoord / scaleX, yCoord / scaleY);
+
+                    texture.SetPixel(x, y, colorPalette[(int)(noise / noiseColorBoundaryWidth)]);
+                }
+            }
+        }
+    }
+
     /// <summary>
     /// Generates the sprite that makes up the body of the boss
     /// </summary>
@@ -566,13 +659,15 @@ public class GeneratorScript : MonoBehaviour
                 snapshotSpriteObj.transform.localScale = new Vector3(objWidth, objHeight);
 
                 DrawShapeFromSnapshot(texture, xValue, yValue);
-
-                texture.Apply();
-
-                bossSprite.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-
-                bossSprite.enabled = true;
             }
+
+            GenerateSpriteColor(texture);
+
+            texture.Apply();
+
+            bossSprite.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+
+            bossSprite.enabled = true;
         }
     }
 
@@ -721,6 +816,12 @@ public class GeneratorScript : MonoBehaviour
                 continue;
             }
 
+            if (weaponTransform.GetComponent<Weapon>().CheckIfCollidingWithOtherWeapons())
+            {
+                //TODO: Fix test so removed correctly
+                //continue;
+            }
+
             //if weapon uses mirror symmetry, do the same check for mirror weapon
             if (mirrorWeaponTransform != null)
             {
@@ -732,8 +833,15 @@ public class GeneratorScript : MonoBehaviour
                 {
                     continue;
                 }
+
+                if (mirrorWeaponTransform.GetComponent<Weapon>().CheckIfCollidingWithOtherWeapons())
+                {
+                    //TODO: Fix test so removed correctly
+                    //continue;
+                }
             }
 
+            //foundPosition = true; --unneeded because method is exited anyway
             return true;
         } while (!foundPosition);
 
@@ -761,7 +869,7 @@ public class GeneratorScript : MonoBehaviour
 
         //generate number of weapons
         weaponQuantity = Mathf.RoundToInt(bossType.weaponQuantityCurve.Evaluate(rand.Next(0, weaponQuantityMax) / (float)weaponQuantityMax));
-        Debug.Log("Number of weapons: " + weaponQuantity);
+        //Debug.Log("Number of weapons: " + weaponQuantity);
 
         for (int i = 0; i < weaponQuantity; i++)
         {
@@ -788,6 +896,7 @@ public class GeneratorScript : MonoBehaviour
             weapon.transform.localScale = new Vector3(weaponType.size, weaponType.size);
             //add collider
             sr.gameObject.AddComponent<PolygonCollider2D>();
+            sr.gameObject.GetComponent<PolygonCollider2D>().isTrigger = true;
 
             //set weapon orientation mode
             int orientationModeIndex = GenerateWeaponOrientationModeIndex(weaponType);
@@ -799,7 +908,7 @@ public class GeneratorScript : MonoBehaviour
                 continue;
             }
             WeaponOrientationMode orientationMode = (WeaponOrientationMode)orientationModeIndex;
-            Debug.Log(orientationMode);
+            //Debug.Log(orientationMode);
             weaponComponent.currentOrientationMode = orientationMode;
 
             //check symmetry score and if weapon should use mirror symmetry instantiate new weapon object
@@ -826,6 +935,7 @@ public class GeneratorScript : MonoBehaviour
                 mirrorWeapon.transform.localScale = new Vector3(weaponType.size, weaponType.size);
                 //add collider
                 mirrorsr.gameObject.AddComponent<PolygonCollider2D>();
+                mirrorsr.gameObject.GetComponent<PolygonCollider2D>().isTrigger = true;
                 //set weapon orientation mode
                 mirrorWeaponComponent.currentOrientationMode = orientationMode;
             }

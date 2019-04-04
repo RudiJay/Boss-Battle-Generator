@@ -38,7 +38,7 @@ public static class TextureDraw
             {
                 if (textureIn.GetPixel(x, y).a == 1)
                 {
-                    textureIO.SetPixel(x0 + x, y0 + y, textureIn.GetPixel(x, y));
+                    textureIO.SetPixel(x0 + x, y0 + y, Color.white);
                 }
             }
         }

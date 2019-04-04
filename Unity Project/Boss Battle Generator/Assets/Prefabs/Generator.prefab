@@ -236,10 +236,14 @@ MonoBehaviour:
   shapeSizeLimiter: 0.7
   weaponXLimit: 3
   weaponYLimit: 3
+  nonComplementaryColorChance: 0.5
+  asymmetricColorChance: 0.05
   bossTypeMax: 100
   symmetryMax: 100
   shapeComplexityMax: 100
   shapeMax: 100
+  perlinColorScaleMin: 25
+  perlinColorScaleMax: 500
   weaponQuantityMax: 100
   weaponTypeMax: 100
   weaponOrientationMax: 100
@@ -701,6 +705,9 @@ MonoBehaviour:
   bossSpriteLayer:
     serializedVersion: 2
     m_Bits: 1024
+  weaponSpriteLayer:
+    serializedVersion: 2
+    m_Bits: 2048
   maxWeaponTypeAttempts: 10
   maxWeaponOrientationAttempts: 15
   maxWeaponPosAttempts: 15

@@ -19,25 +19,22 @@ public class Weapon : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, rot);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Weapon")
-        {
-            //isCollidingWithOtherWeapon = true;
-        }
-    }
-
     public bool CheckIfCollidingWithOtherWeapons()
     {
         RaycastHit2D[] results = new RaycastHit2D[20];
 
-        int length = gameObject.GetComponent<Rigidbody2D>().Cast(Vector2.zero, results, 0.0f);
+        Vector3 boundSize = gameObject.GetComponentInChildren<SpriteRenderer>().bounds.size;
+        float xSize = boundSize.x;
+        float ySize = boundSize.y;
+        Vector2 size = new Vector2(xSize, ySize);
+
+        int length = Physics2D.BoxCast(transform.position, size, transform.rotation.eulerAngles.z, Vector2.zero, new ContactFilter2D().NoFilter(), results, 0.0f);
 
         for (int i = 0; i < length; i++)
         {
-            if (results[i].collider.tag == "Weapon" && results[i].collider != gameObject.GetComponentInChildren<Collider2D>())
+            if (results[i].collider.tag == "Weapon")
             {
-                Debug.Log(results[i].point);
+                Debug.Log("hit " + results[i].collider.gameObject.transform.position);
                 isCollidingWithOtherWeapon = true;
                 break;
             }

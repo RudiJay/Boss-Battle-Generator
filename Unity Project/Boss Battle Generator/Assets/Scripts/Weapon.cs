@@ -34,7 +34,7 @@ public class Weapon : MonoBehaviour
         {
             if (results[i].collider.tag == "Weapon")
             {
-                Debug.Log("hit " + results[i].collider.gameObject.transform.position);
+                //Debug.Log("hit " + results[i].collider.gameObject.transform.position);
                 isCollidingWithOtherWeapon = true;
                 break;
             }

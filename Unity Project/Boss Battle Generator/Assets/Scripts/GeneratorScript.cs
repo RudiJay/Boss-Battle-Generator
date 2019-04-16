@@ -156,6 +156,7 @@ public class GeneratorScript : MonoBehaviour
 
     private IEnumerator autoGenerator;
     private bool isAutoGenerating = false;
+    WaitForSeconds autoGenerateWaitForSeconds;
 
     [Header("Interface")]
     [SerializeField]
@@ -226,6 +227,7 @@ public class GeneratorScript : MonoBehaviour
         //initialise references
         rand = new System.Random();
 
+        autoGenerateWaitForSeconds = new WaitForSeconds(autoGeneratorDelay);
         autoGenerator = AutoGenerateBossFights();
 
         bossObj = GameObject.FindWithTag("Boss");
@@ -262,7 +264,9 @@ public class GeneratorScript : MonoBehaviour
         //Toggle auto generate input
         if (Input.GetButtonDown("ToggleAutoGenerate"))
         {
-            if (!isAutoGenerating)
+            isAutoGenerating = !isAutoGenerating;
+
+            if (isAutoGenerating)
             {
                 StartCoroutine(autoGenerator);
             }
@@ -270,8 +274,6 @@ public class GeneratorScript : MonoBehaviour
             {
                 StopCoroutine(autoGenerator);
             }
-
-            isAutoGenerating = !isAutoGenerating;
         }
     }
 
@@ -282,11 +284,9 @@ public class GeneratorScript : MonoBehaviour
     {
         while (true)
         {
-            WaitForSeconds delay = new WaitForSeconds(autoGeneratorDelay);
-
             GenerateBossFight(true);
 
-            yield return delay;
+            yield return autoGenerateWaitForSeconds;
         }
     }
 

@@ -154,11 +154,17 @@ public class GeneratorScript : MonoBehaviour
 
     private GameObject background;
 
+    private IEnumerator bossGeneration;
+    private bool generationInProgress = false;
+    private WaitForSeconds generationStepDelayTime;
+
     private IEnumerator autoGenerator;
     private bool isAutoGenerating = false;
     WaitForSeconds autoGenerateWaitForSeconds;
 
     [Header("Interface")]
+    [SerializeField]
+    private float generationStepDelay = 0.5f;
     [SerializeField]
     private float autoGeneratorDelay = 2.0f;
     [SerializeField][Tooltip("CAUTION: do not use unless testing sprite creation")]
@@ -194,6 +200,7 @@ public class GeneratorScript : MonoBehaviour
     private BossType[] BossTypeVariables;
     private BossType bossType;
 
+    private bool spriteGenerationComplete = false;
     [Header("Appearance")]
     [SerializeField][Space(10)]
     private ShapeType[] SpriteGenerationShapes;
@@ -204,6 +211,9 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField]
     private bool useColorSchemeForBackground = false;
 
+    private bool weaponGenerationComplete = false;
+    private bool weaponPositioningProcessComplete = false;
+    private bool weaponPositionFound = false;
     [Header("Weapons")]
     [SerializeField][Space(10)]
     private int weaponQuantity = 2;
@@ -226,6 +236,8 @@ public class GeneratorScript : MonoBehaviour
     {
         //initialise references
         rand = new System.Random();
+
+        generationStepDelayTime = new WaitForSeconds(generationStepDelay);
 
         autoGenerateWaitForSeconds = new WaitForSeconds(autoGeneratorDelay);
         autoGenerator = AutoGenerateBossFights();
@@ -348,31 +360,74 @@ public class GeneratorScript : MonoBehaviour
     /// <param name="generateNewSeed">whether the new boss needs to generate a new seed or not</param>
     public void GenerateBossFight(bool generateNewSeed)
     {
-        if (bossSprite)
+        if (bossSprite && !generationInProgress)
         {
-            GeneratorUI.Instance.ToggleGeneratingInProgressLabel(true);
+            bossGeneration = GenerationProcess(generateNewSeed);
 
-            if (generateNewSeed)
-            {
-                GenerateSeed();
-            }
-
-            SetBossType();
-
-            GenerateRandomSymmetryScore();
-
-            GenerateColorScheme();
-
-            GenerateBackground();
-
-            GenerateSprite();
-            
-            GenerateColliders();
-
-            GenerateWeapons();
-
-            GeneratorUI.Instance.ToggleGeneratingInProgressLabel(false);
+            StartCoroutine(bossGeneration);
         }
+    }
+
+    private void StopBossGeneration()
+    {
+        StopCoroutine(bossGeneration);
+
+        generationInProgress = false;
+    }
+
+    private IEnumerator GenerationProcess(bool generateNewSeed)
+    {
+        spriteGenerationComplete = false;
+        weaponGenerationComplete = false;
+
+        generationInProgress = true;
+
+        GeneratorUI.Instance.ToggleGeneratingInProgressLabel(true);
+
+        yield return null;
+
+        ClearWeapons();
+
+        yield return null;
+
+        if (generateNewSeed)
+        {
+            GenerateSeed();
+        }
+
+        SetBossType();
+
+        GenerateRandomSymmetryScore();
+
+        yield return null;
+
+        GenerateColorScheme();
+
+        GenerateBackground();
+
+        yield return null;
+
+        StartCoroutine(GenerateSprite());
+
+        while (!spriteGenerationComplete)
+        {
+            yield return null;
+        }
+
+        GenerateColliders();
+
+        yield return null;
+
+        StartCoroutine(GenerateWeapons());
+
+        while (!weaponGenerationComplete)
+        {
+            yield return null;
+        }
+
+        GeneratorUI.Instance.ToggleGeneratingInProgressLabel(false);
+
+        StopBossGeneration();
     }
 
     /// <summary>
@@ -533,10 +588,12 @@ public class GeneratorScript : MonoBehaviour
     /// <summary>
     /// Generates the sprite that makes up the body of the boss
     /// </summary>
-    private void GenerateSprite()
+    private IEnumerator GenerateSprite()
     {
         if (spriteSnapshotCam && snapshotSpriteObj && SpriteGenerationShapes.Length > 0)
         {
+            bossSprite.enabled = true;
+
             SpriteRenderer snapshotSprite = snapshotSpriteObj.GetComponentInChildren<SpriteRenderer>();
 
             Texture2D texture = new Texture2D(textureWidth, textureHeight, TextureFormat.ARGB32, false);
@@ -564,7 +621,8 @@ public class GeneratorScript : MonoBehaviour
             if (bossType.spriteComplexityCurve.length == 0)
             {
                 Debug.Log("ERROR: Missing complexity curve");
-                return;
+                StopBossGeneration();
+                yield break;
             }
 
             //generate sprite complexity
@@ -680,6 +738,12 @@ public class GeneratorScript : MonoBehaviour
                 snapshotSpriteObj.transform.localScale = new Vector3(objWidth, objHeight);
 
                 DrawShapeFromSnapshot(texture, xValue, yValue);
+
+                texture.Apply();
+
+                bossSprite.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+
+                yield return generationStepDelayTime;
             }
 
             PaintSpriteColor(texture);
@@ -688,7 +752,9 @@ public class GeneratorScript : MonoBehaviour
 
             bossSprite.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
 
-            bossSprite.enabled = true;
+            yield return generationStepDelayTime;
+
+            spriteGenerationComplete = true;
         }
     }
 
@@ -700,6 +766,19 @@ public class GeneratorScript : MonoBehaviour
         Destroy(bossSprite.gameObject.GetComponent<PolygonCollider2D>());
 
         bossSprite.gameObject.AddComponent<PolygonCollider2D>();
+    }
+
+    /// <summary>
+    /// Goes through all weapons attached to boss gameobject and removes them
+    /// </summary>
+    private void ClearWeapons()
+    {
+        //clear previous weapons
+        Weapon[] weapons = bossObj.GetComponentsInChildren<Weapon>();
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            Destroy(weapons[i].gameObject);
+        }
     }
 
     private int GenerateWeaponTypeIndex()
@@ -789,11 +868,13 @@ public class GeneratorScript : MonoBehaviour
         return -1;
     }
 
-    private bool GenerateWeaponPosition(WeaponType weaponType, Transform weaponTransform, Transform mirrorWeaponTransform = null)
+    private IEnumerator GenerateWeaponPosition(WeaponType weaponType, Transform weaponTransform, Transform mirrorWeaponTransform = null)
     {
+        WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
+
         //bool for whether weapon is placed on sprite correctly
         //if weapon can float ignore process and just pick first
-        bool foundPosition = weaponType.canWeaponFloat;
+        weaponPositionFound = weaponType.canWeaponFloat;
 
         int count = -1;
         int xSeed;
@@ -806,6 +887,7 @@ public class GeneratorScript : MonoBehaviour
             if (count > maxWeaponPosAttempts)
             {
                 Debug.Log("Could not find position for this weapon");
+                weaponPositionFound = false;
                 break;
             }
 
@@ -832,16 +914,19 @@ public class GeneratorScript : MonoBehaviour
             weaponTransform.position = new Vector3(xSeed / 100.0f, ySeed / 100.0f, -1f) + bossObj.transform.position;
 
             //if a raycast does not hit the boss sprite collider from this weapon position, try again
-            if (!Physics2D.Raycast(weaponTransform.position, weaponTransform.forward, 1000, bossSpriteLayer) && !foundPosition)
+            if (!Physics2D.Raycast(weaponTransform.position, weaponTransform.forward, 1000, bossSpriteLayer) && !weaponPositionFound)
             {
                 continue;
             }
 
-            if (weaponTransform.GetComponent<Weapon>().CheckIfCollidingWithOtherWeapons())
+            yield return waitFrame;
+
+            if (weaponTransform.GetComponent<Weapon>().isCollidingWithOtherWeapon)
             {
-                //TODO: Fix test so removed correctly
-                //continue;
+                continue;
             }
+
+            yield return generationStepDelayTime;
 
             //if weapon uses mirror symmetry, do the same check for mirror weapon
             if (mirrorWeaponTransform != null)
@@ -850,42 +935,36 @@ public class GeneratorScript : MonoBehaviour
 
                 mirrorWeaponTransform.position = new Vector3(mirrorXSeed / 100.0f, ySeed / 100.0f, -1f) + bossObj.transform.position;
 
-                if (!Physics2D.Raycast(mirrorWeaponTransform.position, mirrorWeaponTransform.forward, 1000, bossSpriteLayer) && !foundPosition)
+                if (!Physics2D.Raycast(mirrorWeaponTransform.position, mirrorWeaponTransform.forward, 1000, bossSpriteLayer) && !weaponPositionFound)
                 {
                     continue;
                 }
 
-                if (mirrorWeaponTransform.GetComponent<Weapon>().CheckIfCollidingWithOtherWeapons())
+                yield return waitFrame;
+
+                if (mirrorWeaponTransform.GetComponent<Weapon>().isCollidingWithOtherWeapon)
                 {
-                    //TODO: Fix test so removed correctly
-                    //continue;
-                }
+                    continue;
+                }           
             }
 
-            //foundPosition = true; --unneeded because method is exited anyway
-            return true;
-        } while (!foundPosition);
+            weaponPositionFound = true;
+        } while (!weaponPositionFound);
 
-        return false;
+        weaponPositioningProcessComplete = true;
     }
 
     /// <summary>
     /// Randomly select the weapons that will be attached to the boss
     /// </summary>
-    private void GenerateWeapons()
+    private IEnumerator GenerateWeapons()
     {
-        //clear previous weapons
-        Weapon[] weapons = bossObj.GetComponentsInChildren<Weapon>();
-        for (int i = 0; i < weapons.Length; i++)
-        {
-            Destroy(weapons[i].gameObject);
-        }
-
         //make sure there is a complexity curve
         if (bossType.weaponQuantityCurve.length == 0)
         {
             Debug.Log("ERROR: Missing weapon quantity curve");
-            return;
+            weaponGenerationComplete = true;
+            yield break;
         }
 
         //generate number of weapons
@@ -961,11 +1040,25 @@ public class GeneratorScript : MonoBehaviour
                 mirrorWeaponComponent.currentOrientationMode = orientationMode;
             }
 
+            weaponPositioningProcessComplete = false;
+            weaponPositionFound = false;
             //position weapon on boss sprite 
-            bool weaponPlaced = (mirrorWeapon == null) ? GenerateWeaponPosition(weaponType, weapon.transform) : GenerateWeaponPosition(weaponType, weapon.transform, mirrorWeapon.transform);
+            if (mirrorWeapon == null)
+            {
+                StartCoroutine(GenerateWeaponPosition(weaponType, weapon.transform));
+            }
+            else
+            {
+                StartCoroutine(GenerateWeaponPosition(weaponType, weapon.transform, mirrorWeapon.transform));
+            }
+
+            while (!weaponPositioningProcessComplete)
+            {
+                yield return null;
+            }
 
             //if weapon could not find a position, destroy weapons
-            if (!weaponPlaced)
+            if (!weaponPositionFound)
             {
                 Destroy(weapon);
                 Destroy(mirrorWeapon);
@@ -1012,6 +1105,10 @@ public class GeneratorScript : MonoBehaviour
                     }
                     break;
             }
+
+            yield return generationStepDelayTime;
         }
+
+        weaponGenerationComplete = true;
     }
 }

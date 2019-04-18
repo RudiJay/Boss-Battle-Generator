@@ -463,7 +463,7 @@ public class GeneratorScript : MonoBehaviour
     /// </summary>
     private void GenerateColorScheme()
     {
-        colorQuantity = rand.Next(1, 5);
+        colorQuantity = rand.Next(2, 5);
         colorPalette = new Color[colorQuantity];
 
         float hue = rand.Next(0, 100) / 100.0f;

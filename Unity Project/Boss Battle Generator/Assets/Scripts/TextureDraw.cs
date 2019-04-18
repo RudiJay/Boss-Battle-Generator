@@ -8,6 +8,18 @@ using UnityEngine;
 
 public static class TextureDraw
 {
+    public static Color MultiplyBlendPixel(Color col1, Color col2)
+    {
+        Color finalCol;
+
+        finalCol.r = (col1.r * col2.r) / 2.0f;
+        finalCol.g = (col1.g * col2.g) / 2.0f;
+        finalCol.b = (col1.b * col2.b) / 2.0f;
+        finalCol.a = Mathf.Min(col1.a, col2.a);
+
+        return finalCol;
+    }
+
     /// <summary>
     /// Makes every pixel in the texture transparent
     /// </summary>

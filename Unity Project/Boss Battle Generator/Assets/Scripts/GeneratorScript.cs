@@ -209,6 +209,9 @@ public class GeneratorScript : MonoBehaviour
     private int colorQuantity = 3;
     private Color[] colorPalette;
     [SerializeField]
+    [Range(0, 1)]
+    private float weaponBrightnessTintAmount;
+    [SerializeField]
     private bool useColorSchemeForBackground = false;
 
     private bool weaponGenerationComplete = false;
@@ -401,7 +404,7 @@ public class GeneratorScript : MonoBehaviour
 
         yield return null;
 
-        GenerateColorScheme();
+        GenerateColorPalette();
 
         GenerateBackground();
 
@@ -459,18 +462,23 @@ public class GeneratorScript : MonoBehaviour
     }
 
     /// <summary>
-    /// Randomly generates the color scheme that will be used for the boss
+    /// Randomly generates the color palette that will be used for the boss
     /// </summary>
-    private void GenerateColorScheme()
+    private void GenerateColorPalette()
     {
         colorQuantity = rand.Next(2, 5);
-        colorPalette = new Color[colorQuantity];
+        colorPalette = new Color[colorQuantity + 1]; //plus 1 for weapon color
 
         float hue = rand.Next(0, 100) / 100.0f;
         float saturation = rand.Next(0, 100) / 100.0f;
         float brightness = rand.Next(0, 100) / 100.0f;
 
         colorPalette[0] = Color.HSVToRGB(hue, saturation, brightness);
+
+        //weapon color is final index of color palette and a darker version of the first color
+        float weaponBrightness = brightness;
+        weaponBrightness = (weaponBrightness > weaponBrightnessTintAmount) ? weaponBrightnessTintAmount : 0.0f;
+        colorPalette[colorQuantity] = Color.HSVToRGB(hue, saturation, weaponBrightness);
 
         GenerateRandomSymmetryScore();
         bool useComplementaryColors = symmetryValue / (float)symmetryMax > nonComplementaryColorChance;
@@ -547,10 +555,10 @@ public class GeneratorScript : MonoBehaviour
     }
 
     /// <summary>
-    /// Takes in the sprite shape generated and applies the color scheme to it
+    /// Takes in the current boss sprite texture generated and applies the color scheme to it
     /// </summary>
-    /// <param name="texture"></param>
-    private void PaintSpriteColor(Texture2D texture)
+    /// <param name="bossTexture"></param>
+    private void PaintBossSpriteColor(Texture2D bossTexture)
     {
         float scaleX = rand.Next(perlinColorScaleMin, perlinColorScaleMax);
         float scaleY = rand.Next(perlinColorScaleMin, perlinColorScaleMax);
@@ -563,26 +571,50 @@ public class GeneratorScript : MonoBehaviour
         }
 
         float noiseColorBoundaryWidth = 1 / (float)colorQuantity;
-        for (int y = 0; y < texture.height; y++)
+        for (int y = 0; y < bossTexture.height; y++)
         {
-            for (int x = 0; x < texture.width; x++)
+            for (int x = 0; x < bossTexture.width; x++)
             {
-                if (texture.GetPixel(x, y) == Color.white)
+                if (bossTexture.GetPixel(x, y) == Color.white)
                 {
                     float xCoord = x;
                     float yCoord = y;
 
                     if (symmetricColor)
                     {
-                        xCoord = Mathf.Abs(x - texture.width / 2.0f);
+                        xCoord = Mathf.Abs(x - bossTexture.width / 2.0f);
                     }
 
                     float noise = Mathf.PerlinNoise(xCoord / scaleX, yCoord / scaleY);
 
-                    texture.SetPixel(x, y, colorPalette[(int)(noise / noiseColorBoundaryWidth)]);
+                    bossTexture.SetPixel(x, y, colorPalette[(int)(noise / noiseColorBoundaryWidth)]);
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// takes in a weapon texture, applies multiply blend of weapon color to a copy and returns it
+    /// </summary>
+    /// <param name="inWeaponTexture">the weapon texture to copy</param>
+    /// <returns>the painted copy of the texture</returns>
+    private Texture2D PaintWeaponTextureColor(Texture2D inWeaponTexture)
+    {
+        Texture2D outTexture = new Texture2D(inWeaponTexture.width, inWeaponTexture.height);
+
+        for (int y = 0; y < inWeaponTexture.height; y++)
+        {
+            for (int x = 0; x < inWeaponTexture.width; x++)
+            {
+                Color pixelColor = inWeaponTexture.GetPixel(x, y);
+
+                outTexture.SetPixel(x, y, TextureDraw.MultiplyBlendPixel(pixelColor, colorPalette[colorQuantity]));
+            }
+        }
+
+        outTexture.Apply();
+
+        return outTexture;
     }
 
     /// <summary>
@@ -746,7 +778,7 @@ public class GeneratorScript : MonoBehaviour
                 yield return generationStepDelayTime;
             }
 
-            PaintSpriteColor(texture);
+            PaintBossSpriteColor(texture);
 
             texture.Apply();
 
@@ -1023,13 +1055,15 @@ public class GeneratorScript : MonoBehaviour
             float mirrorSymmetryMin = (asymmetric + centreX) / symmetryProbabilitiesTotal;
             float mirrorSymmetryMax = 1.0f;
 
+            SpriteRenderer mirrorsr = null;
+
             if (symmetryValue >= mirrorSymmetryMin * symmetryMax && symmetryValue < mirrorSymmetryMax * symmetryMax)
             {
                 mirrorWeapon = Instantiate(WeaponPrefab, bossObj.transform);
                 mirrorWeaponComponent = mirrorWeapon.GetComponent<Weapon>();
 
                 //set up weapon sprite
-                SpriteRenderer mirrorsr = mirrorWeapon.GetComponentInChildren<SpriteRenderer>();
+                mirrorsr = mirrorWeapon.GetComponentInChildren<SpriteRenderer>();
                 mirrorsr.sprite = weaponType.sprite;
                 //set weapon size
                 mirrorWeapon.transform.localScale = new Vector3(weaponType.size, weaponType.size);
@@ -1063,6 +1097,17 @@ public class GeneratorScript : MonoBehaviour
                 Destroy(weapon);
                 Destroy(mirrorWeapon);
                 continue;
+            }
+
+            //color weapon sprite using generated color palette
+            Texture2D texture = PaintWeaponTextureColor(sr.sprite.texture);
+            Sprite weaponSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            sr.sprite = weaponSprite;
+
+            //color mirrored weapon sprite
+            if (mirrorsr != null)
+            {
+                mirrorsr.sprite = weaponSprite;
             }
 
             //set weapon rotation according to orientationMode

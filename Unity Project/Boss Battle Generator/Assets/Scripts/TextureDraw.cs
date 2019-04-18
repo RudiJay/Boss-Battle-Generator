@@ -11,17 +11,17 @@ public static class TextureDraw
     /// <summary>
     /// Gets result of a multiply blend of the colors of two pixels
     /// </summary>
-    /// <param name="col1">First pixel to multiply</param>
-    /// <param name="col2">Second pixel to multiply</param>
+    /// <param name="shapeCol">First pixel to blend</param>
+    /// <param name="overlayCol">Second pixel blend onto shape</param>
     /// <returns>The blended result color</returns>
-    public static Color MultiplyBlendPixel(Color col1, Color col2)
+    public static Color MultiplyBlendPixel(Color shapeCol, Color overlayCol)
     {
         Color finalCol;
 
-        finalCol.r = (col1.r * col2.r) / 2.0f;
-        finalCol.g = (col1.g * col2.g) / 2.0f;
-        finalCol.b = (col1.b * col2.b) / 2.0f;
-        finalCol.a = Mathf.Min(col1.a, col2.a);
+        finalCol.r = (shapeCol.r * overlayCol.r) / 2.0f;
+        finalCol.g = (shapeCol.g * overlayCol.g) / 2.0f;
+        finalCol.b = (shapeCol.b * overlayCol.b) / 2.0f;
+        finalCol.a = shapeCol.a;
 
         return finalCol;
     }
@@ -29,16 +29,63 @@ public static class TextureDraw
     /// <summary>
     /// Makes every pixel in the texture transparent
     /// </summary>
-    /// <param name="texture"></param>
-    public static void Clear(Texture2D texture)
+    /// <param name="ioTexture">The texture to clear</param>
+    public static void Clear(Texture2D ioTexture)
     {
-        for (int y = 0; y < texture.height; y++)
+        for (int y = 0; y < ioTexture.height; y++)
         {
-            for (int x = 0; x < texture.width; x++)
+            for (int x = 0; x < ioTexture.width; x++)
             {
-                texture.SetPixel(x, y, Color.clear);
+                ioTexture.SetPixel(x, y, Color.clear);
             }
         }
+    }
+
+    /// <summary>
+    /// Adds a shadow outline to the non-transparent parts of a texture
+    /// </summary>
+    /// <param name="inTexture">the texture read into the outlined output</param>
+    /// <param name="outlineColor">the color of the outline</param>
+    /// <param name="outlineWidth">the width in pixels of the outline</param>
+    /// <returns>the outlined texture</returns>
+    public static Texture2D OutlineTexture(Texture2D inTexture, Color outlineColor, int outlineWidth)
+    {
+        Texture2D outTexture = new Texture2D(inTexture.width, inTexture.height);
+
+        Clear(outTexture);
+
+        for (int y = 1; y < inTexture.height - 1; y++)
+        {
+            for (int x = 1; x < inTexture.width - 1; x++)
+            {
+                if (inTexture.GetPixel(x, y) != Color.clear)
+                {
+                    for (int y2 = -outlineWidth; y2 <= outlineWidth; y2++)
+                    {
+                        for (int x2 = -outlineWidth; x2 <= outlineWidth; x2++)
+                        {
+                            outTexture.SetPixel(x + x2, y + y2, outlineColor);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int y = 0; y < inTexture.height; y++)
+        {
+            for (int x = 0; x < inTexture.width; x++)
+            {
+                Color pixelCol = inTexture.GetPixel(x, y);
+                if (pixelCol != Color.clear)
+                {
+                    outTexture.SetPixel(x, y, pixelCol);
+                }
+            }
+        }
+
+        outTexture.Apply();
+
+        return outTexture;
     }
 
     /// <summary>

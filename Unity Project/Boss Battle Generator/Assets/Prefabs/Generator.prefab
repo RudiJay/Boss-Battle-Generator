@@ -700,6 +700,8 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.5
     MirrorProbability: 0.5
+  bossSpriteOutlineWidth: 2
+  weaponSpriteOutlineWidth: 1
   weaponBrightnessTintAmount: 0.3
   useColorSchemeForBackground: 0
   weaponQuantity: 2

@@ -209,8 +209,10 @@ public class GeneratorScript : MonoBehaviour
     private int colorQuantity = 3;
     private Color[] colorPalette;
     [SerializeField]
+    private int bossSpriteOutlineWidth = 1, weaponSpriteOutlineWidth = 1;
+    [SerializeField]
     [Range(0, 1)]
-    private float weaponBrightnessTintAmount;
+    private float weaponBrightnessTintAmount = 0.25f;
     [SerializeField]
     private bool useColorSchemeForBackground = false;
 
@@ -591,6 +593,8 @@ public class GeneratorScript : MonoBehaviour
                 }
             }
         }
+
+        bossTexture.Apply();
     }
 
     /// <summary>
@@ -608,7 +612,10 @@ public class GeneratorScript : MonoBehaviour
             {
                 Color pixelColor = inWeaponTexture.GetPixel(x, y);
 
-                outTexture.SetPixel(x, y, TextureDraw.MultiplyBlendPixel(pixelColor, colorPalette[colorQuantity]));
+                if (pixelColor != Color.clear)
+                {
+                    outTexture.SetPixel(x, y, TextureDraw.MultiplyBlendPixel(pixelColor, colorPalette[colorQuantity]));
+                }
             }
         }
 
@@ -779,10 +786,18 @@ public class GeneratorScript : MonoBehaviour
             }
 
             PaintBossSpriteColor(texture);
-
-            texture.Apply();
-
             bossSprite.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+
+            yield return generationStepDelayTime;
+
+            Texture2D outlineTexture = texture;
+            outlineTexture = TextureDraw.OutlineTexture(texture, Color.black, bossSpriteOutlineWidth);
+            bossSprite.sprite = Sprite.Create(outlineTexture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+
+            yield return generationStepDelayTime;
+
+            outlineTexture = TextureDraw.OutlineTexture(outlineTexture, Color.white, bossSpriteOutlineWidth);
+            bossSprite.sprite = Sprite.Create(outlineTexture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
 
             yield return generationStepDelayTime;
 
@@ -1103,6 +1118,16 @@ public class GeneratorScript : MonoBehaviour
             Texture2D texture = PaintWeaponTextureColor(sr.sprite.texture);
             Sprite weaponSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
             sr.sprite = weaponSprite;
+
+            yield return generationStepDelayTime;
+
+            //add texture outlines
+            texture = TextureDraw.OutlineTexture(texture, Color.black, weaponSpriteOutlineWidth);
+            texture = TextureDraw.OutlineTexture(texture, Color.white, weaponSpriteOutlineWidth);
+            weaponSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            sr.sprite = weaponSprite;
+
+            yield return generationStepDelayTime;
 
             //color mirrored weapon sprite
             if (mirrorsr != null)

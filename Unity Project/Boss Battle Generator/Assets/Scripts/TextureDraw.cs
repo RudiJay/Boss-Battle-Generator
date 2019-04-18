@@ -8,6 +8,12 @@ using UnityEngine;
 
 public static class TextureDraw
 {
+    /// <summary>
+    /// Gets result of a multiply blend of the colors of two pixels
+    /// </summary>
+    /// <param name="col1">First pixel to multiply</param>
+    /// <param name="col2">Second pixel to multiply</param>
+    /// <returns>The blended result color</returns>
     public static Color MultiplyBlendPixel(Color col1, Color col2)
     {
         Color finalCol;

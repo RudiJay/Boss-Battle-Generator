@@ -54,11 +54,11 @@ public static class TextureDraw
 
         Clear(outTexture);
 
-        for (int y = 1; y < inTexture.height - 1; y++)
+        for (int y = outlineWidth; y < inTexture.height - outlineWidth; y++)
         {
-            for (int x = 1; x < inTexture.width - 1; x++)
+            for (int x = outlineWidth; x < inTexture.width - outlineWidth; x++)
             {
-                if (inTexture.GetPixel(x, y) != Color.clear)
+                if (inTexture.GetPixel(x, y).a != 0.0f)
                 {
                     for (int y2 = -outlineWidth; y2 <= outlineWidth; y2++)
                     {
@@ -76,7 +76,7 @@ public static class TextureDraw
             for (int x = 0; x < inTexture.width; x++)
             {
                 Color pixelCol = inTexture.GetPixel(x, y);
-                if (pixelCol != Color.clear)
+                if (pixelCol.a != 0.0f)
                 {
                     outTexture.SetPixel(x, y, pixelCol);
                 }

@@ -701,8 +701,8 @@ MonoBehaviour:
     CentreXAndNormaliseRotProbability: 0.5
     MirrorProbability: 0.5
   bossSpriteOutlineWidth: 2
-  weaponSpriteOutlineWidth: 1
-  weaponBrightnessTintAmount: 0.3
+  weaponSpriteOutlineWidth: 2
+  weaponBrightnessTintAmount: 0.25
   useColorSchemeForBackground: 0
   weaponQuantity: 2
   WeaponPrefab: {fileID: 6663881351590808801, guid: 907643923dc0e2644b1d692852f2fed4,

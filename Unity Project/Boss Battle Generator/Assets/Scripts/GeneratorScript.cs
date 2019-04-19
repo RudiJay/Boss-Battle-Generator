@@ -577,7 +577,7 @@ public class GeneratorScript : MonoBehaviour
         {
             for (int x = 0; x < bossTexture.width; x++)
             {
-                if (bossTexture.GetPixel(x, y) == Color.white)
+                if (bossTexture.GetPixel(x, y).a != 0.0f)
                 {
                     float xCoord = x;
                     float yCoord = y;
@@ -606,13 +606,15 @@ public class GeneratorScript : MonoBehaviour
     {
         Texture2D outTexture = new Texture2D(inWeaponTexture.width, inWeaponTexture.height);
 
+        TextureDraw.Clear(outTexture);
+
         for (int y = 0; y < inWeaponTexture.height; y++)
         {
             for (int x = 0; x < inWeaponTexture.width; x++)
             {
                 Color pixelColor = inWeaponTexture.GetPixel(x, y);
 
-                if (pixelColor != Color.clear)
+                if (pixelColor.a == 1.0f)
                 {
                     outTexture.SetPixel(x, y, TextureDraw.MultiplyBlendPixel(pixelColor, colorPalette[colorQuantity]));
                 }
@@ -785,17 +787,20 @@ public class GeneratorScript : MonoBehaviour
                 yield return generationStepDelayTime;
             }
 
+            //paint boss texture
             PaintBossSpriteColor(texture);
             bossSprite.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
 
             yield return generationStepDelayTime;
 
+            //add black outline to sprite texture
             Texture2D outlineTexture = texture;
             outlineTexture = TextureDraw.OutlineTexture(texture, Color.black, bossSpriteOutlineWidth);
             bossSprite.sprite = Sprite.Create(outlineTexture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
 
             yield return generationStepDelayTime;
 
+            //add white outline to sprite texture
             outlineTexture = TextureDraw.OutlineTexture(outlineTexture, Color.white, bossSpriteOutlineWidth);
             bossSprite.sprite = Sprite.Create(outlineTexture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
 
@@ -1115,16 +1120,21 @@ public class GeneratorScript : MonoBehaviour
             }
 
             //color weapon sprite using generated color palette
-            Texture2D texture = PaintWeaponTextureColor(sr.sprite.texture);
-            Sprite weaponSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            Texture2D weaponTexture = PaintWeaponTextureColor(sr.sprite.texture);
+            Sprite weaponSprite = Sprite.Create(weaponTexture, new Rect(0, 0, weaponTexture.width, weaponTexture.height), new Vector2(0.5f, 0.5f));
             sr.sprite = weaponSprite;
 
             yield return generationStepDelayTime;
 
             //add texture outlines
-            texture = TextureDraw.OutlineTexture(texture, Color.black, weaponSpriteOutlineWidth);
-            texture = TextureDraw.OutlineTexture(texture, Color.white, weaponSpriteOutlineWidth);
-            weaponSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            weaponTexture = TextureDraw.OutlineTexture(weaponTexture, Color.black, weaponSpriteOutlineWidth);
+            weaponSprite = Sprite.Create(weaponTexture, new Rect(0, 0, weaponTexture.width, weaponTexture.height), new Vector2(0.5f, 0.5f));
+            sr.sprite = weaponSprite;
+
+            yield return generationStepDelayTime;
+
+            weaponTexture = TextureDraw.OutlineTexture(weaponTexture, Color.white, weaponSpriteOutlineWidth);
+            weaponSprite = Sprite.Create(weaponTexture, new Rect(0, 0, weaponTexture.width, weaponTexture.height), new Vector2(0.5f, 0.5f));
             sr.sprite = weaponSprite;
 
             yield return generationStepDelayTime;

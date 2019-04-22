@@ -229,8 +229,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generationStepDelay: 0.1
+  bossDemonstrationDelay: 2
   autoGeneratorDelay: 5
-  DebugShowSpriteBorder: 0
   seed: 0
   maxBossWidth: 625
   maxBossHeight: 625
@@ -753,3 +753,4 @@ MonoBehaviour:
     AsymmetricProbability: 0.01
     CentreXProbability: 0.5
     MirrorProbability: 0.5
+  GeneratableAttacks: []

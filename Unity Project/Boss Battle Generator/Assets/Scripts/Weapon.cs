@@ -6,8 +6,10 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField]
     public WeaponOrientationMode currentOrientationMode { get; set; }
+
+    [SerializeField]
+    private GameObject projectilePrefab;
 
     public bool isCollidingWithOtherWeapon = false;
 
@@ -17,6 +19,11 @@ public class Weapon : MonoBehaviour
     public void SetWeaponRotation(float rot)
     {
         transform.rotation = Quaternion.Euler(0, 0, rot);
+    }
+
+    public void DemonstrateAttack()
+    {
+        Instantiate(projectilePrefab, transform);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

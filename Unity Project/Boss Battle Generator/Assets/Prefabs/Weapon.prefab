@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff993a35852193f48b20cea4bc82663e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 7902893971006019126, guid: 49244084617b64148bde0b9b6d35b199,
+    type: 3}
   isCollidingWithOtherWeapon: 0
   weaponSpriteLayer:
     serializedVersion: 2

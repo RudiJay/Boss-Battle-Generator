@@ -24,13 +24,19 @@ public class GeneratorScript : MonoBehaviour
     private bool generationInProgress = false;
     private WaitForSeconds generationStepDelayTime;
 
+    private IEnumerator bossDemonstration;
+    private bool bossDemonstrationInProgress = false;
+    private WaitForSeconds bossDemonstrationDelayTime;
+
     private IEnumerator autoGenerator;
     private bool isAutoGenerating = false;
-    WaitForSeconds autoGenerateWaitForSeconds;
+    private WaitForSeconds autoGenerateWaitForSeconds;
 
     [Header("Interface")]
     [SerializeField]
     private float generationStepDelay = 0.5f;
+    [SerializeField]
+    private float bossDemonstrationDelay = 0.5f;
     [SerializeField]
     private float autoGeneratorDelay = 2.0f;
 
@@ -107,6 +113,9 @@ public class GeneratorScript : MonoBehaviour
         rand = new System.Random();
 
         generationStepDelayTime = new WaitForSeconds(generationStepDelay);
+
+        bossDemonstrationDelayTime = new WaitForSeconds(bossDemonstrationDelay);
+        bossDemonstration = DemonstrateBossFightLoop();
 
         autoGenerateWaitForSeconds = new WaitForSeconds(autoGeneratorDelay);
         autoGenerator = AutoGenerateBossFights();
@@ -231,6 +240,8 @@ public class GeneratorScript : MonoBehaviour
     {
         if (bossSprite && !generationInProgress)
         {
+            StopBossDemonstration();
+
             bossGeneration = GenerationProcess(generateNewSeed);
 
             StartCoroutine(bossGeneration);
@@ -244,12 +255,19 @@ public class GeneratorScript : MonoBehaviour
         generationInProgress = false;
     }
 
+    private void StopBossDemonstration()
+    {
+        StopCoroutine(bossDemonstration);
+
+        bossDemonstrationInProgress = false;
+    }
+
     private IEnumerator GenerationProcess(bool generateNewSeed)
     {
+        generationInProgress = true;
+
         spriteGenerationComplete = false;
         weaponGenerationComplete = false;
-
-        generationInProgress = true;
 
         GeneratorUI.Instance.ToggleGeneratingInProgressLabel(true);
 
@@ -296,7 +314,26 @@ public class GeneratorScript : MonoBehaviour
 
         GeneratorUI.Instance.ToggleGeneratingInProgressLabel(false);
 
-        StopBossGeneration();
+        StartCoroutine(bossDemonstration);
+
+        generationInProgress = false;
+    }
+
+    private IEnumerator DemonstrateBossFightLoop()
+    {
+        bossDemonstrationInProgress = true;
+
+        while (true)
+        {
+            Weapon[] weapons = bossObj.GetComponentsInChildren<Weapon>();
+
+            for (int i = 0; i < weapons.Length; i++)
+            {
+                weapons[i].DemonstrateAttack();
+            }
+
+            yield return bossDemonstrationDelayTime;
+        }
     }
 
     /// <summary>

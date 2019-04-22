@@ -33,8 +33,6 @@ public class GeneratorScript : MonoBehaviour
     private float generationStepDelay = 0.5f;
     [SerializeField]
     private float autoGeneratorDelay = 2.0f;
-    [SerializeField][Tooltip("CAUTION: do not use unless testing sprite creation")]
-    private bool DebugShowSpriteBorder = false;
 
     
     [Header("Generation Variables")]
@@ -506,23 +504,8 @@ public class GeneratorScript : MonoBehaviour
             Texture2D texture = new Texture2D(textureWidth, textureHeight, TextureFormat.ARGB32, false);
             texture.wrapMode = TextureWrapMode.Clamp;
 
-            //whether to clear out a the space the sprite can occupy, leaving the border around it
-            //or just clear out the whole background
-            //CAUTION: this border is included in polygon collider generated later on, so do not use unless debugging sprite creation
-            if (DebugShowSpriteBorder)
-            {
-                for (int y = yOffset; y < maxBossHeight + yOffset; y++)
-                {
-                    for (int x = xOffset; x < maxBossWidth + xOffset; x++)
-                    {
-                        texture.SetPixel(x, y, Color.clear);
-                    }
-                }
-            }
-            else
-            {
-                TextureDraw.Clear(texture);
-            }
+            //Clear texture
+            TextureDraw.Clear(texture);
 
             //make sure there is a complexity curve
             if (bossType.spriteComplexityCurve.length == 0)

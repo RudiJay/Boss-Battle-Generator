@@ -721,6 +721,7 @@ MonoBehaviour:
     size: 0.6
     availableWeaponOrientations: 31
     bossTypesWeaponWieldableBy: 30
+    generateWeaponColor: 1
     canWeaponFloat: 0
     AsymmetricProbability: 0.01
     CentreXProbability: 0.5
@@ -729,6 +730,7 @@ MonoBehaviour:
     size: 1
     availableWeaponOrientations: -1
     bossTypesWeaponWieldableBy: 52
+    generateWeaponColor: 1
     canWeaponFloat: 0
     AsymmetricProbability: 0.5
     CentreXProbability: 0.75
@@ -737,6 +739,7 @@ MonoBehaviour:
     size: 0.9
     availableWeaponOrientations: 31
     bossTypesWeaponWieldableBy: 30
+    generateWeaponColor: 1
     canWeaponFloat: 0
     AsymmetricProbability: 0.01
     CentreXProbability: 0.35
@@ -745,6 +748,7 @@ MonoBehaviour:
     size: 0.9
     availableWeaponOrientations: 47
     bossTypesWeaponWieldableBy: 32
+    generateWeaponColor: 0
     canWeaponFloat: 0
     AsymmetricProbability: 0.01
     CentreXProbability: 0.5

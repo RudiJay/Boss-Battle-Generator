@@ -5,140 +5,6 @@
 using System.Collections;
 using UnityEngine;
 
-/// <summary>
-/// Set up enum flags attribute
-/// </summary>
-public class EnumFlagsAttribute : PropertyAttribute
-{
-    public EnumFlagsAttribute() { }
-}
-
-/// <summary>
-/// Names of each boss type
-/// </summary>
-public enum BossTypeName
-{
-    Random,
-    Rocketship,
-    FlyingSaucer,
-    Starfighter,
-    SpaceBattleship,
-    AstroMonster
-}
-
-/// <summary>
-/// Names of each basic shape sprite type
-/// </summary>
-public enum ShapeTypeName
-{
-    CIRCLE,
-    RING,
-    OVAL,
-    HALO,
-    SEMICIRCLE,
-    SEMIOVAL,
-    SQUARE,
-    RECT,
-    DIAMOND,
-    RHOMBUS,
-    EQUITRI,
-    ISOTRI,
-    RANGLETRI,
-    SCALENETRI,
-    PENT,
-    IPENT,
-    HEX,
-    IHEX,
-    FIVESTAR,
-    SIXSTAR
-}
-
-/// <summary>
-/// Bitmask enum of each weapon orientation type
-/// </summary>
-[System.Flags]
-public enum WeaponOrientationMode
-{
-    FIXEDFORWARD,
-    FIXEDSIDEWAYS,
-    FIXEDOTHERFORWARDS,
-    FIXEDOTHER,
-    ROTATABLE,
-    NONORIENTED
-}
-
-/// <summary>
-/// Serialisable struct containing variables for each boss type
-/// </summary>
-[System.Serializable]
-public struct BossType
-{
-    public BossTypeName typeName;
-    [Space(10)]
-    public AnimationCurve spriteComplexityCurve;
-    [Space(10)]
-    public AnimationCurve weaponQuantityCurve;
-    [Space(10)]
-    [Range(0, 1)]
-    public float[] shapeProbability;
-
-    [Header("Symmetry Multipliers")][Space(5)]
-    public float asymmetricProbabilityMultiplier;
-    public float normaliseRotProbabilityMultiplier;
-    public float centreXProbabilityMultiplier;
-    public float mirrorProbabilityMultiplier;
-    
-}
-
-/// <summary>
-/// Serialisable struct containing variables for each basic shape sprite
-/// </summary>
-[System.Serializable]
-public struct ShapeType
-{
-    public ShapeTypeName shapeName;
-
-    public Sprite sprite;
-
-    public bool twoDimensionSizeGeneration;
-
-    public bool generateRotation;
-
-    public float nearestSymmetricalRot;
-
-    [Header("Symmetry")]
-    [Space(5)]
-    public float AsymmetricProbability;
-    public float NormaliseRotProbability;
-    public float CentreXAndNormaliseRotProbability;
-    public float MirrorProbability;
-}
-
-/// <summary>
-/// Serialisable struct containing variables for each weapon type
-/// </summary>
-[System.Serializable]
-public struct WeaponType
-{
-    public Sprite sprite;
-
-    public float size;
-
-    [EnumFlags]
-    public WeaponOrientationMode availableWeaponOrientations;
-
-    [EnumFlags]
-    public BossTypeName bossTypesWeaponWieldableBy;
-
-    public bool canWeaponFloat;
-
-    [Header("Symmetry")]
-    [Space(5)]
-    public float AsymmetricProbability;
-    public float CentreXProbability;
-    public float MirrorProbability;
-}
-
 public class GeneratorScript : MonoBehaviour
 {
     public static GeneratorScript Instance;
@@ -1035,7 +901,7 @@ public class GeneratorScript : MonoBehaviour
             {
                 continue;
             }
-            WeaponType weaponType = GeneratableWeapons[weaponTypeIndex];            
+            WeaponType weaponType = GeneratableWeapons[weaponTypeIndex];
 
             //create weapon gameobject
             GameObject weapon = Instantiate(WeaponPrefab, bossObj.transform);
@@ -1119,12 +985,20 @@ public class GeneratorScript : MonoBehaviour
                 continue;
             }
 
-            //color weapon sprite using generated color palette
-            Texture2D weaponTexture = PaintWeaponTextureColor(sr.sprite.texture);
-            Sprite weaponSprite = Sprite.Create(weaponTexture, new Rect(0, 0, weaponTexture.width, weaponTexture.height), new Vector2(0.5f, 0.5f));
-            sr.sprite = weaponSprite;
+            //appearance step
+            Sprite weaponSprite = sr.sprite;
+            Texture2D weaponTexture = weaponSprite.texture;
 
-            yield return generationStepDelayTime;
+            //color weapon sprite using generated color palette if sprite is to be recoloured
+            if (weaponType.generateWeaponColor == true)
+            {
+                weaponTexture = PaintWeaponTextureColor(weaponTexture);
+
+                weaponSprite = Sprite.Create(weaponTexture, new Rect(0, 0, weaponTexture.width, weaponTexture.height), new Vector2(0.5f, 0.5f));
+                sr.sprite = weaponSprite;
+
+                yield return generationStepDelayTime;
+            }
 
             //add texture outlines
             weaponTexture = TextureDraw.OutlineTexture(weaponTexture, Color.black, weaponSpriteOutlineWidth);

@@ -745,7 +745,7 @@ public class GeneratorScript : MonoBehaviour
         bossWeapons.Clear();
     }
 
-    private bool GenerateWeaponType(out WeaponType weaponType)
+    private bool GenerateWeaponType(ref WeaponType weaponType)
     {
         bool weaponPicked = false;
         int count = 0;
@@ -774,7 +774,7 @@ public class GeneratorScript : MonoBehaviour
         return weaponPicked;
     }
 
-    private bool GenerateWeaponOrientationMode(WeaponType weaponType, out WeaponOrientationMode orientationMode)
+    private bool GenerateWeaponOrientationMode(WeaponType weaponType, ref WeaponOrientationMode orientationMode)
     {
         bool orientationPicked = false;
         int weaponOrientationValue;
@@ -934,8 +934,8 @@ public class GeneratorScript : MonoBehaviour
             GenerateRandomSymmetryScore(); //symmetry score must be calculated again for each new weapon so they don't all do the same thing.
 
             //pick random weapon type
-            WeaponType weaponType;
-            bool typeFound = GenerateWeaponType(out weaponType);
+            WeaponType weaponType = new WeaponType();
+            bool typeFound = GenerateWeaponType(ref weaponType);
 
             //skip this weapon if a weapon can't be found
             if (!typeFound)
@@ -957,8 +957,8 @@ public class GeneratorScript : MonoBehaviour
             sr.gameObject.GetComponent<PolygonCollider2D>().isTrigger = true;
 
             //set weapon orientation mode
-            WeaponOrientationMode orientationMode;
-            bool orientationModeFound = GenerateWeaponOrientationMode(weaponType, out orientationMode);
+            WeaponOrientationMode orientationMode = new WeaponOrientationMode();
+            bool orientationModeFound = GenerateWeaponOrientationMode(weaponType, ref orientationMode);
 
             //if setting orientation mode failed, destroy weapon and move on
             if (!orientationModeFound)

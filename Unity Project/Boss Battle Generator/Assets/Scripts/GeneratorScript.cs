@@ -745,28 +745,24 @@ public class GeneratorScript : MonoBehaviour
         bossWeapons.Clear();
     }
 
-    private int GenerateWeaponTypeIndex()
+    private bool GenerateWeaponType(out WeaponType weaponType)
     {
-        WeaponType weaponType;
-
         bool weaponPicked = false;
         int count = 0;
-        int weaponTypeSeed;
+        int weaponTypeValue;
         int weaponTypeIndex;
-        int bossTypeMask;
+        int bossTypeMask = 1 << (int)bossType.typeName;
 
         do
         {
-            weaponTypeSeed = rand.Next(0, weaponTypeMax);
-            weaponTypeIndex = (int)(weaponTypeSeed / (float)weaponTypeMax * generatableWeapons.Length);
+            weaponTypeValue = rand.Next(0, weaponTypeMax);
+            weaponTypeIndex = (int)(weaponTypeValue / (float)weaponTypeMax * generatableWeapons.Length);
             weaponType = generatableWeapons[weaponTypeIndex];
-
-            bossTypeMask = 1 << (int)bossType.typeName;
 
             count++;
             if (((int)weaponType.bossTypesWeaponWieldableBy & bossTypeMask) == bossTypeMask)
             {
-                return weaponTypeIndex;
+                weaponPicked = true;
             }
             else if (count > maxWeaponTypeAttempts)
             {
@@ -775,23 +771,21 @@ public class GeneratorScript : MonoBehaviour
             }
         } while (!weaponPicked);
 
-        return -1;
+        return weaponPicked;
     }
 
-    private int GenerateWeaponOrientationModeIndex(WeaponType weaponType)
+    private bool GenerateWeaponOrientationMode(WeaponType weaponType, out WeaponOrientationMode orientationMode)
     {
-        WeaponOrientationMode orientationMode;
-
         bool orientationPicked = false;
-        int weaponOrientationSeed;
+        int weaponOrientationValue;
         int orientationIndex;
         int orientationMask;
         int count = 0;
 
         do
         {
-            weaponOrientationSeed = rand.Next(0, weaponOrientationMax);
-            orientationIndex = (int)(weaponOrientationSeed / (float)weaponOrientationMax * System.Enum.GetNames(typeof(WeaponOrientationMode)).Length);
+            weaponOrientationValue = rand.Next(0, weaponOrientationMax);
+            orientationIndex = (int)(weaponOrientationValue / (float)weaponOrientationMax * System.Enum.GetNames(typeof(WeaponOrientationMode)).Length);
             orientationMode = (WeaponOrientationMode)orientationIndex;
 
             orientationMask = 1 << (int)orientationMode;
@@ -810,16 +804,16 @@ public class GeneratorScript : MonoBehaviour
                 //if symmetry is centred, do not allow non symmetrical orientation modes
                 if (symmetryValue >= centreXMin * symmetryMax && symmetryValue < centreXMax * symmetryMax)
                 {
-                    if (orientationIndex != (int)WeaponOrientationMode.FIXEDSIDEWAYS &&
-                        orientationIndex != (int)WeaponOrientationMode.FIXEDOTHERFORWARDS &&
-                        orientationIndex != (int)WeaponOrientationMode.FIXEDOTHER)
+                    if (orientationMode != WeaponOrientationMode.FIXEDSIDEWAYS &&
+                        orientationMode != WeaponOrientationMode.FIXEDOTHERFORWARDS &&
+                        orientationMode != WeaponOrientationMode.FIXEDOTHER)
                     {
-                        return orientationIndex;
+                        orientationPicked = true;
                     }
                 }
                 else
                 {
-                    return orientationIndex;
+                    orientationPicked = true;
                 }
             }
             else if (count > maxWeaponOrientationAttempts)
@@ -829,7 +823,7 @@ public class GeneratorScript : MonoBehaviour
             }
         } while (!orientationPicked);
 
-        return -1;
+        return orientationPicked;
     }
 
     private IEnumerator GenerateWeaponPosition(WeaponType weaponType, Transform weaponTransform, Transform mirrorWeaponTransform = null)
@@ -940,14 +934,14 @@ public class GeneratorScript : MonoBehaviour
             GenerateRandomSymmetryScore(); //symmetry score must be calculated again for each new weapon so they don't all do the same thing.
 
             //pick random weapon type
-            int weaponTypeIndex = GenerateWeaponTypeIndex();
+            WeaponType weaponType;
+            bool typeFound = GenerateWeaponType(out weaponType);
 
             //skip this weapon if a weapon can't be found
-            if (weaponTypeIndex == -1)
+            if (!typeFound)
             {
                 continue;
             }
-            WeaponType weaponType = generatableWeapons[weaponTypeIndex];
 
             //create weapon gameobject
             GameObject weaponObj = Instantiate(weaponPrefab, bossObj.transform);
@@ -963,16 +957,16 @@ public class GeneratorScript : MonoBehaviour
             sr.gameObject.GetComponent<PolygonCollider2D>().isTrigger = true;
 
             //set weapon orientation mode
-            int orientationModeIndex = GenerateWeaponOrientationModeIndex(weaponType);
+            WeaponOrientationMode orientationMode;
+            bool orientationModeFound = GenerateWeaponOrientationMode(weaponType, out orientationMode);
 
             //if setting orientation mode failed, destroy weapon and move on
-            if (orientationModeIndex == -1)
+            if (!orientationModeFound)
             {
                 Destroy(weaponObj);
                 continue;
             }
-            WeaponOrientationMode orientationMode = (WeaponOrientationMode)orientationModeIndex;
-            //Debug.Log(orientationMode);
+            //set up orientation mode of weapon
             weapon.currentOrientationMode = orientationMode;
 
             //check symmetry score and if weapon should use mirror symmetry instantiate new weapon object

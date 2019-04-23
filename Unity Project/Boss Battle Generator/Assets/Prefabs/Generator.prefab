@@ -229,7 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generationStepDelay: 0.1
-  bossDemonstrationDelay: 2
+  bossDemonstrationDelay: 1
   autoGeneratorDelay: 5
   seed: 0
   maxBossWidth: 625
@@ -237,8 +237,6 @@ MonoBehaviour:
   shapeSizeLimiter: 0.7
   weaponXLimit: 3
   weaponYLimit: 3
-  nonComplementaryColorChance: 0.5
-  asymmetricColorChance: 0.05
   bossTypeMax: 100
   symmetryMax: 100
   shapeComplexityMax: 100
@@ -248,6 +246,9 @@ MonoBehaviour:
   weaponQuantityMax: 100
   weaponTypeMax: 100
   weaponOrientationMax: 100
+  attackQuantityMax: 100
+  attackTypeMax: 100
+  attackWeaponMax: 100
   bossTypeVariables:
   - typeName: 1
     spriteComplexityCurve:
@@ -700,6 +701,8 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.5
     MirrorProbability: 0.5
+  nonComplementaryColorChance: 0.5
+  asymmetricColorChance: 0.05
   bossSpriteOutlineWidth: 2
   weaponSpriteOutlineWidth: 2
   weaponBrightnessTintAmount: 0.25
@@ -724,7 +727,7 @@ MonoBehaviour:
     MirrorProbability: 0.5
   - sprite: {fileID: 21300000, guid: a5f9c6fbd5c98b14a9d6a8d7a64ae51d, type: 3}
     size: 1
-    availableWeaponOrientations: -1
+    availableWeaponOrientations: 31
     bossTypesWeaponWieldableBy: 52
     generateWeaponColor: 1
     canWeaponFloat: 0

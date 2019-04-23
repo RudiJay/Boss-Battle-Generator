@@ -61,7 +61,7 @@ public class GeneratorScript : MonoBehaviour
     private int bossTypeMax = 100;
     [SerializeField]
     private int symmetryMax = 100, shapeComplexityMax = 100, shapeMax = 100, perlinColorScaleMin = 100, perlinColorScaleMax = 100, 
-        weaponQuantityMax = 100, weaponTypeMax = 100, weaponOrientationMax = 100;
+        weaponQuantityMax = 100, weaponTypeMax = 100, weaponOrientationMax = 100, attackQuantityMax = 100, attackTypeMax = 100, attackWeaponMax = 100;
 
     [Header("Boss Type")]
     [SerializeField][Space(10)]
@@ -102,10 +102,12 @@ public class GeneratorScript : MonoBehaviour
     private List<Weapon> bossWeapons;
     private int weaponQuantity = 2;
 
+    private bool attackGenerationComplete = false;
     [Header("Attacks")]
     [SerializeField][Space(10)]
     private ScriptableObject[] generatableAttackTypes;
-    private List<IAttackType> generatedAttacks;
+    private List<IAttackType> bossAttacks;
+    private int attackQuantity = 3;
 
     private void Awake()
     {
@@ -137,7 +139,7 @@ public class GeneratorScript : MonoBehaviour
         background = GameObject.FindWithTag("Background");
         
         bossWeapons = new List<Weapon>();
-        generatedAttacks = new List<IAttackType>();
+        bossAttacks = new List<IAttackType>();
 
         //calculate determinant sizes
         textureWidth = (int)(maxBossWidth * 1.25f);
@@ -280,7 +282,9 @@ public class GeneratorScript : MonoBehaviour
 
         yield return null;
 
+        //clean up potential previous boss
         ClearWeapons();
+        ClearAttacks();
 
         yield return null;
 
@@ -319,27 +323,16 @@ public class GeneratorScript : MonoBehaviour
             yield return null;
         }
 
-        foreach (ScriptableObject obj in generatableAttackTypes)
+        StartCoroutine(GenerateAttacks());
+
+        while (!attackGenerationComplete)
         {
-            IAttackType attack = (IAttackType)obj;
-            if (attack != null)
-            {
-                generatedAttacks.Add(attack);
-            }
+            yield return null;
         }
-
-        foreach (IAttackType attack in generatedAttacks)
-        {
-            attack.ResetAttack();
-            int weaponNo = rand.Next(0, bossWeapons.Count);
-            attack.SetupAttack(bossWeapons[weaponNo].gameObject);
-        }
-
-        yield return null;
-
-        StartCoroutine(bossDemonstration);
 
         bossDemonstrationInProgress = true;
+        bossDemonstration = DemonstrateBossFightLoop();
+        StartCoroutine(bossDemonstration);        
 
         GeneratorUI.Instance.ToggleGeneratingInProgressLabel(false);
 
@@ -348,16 +341,18 @@ public class GeneratorScript : MonoBehaviour
 
     private IEnumerator DemonstrateBossFightLoop()
     {
+
+
         while (true)
         {
-            //foreach (IAttackType attack in generatedAttacks)
-            //{
-                generatedAttacks[0].PerformAttack();
+            for (int i = 0; i < bossAttacks.Count; i++)
+            {
+                bossAttacks[i].PerformAttack();
 
                 yield return bossDemonstrationDelayTime;
-            //}
+            }
 
-            //yield return bossDemonstrationDelayTime;
+            yield return bossDemonstrationDelayTime;
         }
     }
 
@@ -1116,5 +1111,126 @@ public class GeneratorScript : MonoBehaviour
         }
 
         weaponGenerationComplete = true;
+    }
+
+    private void ClearAttacks()
+    {
+        bossAttacks.Clear();
+    }
+
+    private bool GenerateAttackType(ref IAttackType attackType)
+    {
+        bool attackPicked = false;
+        int count = 0;
+        int attackTypeValue;
+        int attackTypeIndex;
+        int bossTypeMask = 1 << (int)bossType.typeName;
+
+        do
+        {
+            attackTypeValue = rand.Next(0, attackTypeMax);
+            attackTypeIndex = (int)(attackTypeValue / (float)weaponTypeMax * generatableAttackTypes.Length);
+            attackType = (IAttackType)Instantiate(generatableAttackTypes[attackTypeIndex]);
+
+            if (attackType == null)
+            {
+                continue;
+            }
+
+            count++;
+            
+            //if (((int)attackType.bossTypesPerformableBy & bossTypeMask) == bossTypeMask)
+            //{
+            //    attackPicked = true;
+            //}
+            if (count > maxWeaponTypeAttempts)
+            {
+                Debug.Log("Couldn't pick attack for this boss");
+                break;
+            }
+
+            attackPicked = true;
+        } while (!attackPicked);
+
+        return attackPicked;
+    }
+
+    private bool LocateWeaponForAttack(IAttackType attack, out Weapon weapon)
+    {
+        bool weaponLocated = false;
+        int count = 0;
+        int weaponValue;
+        int weaponIndex;
+        int bossTypeMask = 1 << (int)bossType.typeName;
+        
+        do
+        {
+            weaponValue = rand.Next(0, attackWeaponMax);
+            weaponIndex = (int)(weaponValue / (float)attackWeaponMax * bossWeapons.Count);
+
+            weapon = bossWeapons[weaponIndex];
+
+            if (weapon == null)
+            {
+                continue;
+            }
+
+            count++;
+            //if (((int)attackType.bossTypesPerformableBy & bossTypeMask) == bossTypeMask)
+            //{
+            //    return attackTypeIndex;
+            //}
+            if (count > maxWeaponTypeAttempts)
+            {
+                Debug.Log("Couldn't pick weapon for this boss type");
+                break;
+            }
+
+            weaponLocated = true;
+        } while (!weaponLocated);
+
+        return weaponLocated;
+    }
+
+    private IEnumerator GenerateAttacks()
+    {
+        //TODO tie into boss difficulty
+        attackQuantity = rand.Next(bossWeapons.Count, 11);
+        Debug.Log("Attack Quantity: " + attackQuantity);
+
+        for (int i = 0; i < attackQuantity; i++)
+        {
+            IAttackType attackType = null;
+            bool attackTypeFound = GenerateAttackType(ref attackType);
+
+            if (!attackTypeFound)
+            {
+                continue;
+            }
+
+            //assign weapon to the attack
+            Weapon attackWeapon;
+            //if the attack uses a weapon
+            //if (attackType.requiredWeaponType != 0)
+            {
+                if (bossWeapons.Count > 0)
+                {
+                    bool foundWeapon = LocateWeaponForAttack(attackType, out attackWeapon);
+
+                    if (!foundWeapon)
+                    {
+                        continue;
+                    }
+
+                    attackType.SetupAttack(attackWeapon.gameObject);
+                }
+            }
+
+            bossAttacks.Add(attackType);
+
+            yield return generationStepDelayTime;
+        }
+
+        attackGenerationComplete = true;
     }
 }

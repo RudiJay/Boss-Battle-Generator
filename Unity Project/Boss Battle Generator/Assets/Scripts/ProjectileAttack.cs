@@ -6,9 +6,10 @@ public class ProjectileAttack : ScriptableObject, IAttackType
 {
     public WeaponOrientationMode requiredWeaponType { get; }
 
-    public BossTypeName requiredBossType { get; }
+    public BossTypeName bossTypesPerformableBy { get; }
 
-    //number of projectiles per shot
+    [SerializeField]
+    private int projectilesPerShot = 1;
     //projectile spread
     //number of shots
     //shot interval(s)
@@ -24,7 +25,7 @@ public class ProjectileAttack : ScriptableObject, IAttackType
 
     //weapon movement behavior (spin weapon while shooting) (move 30 degrees between shots)
 
-    private List<Weapon> assignedWeapons;
+    private List<Weapon> assignedWeapons = new List<Weapon>();
 
     public void ResetAttack()
     {
@@ -49,9 +50,9 @@ public class ProjectileAttack : ScriptableObject, IAttackType
 
     public void PerformAttack()
     {
-        foreach (Weapon weapon in assignedWeapons)
+        for (int i = 0; i < assignedWeapons.Count; i++)
         {
-            FireProjectile(weapon);
+            FireProjectile(assignedWeapons[i]);
         }
     }
 

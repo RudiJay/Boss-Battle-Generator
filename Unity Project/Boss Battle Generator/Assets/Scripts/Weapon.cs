@@ -8,8 +8,7 @@ public class Weapon : MonoBehaviour
 {
     public WeaponOrientationMode currentOrientationMode { get; set; }
 
-    [SerializeField]
-    private GameObject projectilePrefab;
+    public Weapon mirrorPair { get; set; }
 
     public bool isCollidingWithOtherWeapon = false;
 
@@ -21,9 +20,9 @@ public class Weapon : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, rot);
     }
 
-    public void DemonstrateAttack()
+    public void PerformAttack(GameObject projectileObj)
     {
-        Instantiate(projectilePrefab, transform);
+        Instantiate(projectileObj, transform);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

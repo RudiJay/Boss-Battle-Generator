@@ -3,6 +3,7 @@
  */
 
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GeneratorScript : MonoBehaviour
@@ -67,13 +68,13 @@ public class GeneratorScript : MonoBehaviour
 
     [Header("Boss Type")]
     [SerializeField][Space(10)]
-    private BossType[] BossTypeVariables;
+    private BossType[] bossTypeVariables;
     private BossType bossType;
 
     private bool spriteGenerationComplete = false;
     [Header("Appearance")]
     [SerializeField][Space(10)]
-    private ShapeType[] SpriteGenerationShapes;
+    private ShapeType[] spriteGenerationShapes;
     private int spriteShapeComplexity = 3;
 
     private int colorQuantity = 3;
@@ -91,15 +92,20 @@ public class GeneratorScript : MonoBehaviour
     private bool weaponPositionFound = false;
     [Header("Weapons")]
     [SerializeField][Space(10)]
-    private int weaponQuantity = 2;
+    private GameObject weaponPrefab;
     [SerializeField]
-    private GameObject WeaponPrefab;
-    [SerializeField]
-    private LayerMask bossSpriteLayer, weaponSpriteLayer;
+    private LayerMask bossSpriteLayer;
     [SerializeField]
     private int maxWeaponTypeAttempts = 10, maxWeaponOrientationAttempts = 10, maxWeaponPosAttempts = 15;
     [SerializeField]
-    private WeaponType[] GeneratableWeapons;
+    private WeaponType[] generatableWeapons;
+    private List<Weapon> bossWeapons;
+    private int weaponQuantity = 2;
+
+    [Header("Attacks")]
+    [SerializeField][Space(10)]
+    private ScriptableObject[] generatableAttackTypes;
+    private List<IAttackType> generatedAttacks;
 
     private void Awake()
     {
@@ -127,10 +133,11 @@ public class GeneratorScript : MonoBehaviour
         }
 
         spriteSnapshotCam = GameObject.FindWithTag("SpriteSnapshotCam").GetComponent<Camera>();
-
         snapshotSpriteObj = GameObject.FindWithTag("SnapshotSpriteObj");
-
         background = GameObject.FindWithTag("Background");
+        
+        bossWeapons = new List<Weapon>();
+        generatedAttacks = new List<IAttackType>();
 
         //calculate determinant sizes
         textureWidth = (int)(maxBossWidth * 1.25f);
@@ -312,28 +319,47 @@ public class GeneratorScript : MonoBehaviour
             yield return null;
         }
 
-        GeneratorUI.Instance.ToggleGeneratingInProgressLabel(false);
+        foreach (ScriptableObject obj in generatableAttackTypes)
+        {
+            IAttackType attack = (IAttackType)obj;
+            if (attack != null)
+            {
+                generatedAttacks.Add(attack);
+            }
+        }
+
+        foreach (IAttackType attack in generatedAttacks)
+        {
+            int weaponNo = rand.Next(0, bossWeapons.Count);
+            attack.SetupAttack(bossWeapons[weaponNo].gameObject);
+        }
+
+        yield return null;
 
         StartCoroutine(bossDemonstration);
+
+        bossDemonstrationInProgress = true;
+
+        GeneratorUI.Instance.ToggleGeneratingInProgressLabel(false);
 
         generationInProgress = false;
     }
 
     private IEnumerator DemonstrateBossFightLoop()
     {
-        bossDemonstrationInProgress = true;
-
-        while (true)
+        while (bossDemonstrationInProgress)
         {
-            Weapon[] weapons = bossObj.GetComponentsInChildren<Weapon>();
-
-            for (int i = 0; i < weapons.Length; i++)
+            foreach (IAttackType attack in generatedAttacks)
             {
-                weapons[i].DemonstrateAttack();
+                attack.PerformAttack();
+
+                yield return bossDemonstrationDelayTime;
             }
 
             yield return bossDemonstrationDelayTime;
         }
+
+        yield return null;
     }
 
     /// <summary>
@@ -352,7 +378,7 @@ public class GeneratorScript : MonoBehaviour
             GeneratorUI.Instance.ShowRandomBossType(typeName.ToString());
         }
 
-        bossType = System.Array.Find<BossType>(BossTypeVariables, BossTypeVariables => BossTypeVariables.typeName == typeName);
+        bossType = System.Array.Find<BossType>(bossTypeVariables, BossTypeVariables => BossTypeVariables.typeName == typeName);
     }
 
     /// <summary>
@@ -532,7 +558,7 @@ public class GeneratorScript : MonoBehaviour
     /// </summary>
     private IEnumerator GenerateSprite()
     {
-        if (spriteSnapshotCam && snapshotSpriteObj && SpriteGenerationShapes.Length > 0)
+        if (spriteSnapshotCam && snapshotSpriteObj && spriteGenerationShapes.Length > 0)
         {
             bossSprite.enabled = true;
 
@@ -568,8 +594,8 @@ public class GeneratorScript : MonoBehaviour
                 snapshotSpriteObj.transform.rotation = Quaternion.identity;
 
                 ShapeType spriteShape;
-                int index = (int)(shapeSeed / (float)shapeMax * SpriteGenerationShapes.Length);
-                spriteShape = SpriteGenerationShapes[index];
+                int index = (int)(shapeSeed / (float)shapeMax * spriteGenerationShapes.Length);
+                spriteShape = spriteGenerationShapes[index];
 
                 snapshotSprite.sprite = spriteShape.sprite;
 
@@ -712,11 +738,12 @@ public class GeneratorScript : MonoBehaviour
     private void ClearWeapons()
     {
         //clear previous weapons
-        Weapon[] weapons = bossObj.GetComponentsInChildren<Weapon>();
-        for (int i = 0; i < weapons.Length; i++)
+        foreach (Weapon weapon in bossWeapons)
         {
-            Destroy(weapons[i].gameObject);
+            Destroy(weapon.gameObject);
         }
+
+        bossWeapons.Clear();
     }
 
     private int GenerateWeaponTypeIndex()
@@ -732,8 +759,8 @@ public class GeneratorScript : MonoBehaviour
         do
         {
             weaponTypeSeed = rand.Next(0, weaponTypeMax);
-            weaponTypeIndex = (int)(weaponTypeSeed / (float)weaponTypeMax * GeneratableWeapons.Length);
-            weaponType = GeneratableWeapons[weaponTypeIndex];
+            weaponTypeIndex = (int)(weaponTypeSeed / (float)weaponTypeMax * generatableWeapons.Length);
+            weaponType = generatableWeapons[weaponTypeIndex];
 
             bossTypeMask = 1 << (int)bossType.typeName;
 
@@ -921,17 +948,17 @@ public class GeneratorScript : MonoBehaviour
             {
                 continue;
             }
-            WeaponType weaponType = GeneratableWeapons[weaponTypeIndex];
+            WeaponType weaponType = generatableWeapons[weaponTypeIndex];
 
             //create weapon gameobject
-            GameObject weapon = Instantiate(WeaponPrefab, bossObj.transform);
-            Weapon weaponComponent = weapon.GetComponent<Weapon>();
+            GameObject weaponObj = Instantiate(weaponPrefab, bossObj.transform);
+            Weapon weapon = weaponObj.GetComponent<Weapon>();
 
             //set up weapon sprite
-            SpriteRenderer sr = weapon.GetComponentInChildren<SpriteRenderer>();
+            SpriteRenderer sr = weaponObj.GetComponentInChildren<SpriteRenderer>();
             sr.sprite = weaponType.sprite;
             //set weapon size
-            weapon.transform.localScale = new Vector3(weaponType.size, weaponType.size);
+            weaponObj.transform.localScale = new Vector3(weaponType.size, weaponType.size);
             //add collider
             sr.gameObject.AddComponent<PolygonCollider2D>();
             sr.gameObject.GetComponent<PolygonCollider2D>().isTrigger = true;
@@ -942,16 +969,16 @@ public class GeneratorScript : MonoBehaviour
             //if setting orientation mode failed, destroy weapon and move on
             if (orientationModeIndex == -1)
             {
-                Destroy(weapon);
+                Destroy(weaponObj);
                 continue;
             }
             WeaponOrientationMode orientationMode = (WeaponOrientationMode)orientationModeIndex;
             //Debug.Log(orientationMode);
-            weaponComponent.currentOrientationMode = orientationMode;
+            weapon.currentOrientationMode = orientationMode;
 
             //check symmetry score and if weapon should use mirror symmetry instantiate new weapon object
-            GameObject mirrorWeapon = null;
-            Weapon mirrorWeaponComponent = null;
+            GameObject mirrorWeaponObj = null;
+            Weapon mirrorWeapon = null;
 
             //calculate probability bounds for weapon being mirrored symmetrically
             float asymmetric = weaponType.AsymmetricProbability * bossType.asymmetricProbabilityMultiplier;
@@ -962,34 +989,40 @@ public class GeneratorScript : MonoBehaviour
             float mirrorSymmetryMax = 1.0f;
 
             SpriteRenderer mirrorsr = null;
+            bool mirroringWeapon = false;
 
             if (symmetryValue >= mirrorSymmetryMin * symmetryMax && symmetryValue < mirrorSymmetryMax * symmetryMax)
             {
-                mirrorWeapon = Instantiate(WeaponPrefab, bossObj.transform);
-                mirrorWeaponComponent = mirrorWeapon.GetComponent<Weapon>();
+                mirroringWeapon = true;
+                mirrorWeaponObj = Instantiate(weaponPrefab, bossObj.transform);
+                mirrorWeapon = mirrorWeaponObj.GetComponent<Weapon>();
+
+                //set up weapons as mirrored pairs
+                weapon.mirrorPair = mirrorWeapon;
+                mirrorWeapon.mirrorPair = weapon;
 
                 //set up weapon sprite
-                mirrorsr = mirrorWeapon.GetComponentInChildren<SpriteRenderer>();
+                mirrorsr = mirrorWeaponObj.GetComponentInChildren<SpriteRenderer>();
                 mirrorsr.sprite = weaponType.sprite;
                 //set weapon size
-                mirrorWeapon.transform.localScale = new Vector3(weaponType.size, weaponType.size);
+                mirrorWeaponObj.transform.localScale = new Vector3(weaponType.size, weaponType.size);
                 //add collider
                 mirrorsr.gameObject.AddComponent<PolygonCollider2D>();
                 mirrorsr.gameObject.GetComponent<PolygonCollider2D>().isTrigger = true;
                 //set weapon orientation mode
-                mirrorWeaponComponent.currentOrientationMode = orientationMode;
+                mirrorWeapon.currentOrientationMode = orientationMode;
             }
 
             weaponPositioningProcessComplete = false;
             weaponPositionFound = false;
             //position weapon on boss sprite 
-            if (mirrorWeapon == null)
+            if (!mirroringWeapon)
             {
-                StartCoroutine(GenerateWeaponPosition(weaponType, weapon.transform));
+                StartCoroutine(GenerateWeaponPosition(weaponType, weaponObj.transform));
             }
             else
             {
-                StartCoroutine(GenerateWeaponPosition(weaponType, weapon.transform, mirrorWeapon.transform));
+                StartCoroutine(GenerateWeaponPosition(weaponType, weaponObj.transform, mirrorWeaponObj.transform));
             }
 
             while (!weaponPositioningProcessComplete)
@@ -1000,8 +1033,8 @@ public class GeneratorScript : MonoBehaviour
             //if weapon could not find a position, destroy weapons
             if (!weaponPositionFound)
             {
-                Destroy(weapon);
-                Destroy(mirrorWeapon);
+                Destroy(weaponObj);
+                Destroy(mirrorWeaponObj);
                 continue;
             }
 
@@ -1034,7 +1067,7 @@ public class GeneratorScript : MonoBehaviour
             yield return generationStepDelayTime;
 
             //color mirrored weapon sprite
-            if (mirrorsr != null)
+            if (mirroringWeapon)
             {
                 mirrorsr.sprite = weaponSprite;
             }
@@ -1048,36 +1081,42 @@ public class GeneratorScript : MonoBehaviour
                     break;
                 case WeaponOrientationMode.FIXEDSIDEWAYS:
                     {
-                        weaponComponent.SetWeaponRotation(90 * Mathf.Sign(weapon.transform.position.x));
+                        weapon.SetWeaponRotation(90 * Mathf.Sign(weaponObj.transform.position.x));
 
-                        if (mirrorWeaponComponent != null)
+                        if (mirroringWeapon)
                         {
-                            mirrorWeaponComponent.SetWeaponRotation(90 * Mathf.Sign(mirrorWeapon.transform.position.x));
+                            mirrorWeapon.SetWeaponRotation(90 * Mathf.Sign(mirrorWeaponObj.transform.position.x));
                         }
                     }
                     break;
                 case WeaponOrientationMode.FIXEDOTHERFORWARDS:
                     {
                         int randomOrientation = rand.Next(0, 90);
-                        weaponComponent.SetWeaponRotation(randomOrientation * Mathf.Sign(weapon.transform.position.x));
+                        weapon.SetWeaponRotation(randomOrientation * Mathf.Sign(weaponObj.transform.position.x));
 
-                        if (mirrorWeaponComponent != null)
+                        if (mirroringWeapon)
                         {
-                            mirrorWeaponComponent.SetWeaponRotation(randomOrientation * Mathf.Sign(mirrorWeapon.transform.position.x));
+                            mirrorWeapon.SetWeaponRotation(randomOrientation * Mathf.Sign(mirrorWeaponObj.transform.position.x));
                         }
                     }
                     break;
                 case WeaponOrientationMode.FIXEDOTHER:
                     {
                         int randomOrientation = rand.Next(0, 180);
-                        weaponComponent.SetWeaponRotation(randomOrientation * Mathf.Sign(weapon.transform.position.x));
+                        weapon.SetWeaponRotation(randomOrientation * Mathf.Sign(weaponObj.transform.position.x));
 
-                        if (mirrorWeaponComponent != null)
+                        if (mirroringWeapon)
                         {
-                            mirrorWeaponComponent.SetWeaponRotation(randomOrientation * Mathf.Sign(mirrorWeapon.transform.position.x));
+                            mirrorWeapon.SetWeaponRotation(randomOrientation * Mathf.Sign(mirrorWeaponObj.transform.position.x));
                         }
                     }
                     break;
+            }
+
+            bossWeapons.Add(weapon);
+            if (mirroringWeapon)
+            {
+                bossWeapons.Add(mirrorWeapon);
             }
 
             yield return generationStepDelayTime;

@@ -56,9 +56,6 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField]
     private float weaponXLimit = 3, weaponYLimit = 3;
 
-    [SerializeField][Range(0, 1)]
-    private float nonComplementaryColorChance = 0.5f, asymmetricColorChance = 0.25f;
-
     [Header("Randomisation Scales")]
     [SerializeField][Space(10)]
     private int bossTypeMax = 100;
@@ -79,6 +76,9 @@ public class GeneratorScript : MonoBehaviour
 
     private int colorQuantity = 3;
     private Color[] colorPalette;
+    [SerializeField]
+    [Range(0, 1)]
+    private float nonComplementaryColorChance = 0.5f, asymmetricColorChance = 0.25f;
     [SerializeField]
     private int bossSpriteOutlineWidth = 1, weaponSpriteOutlineWidth = 1;
     [SerializeField]

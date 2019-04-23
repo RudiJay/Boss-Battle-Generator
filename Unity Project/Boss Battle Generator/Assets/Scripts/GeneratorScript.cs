@@ -330,6 +330,7 @@ public class GeneratorScript : MonoBehaviour
 
         foreach (IAttackType attack in generatedAttacks)
         {
+            attack.ResetAttack();
             int weaponNo = rand.Next(0, bossWeapons.Count);
             attack.SetupAttack(bossWeapons[weaponNo].gameObject);
         }
@@ -347,19 +348,17 @@ public class GeneratorScript : MonoBehaviour
 
     private IEnumerator DemonstrateBossFightLoop()
     {
-        while (bossDemonstrationInProgress)
+        while (true)
         {
-            foreach (IAttackType attack in generatedAttacks)
-            {
-                attack.PerformAttack();
+            //foreach (IAttackType attack in generatedAttacks)
+            //{
+                generatedAttacks[0].PerformAttack();
 
                 yield return bossDemonstrationDelayTime;
-            }
+            //}
 
-            yield return bossDemonstrationDelayTime;
+            //yield return bossDemonstrationDelayTime;
         }
-
-        yield return null;
     }
 
     /// <summary>

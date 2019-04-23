@@ -26,6 +26,11 @@ public class ProjectileAttack : ScriptableObject, IAttackType
 
     private List<Weapon> assignedWeapons;
 
+    public void ResetAttack()
+    {
+        assignedWeapons.Clear();
+    }
+
     public void SetupAttack(GameObject performingObj)
     {
         Weapon weapon = performingObj.GetComponent<Weapon>();

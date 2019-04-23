@@ -10,6 +10,8 @@ public interface IAttackType
     //the boss types the boss must be of to use this attack type, if any
     BossTypeName requiredBossType { get; }
 
+    void ResetAttack();
+
     void SetupAttack(GameObject performingObj);
 
     void PerformAttack();

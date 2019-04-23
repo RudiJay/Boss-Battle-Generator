@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcef602d7588eba4494d86bcae410e68, type: 3}
   m_Name: SingleStraightShot
   m_EditorClassIdentifier: 
-  projectileObj: {fileID: 0}
+  projectileObj: {fileID: 7902893971006019126, guid: 49244084617b64148bde0b9b6d35b199,
+    type: 3}

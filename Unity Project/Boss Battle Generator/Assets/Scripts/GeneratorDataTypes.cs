@@ -51,7 +51,6 @@ public enum ShapeTypeName
 /// <summary>
 /// Bitmask enum of each weapon orientation type
 /// </summary>
-[System.Flags]
 public enum WeaponOrientationMode
 {
     FIXEDFORWARD,

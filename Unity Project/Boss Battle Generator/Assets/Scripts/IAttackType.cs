@@ -5,10 +5,10 @@ using UnityEngine;
 public interface IAttackType
 {
     //the weapon orientation mode required to perform this attack. if empty, does not use a weapon
-    WeaponOrientationMode requiredWeaponType { get; }
+    WeaponOrientationMode GetRequiredWeaponTypes();
 
     //the boss types the boss must be of to use this attack type, if any
-    BossTypeName bossTypesPerformableBy { get; }
+    BossTypeName GetCompatibleBossTypes();
 
     void ResetAttack();
 

@@ -10,10 +10,7 @@ public class Weapon : MonoBehaviour
 
     public Weapon mirrorPair { get; set; }
 
-    public bool isCollidingWithOtherWeapon = false;
-
-    [SerializeField]
-    private LayerMask weaponSpriteLayer;
+    private bool isCollidingWithOtherWeapon = false;
 
     public void SetWeaponRotation(float rot)
     {
@@ -23,6 +20,16 @@ public class Weapon : MonoBehaviour
     public void PerformAttack(GameObject projectileObj)
     {
         Instantiate(projectileObj, transform);
+    }
+
+    public bool GetCollidingWithOtherWeapon()
+    {
+        return isCollidingWithOtherWeapon;
+    }
+
+    private void Start()
+    {
+        isCollidingWithOtherWeapon = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

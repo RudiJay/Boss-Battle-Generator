@@ -60,8 +60,15 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField][Space(10)]
     private int bossTypeMax = 100;
     [SerializeField]
-    private int symmetryMax = 100, shapeComplexityMax = 100, shapeMax = 100, perlinColorScaleMin = 100, perlinColorScaleMax = 100, 
-        weaponQuantityMax = 100, weaponTypeMax = 100, weaponOrientationMax = 100, attackQuantityMax = 100, attackTypeMax = 100, attackWeaponMax = 100;
+    private int symmetryMax = 100, shapeComplexityMax = 100, shapeMax = 100;
+    [SerializeField]
+    private int perlinColorScaleMin = 100, perlinColorScaleMax = 100;
+    [SerializeField]
+    private int weaponQuantityMax = 100, weaponTypeMax = 100, weaponOrientationMax = 100;
+    [SerializeField]
+    private int attackQuantityMax = 100, attackTypeMax = 100, attackWeaponMax = 100;
+    [SerializeField]
+    private int attackPatternLengthMin = 1, attackPatternLengthMax = 15;
 
     [Header("Boss Type")]
     [SerializeField][Space(10)]
@@ -106,7 +113,8 @@ public class GeneratorScript : MonoBehaviour
     [Header("Attacks")]
     [SerializeField][Space(10)]
     private ScriptableObject[] generatableAttackTypes;
-    private List<IAttackType> bossAttacks;
+    private List<IAttackType> bossAttackTypes;
+    private List<IAttackType> bossAttackPattern;
     private int attackQuantity = 3;
 
     private void Awake()
@@ -139,7 +147,8 @@ public class GeneratorScript : MonoBehaviour
         background = GameObject.FindWithTag("Background");
         
         bossWeapons = new List<Weapon>();
-        bossAttacks = new List<IAttackType>();
+        bossAttackTypes = new List<IAttackType>();
+        bossAttackPattern = new List<IAttackType>();
 
         //calculate determinant sizes
         textureWidth = (int)(maxBossWidth * 1.25f);
@@ -330,6 +339,10 @@ public class GeneratorScript : MonoBehaviour
             yield return null;
         }
 
+        GenerateAttackPattern();
+
+        yield return null;
+
         bossDemonstrationInProgress = true;
         bossDemonstration = DemonstrateBossFightLoop();
         StartCoroutine(bossDemonstration);        
@@ -341,13 +354,11 @@ public class GeneratorScript : MonoBehaviour
 
     private IEnumerator DemonstrateBossFightLoop()
     {
-
-
         while (true)
         {
-            for (int i = 0; i < bossAttacks.Count; i++)
+            for (int i = 0; i < bossAttackPattern.Count; i++)
             {
-                bossAttacks[i].PerformAttack();
+                bossAttackPattern[i].PerformAttack();
 
                 yield return bossDemonstrationDelayTime;
             }
@@ -874,7 +885,7 @@ public class GeneratorScript : MonoBehaviour
 
             yield return waitFrame;
 
-            if (weaponTransform.GetComponent<Weapon>().isCollidingWithOtherWeapon)
+            if (weaponTransform.GetComponent<Weapon>().GetCollidingWithOtherWeapon())
             {
                 continue;
             }
@@ -895,7 +906,7 @@ public class GeneratorScript : MonoBehaviour
 
                 yield return waitFrame;
 
-                if (mirrorWeaponTransform.GetComponent<Weapon>().isCollidingWithOtherWeapon)
+                if (mirrorWeaponTransform.GetComponent<Weapon>().GetCollidingWithOtherWeapon())
                 {
                     continue;
                 }           
@@ -1115,7 +1126,8 @@ public class GeneratorScript : MonoBehaviour
 
     private void ClearAttacks()
     {
-        bossAttacks.Clear();
+        bossAttackTypes.Clear();
+        bossAttackPattern.Clear();
     }
 
     private bool GenerateAttackType(ref IAttackType attackType)
@@ -1138,18 +1150,16 @@ public class GeneratorScript : MonoBehaviour
             }
 
             count++;
-            
-            //if (((int)attackType.bossTypesPerformableBy & bossTypeMask) == bossTypeMask)
-            //{
-            //    attackPicked = true;
-            //}
-            if (count > maxWeaponTypeAttempts)
+
+            if (((int)attackType.GetCompatibleBossTypes() & bossTypeMask) == bossTypeMask)
+            {
+                attackPicked = true;
+            }
+            else if (count > maxWeaponTypeAttempts)
             {
                 Debug.Log("Couldn't pick attack for this boss");
                 break;
             }
-
-            attackPicked = true;
         } while (!attackPicked);
 
         return attackPicked;
@@ -1161,7 +1171,7 @@ public class GeneratorScript : MonoBehaviour
         int count = 0;
         int weaponValue;
         int weaponIndex;
-        int bossTypeMask = 1 << (int)bossType.typeName;
+        int weaponOrientationMask;
         
         do
         {
@@ -1175,18 +1185,18 @@ public class GeneratorScript : MonoBehaviour
                 continue;
             }
 
+            weaponOrientationMask = 1 << (int)weapon.currentOrientationMode;
+
             count++;
-            //if (((int)attackType.bossTypesPerformableBy & bossTypeMask) == bossTypeMask)
-            //{
-            //    return attackTypeIndex;
-            //}
-            if (count > maxWeaponTypeAttempts)
+            if (((int)attack.GetRequiredWeaponTypes() & weaponOrientationMask) == weaponOrientationMask)
             {
-                Debug.Log("Couldn't pick weapon for this boss type");
+                weaponLocated = true;
+            }
+            else if (count > maxWeaponTypeAttempts)
+            {
+                Debug.Log("Couldn't locate weapon for this attack type");
                 break;
             }
-
-            weaponLocated = true;
         } while (!weaponLocated);
 
         return weaponLocated;
@@ -1195,7 +1205,8 @@ public class GeneratorScript : MonoBehaviour
     private IEnumerator GenerateAttacks()
     {
         //TODO tie into boss difficulty
-        attackQuantity = rand.Next(bossWeapons.Count, 11);
+        //minimum quantity is largest of number of weapons or 1
+        attackQuantity = rand.Next(Mathf.Max(bossWeapons.Count, 1), 11);
         Debug.Log("Attack Quantity: " + attackQuantity);
 
         for (int i = 0; i < attackQuantity; i++)
@@ -1211,7 +1222,7 @@ public class GeneratorScript : MonoBehaviour
             //assign weapon to the attack
             Weapon attackWeapon;
             //if the attack uses a weapon
-            //if (attackType.requiredWeaponType != 0)
+            if (attackType.GetRequiredWeaponTypes() != 0)
             {
                 if (bossWeapons.Count > 0)
                 {
@@ -1226,11 +1237,27 @@ public class GeneratorScript : MonoBehaviour
                 }
             }
 
-            bossAttacks.Add(attackType);
+            bossAttackTypes.Add(attackType);
 
             yield return generationStepDelayTime;
         }
 
         attackGenerationComplete = true;
+    }
+
+    private void GenerateAttackPattern()
+    {
+        if (bossAttackTypes.Count > 0)
+        {
+            int attackPatternLength = rand.Next(attackPatternLengthMin, attackPatternLengthMax);
+
+            Debug.Log("Attack Pattern Length: " + attackPatternLength);
+            for (int i = 0; i < attackPatternLength; i++)
+            {
+                int attack = (int)(rand.Next(0, attackTypeMax) / (float)attackTypeMax * bossAttackTypes.Count);
+
+                bossAttackPattern.Add(bossAttackTypes[attack]);
+            }
+        }
     }
 }

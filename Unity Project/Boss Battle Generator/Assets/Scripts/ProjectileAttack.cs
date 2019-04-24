@@ -65,15 +65,50 @@ public class ProjectileAttack : ScriptableObject, IAttackType
     {
         for (int i = 0; i < assignedWeapons.Count; i++)
         {
-            FireProjectile(assignedWeapons[i]);
+            for (int j = 0; j < projectilesPerShot; j++)
+            {
+                float angle = GetFiringAngle(j);
+
+                FireProjectile(assignedWeapons[i], angle);
+            }
         }
     }
 
-    private void FireProjectile(Weapon source)
+    private float GetFiringAngle(int projectileInShot)
+    {
+        float firingAngle = 0.0f;
+
+        bool isOdd = projectilesPerShot % 2 == 1;
+
+        //if (isOdd)
+        {
+            firingAngle = (projectileInShot * projectileShotSpread) - (projectilesPerShot / 2) * projectileShotSpread;
+        }
+
+        if (projectilesPerShot % 2 == 0)
+        {
+            firingAngle += projectileShotSpread / 2.0f;
+        }
+        //else
+        //{
+        //    int sign = 1;
+        //    if (projectileInShot < projectilesPerShot / 2)
+        //    {
+        //        projectileInShot = projectilesPerShot - 1 - projectileInShot;
+        //        sign = -1;
+        //    }
+
+        //    firingAngle = sign * (0.5f * projectileShotSpread) * (projectileInShot + 1 - (projectilesPerShot / 2));
+        //}
+        Debug.Log(firingAngle);
+        return firingAngle;
+    }
+
+    private void FireProjectile(Weapon source, float firingAngle)
     {
         if (source != null)
         {
-            source.PerformAttack(projectileObj);
+            source.PerformAttack(projectileObj, firingAngle);
         }
     }
 }

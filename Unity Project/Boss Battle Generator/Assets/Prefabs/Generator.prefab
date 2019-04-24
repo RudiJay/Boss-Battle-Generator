@@ -237,9 +237,8 @@ MonoBehaviour:
   shapeSizeLimiter: 0.7
   weaponXLimit: 3
   weaponYLimit: 3
-  bossTypeMax: 100
-  symmetryMax: 100
-  shapeComplexityMax: 100
+  symmetryProbMax: 100
+  shapeComplexityProbMax: 100
   perlinColorScaleMin: 25
   perlinColorScaleMax: 500
   weaponQuantityProbMax: 100
@@ -751,3 +750,5 @@ MonoBehaviour:
     MirrorProbability: 0.5
   generatableAttackTypes:
   - {fileID: 11400000, guid: 73b4e2ab11a892d439b4fedfbb472fa3, type: 2}
+  - {fileID: 11400000, guid: 9e850a362727d35479071aa6df6886fe, type: 2}
+  - {fileID: 11400000, guid: f7c08aa3ccaa65a48bed0bf1db8f128d, type: 2}

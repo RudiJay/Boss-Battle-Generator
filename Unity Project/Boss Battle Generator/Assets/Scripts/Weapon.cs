@@ -23,9 +23,9 @@ public class Weapon : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, rot);
     }
 
-    public void PerformAttack(GameObject projectileObj)
+    public void PerformAttack(GameObject projectileObj, float firingAngle)
     {
-        Instantiate(projectileObj, transform);
+        Instantiate(projectileObj, transform.position, transform.rotation * Quaternion.Euler(0, 0, firingAngle));
     }
 
     public bool GetCollidingWithOtherWeapon()

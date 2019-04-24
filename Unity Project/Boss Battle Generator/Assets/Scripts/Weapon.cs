@@ -6,7 +6,13 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    public WeaponOrientationMode currentOrientationMode { get; set; }
+    [SerializeField]
+    private WeaponOrientationMode currentOrientationMode;
+    public WeaponOrientationMode CurrentOrientationMode
+    {
+        get { return currentOrientationMode; }
+        set { currentOrientationMode = value; }
+    }
 
     public Weapon mirrorPair { get; set; }
 

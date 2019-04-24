@@ -57,16 +57,17 @@ public class GeneratorScript : MonoBehaviour
     private float weaponXLimit = 3, weaponYLimit = 3;
 
     [Header("Randomisation Scales")]
-    [SerializeField][Space(10)]
-    private int bossTypeMax = 100;
     [SerializeField]
-    private int symmetryMax = 100, shapeComplexityMax = 100, shapeMax = 100;
+    [Space(10)]
+    private int symmetryProbMax = 100;
     [SerializeField]
-    private int perlinColorScaleMin = 100, perlinColorScaleMax = 100;
+    private int shapeComplexityProbMax = 100;
     [SerializeField]
-    private int weaponQuantityMax = 100, weaponTypeMax = 100, weaponOrientationMax = 100;
+    private int perlinColorScaleMin = 25, perlinColorScaleMax = 100;
     [SerializeField]
-    private int attackQuantityMax = 100, attackTypeMax = 100, attackWeaponMax = 100;
+    private int weaponQuantityProbMax = 100;
+    [SerializeField]
+    private int attackQuantityMax = 10;
     [SerializeField]
     private int attackPatternLengthMin = 1, attackPatternLengthMax = 15;
 
@@ -377,8 +378,7 @@ public class GeneratorScript : MonoBehaviour
 
         if (typeName == BossTypeName.Random)
         {
-            int typeSeed = rand.Next(0, bossTypeMax);
-            int index = (int)(typeSeed / (float)bossTypeMax * (System.Enum.GetNames(typeof(BossTypeName)).Length - 1)) + 1; //-1 and +1 to avoid setting boss type to RANDOM again
+            int index = rand.Next(0, System.Enum.GetNames(typeof(BossTypeName)).Length - 1) + 1; //-1 and +1 to avoid setting boss type to RANDOM again
             typeName = (BossTypeName)index;
             GeneratorUI.Instance.ShowRandomBossType(typeName.ToString());
         }
@@ -391,7 +391,7 @@ public class GeneratorScript : MonoBehaviour
     /// </summary>
     private void GenerateRandomSymmetryScore()
     {
-        symmetryValue = rand.Next(0, symmetryMax);
+        symmetryValue = rand.Next(0, symmetryProbMax);
         //Debug.Log("Symmetric seed (0, " + symmetryMax + "): " + symmetryValue);
     }
 
@@ -415,7 +415,7 @@ public class GeneratorScript : MonoBehaviour
         colorPalette[colorQuantity] = Color.HSVToRGB(hue, saturation, weaponBrightness);
 
         GenerateRandomSymmetryScore();
-        bool useComplementaryColors = symmetryValue / (float)symmetryMax > nonComplementaryColorChance;
+        bool useComplementaryColors = symmetryValue / (float)symmetryProbMax > nonComplementaryColorChance;
         float offset = 0;
         for (int i = 1; i < colorQuantity; i++)
         {
@@ -499,7 +499,7 @@ public class GeneratorScript : MonoBehaviour
 
         bool symmetricColor = false;
         GenerateRandomSymmetryScore();
-        if (symmetryValue / (float)symmetryMax > asymmetricColorChance)
+        if (symmetryValue / (float)symmetryProbMax > asymmetricColorChance)
         {
             symmetricColor = true;
         }
@@ -584,7 +584,7 @@ public class GeneratorScript : MonoBehaviour
             }
 
             //generate sprite complexity
-            spriteShapeComplexity = Mathf.RoundToInt(bossType.spriteComplexityCurve.Evaluate(rand.Next(0, shapeComplexityMax) / (float)shapeComplexityMax));
+            spriteShapeComplexity = Mathf.RoundToInt(bossType.spriteComplexityCurve.Evaluate(rand.Next(0, shapeComplexityProbMax) / (float)shapeComplexityProbMax));
             //Debug.Log("Sprite Shape Complexity: " + spriteShapeComplexity);
             //make sure there is at least one shape
             spriteShapeComplexity = Mathf.Max(spriteShapeComplexity, 1);
@@ -592,14 +592,11 @@ public class GeneratorScript : MonoBehaviour
             for (int i = 0; i < spriteShapeComplexity; i++)
             {
                 GenerateRandomSymmetryScore(); //symmetry score must be calculated again for every shape so they don't all do the same thing
-
-                int shapeSeed = rand.Next(0, shapeMax);                
-                //Debug.Log("Shape seed (0, " + shapeMax + "): " + shapeSeed);
                 
                 snapshotSpriteObj.transform.rotation = Quaternion.identity;
 
                 ShapeType spriteShape;
-                int index = (int)(shapeSeed / (float)shapeMax * spriteGenerationShapes.Length);
+                int index = rand.Next(0, spriteGenerationShapes.Length);
                 spriteShape = spriteGenerationShapes[index];
 
                 snapshotSprite.sprite = spriteShape.sprite;
@@ -667,19 +664,19 @@ public class GeneratorScript : MonoBehaviour
                 float mirrorMax = centreXMax + (mirror / symmetryProbabilityTotal);
 
                 //determine which symmetry probability bound the shape belongs in
-                if (symmetryValue >= asymmetricMax * symmetryMax && symmetryValue < normaliseRotMax * symmetryMax && spriteShape.generateRotation)
+                if (symmetryValue >= asymmetricMax * symmetryProbMax && symmetryValue < normaliseRotMax * symmetryProbMax && spriteShape.generateRotation)
                 {
                     //normalise rotation
                     rotValue = (int)(Mathf.Round(rotValue / spriteShape.nearestSymmetricalRot) * spriteShape.nearestSymmetricalRot * Mathf.Sign(rotValue));
                 }
-                else if (symmetryValue >= normaliseRotMax * symmetryMax && symmetryValue < centreXMax * symmetryMax)
+                else if (symmetryValue >= normaliseRotMax * symmetryProbMax && symmetryValue < centreXMax * symmetryProbMax)
                 {
                     //normalise rotation
                     rotValue = spriteShape.generateRotation ? (int)(Mathf.Round(rotValue / spriteShape.nearestSymmetricalRot) * spriteShape.nearestSymmetricalRot * Mathf.Sign(rotValue)) : 0;
                     //centre shape in x axis
                     xValue = textureWidth / 2;
                 }
-                else if (symmetryValue >= centreXMax * symmetryMax && symmetryValue < mirrorMax * symmetryMax)
+                else if (symmetryValue >= centreXMax * symmetryProbMax && symmetryValue < mirrorMax * symmetryProbMax)
                 {
                     //get opposite x value
                     int x2 = textureWidth - xValue;
@@ -755,14 +752,12 @@ public class GeneratorScript : MonoBehaviour
     {
         bool weaponPicked = false;
         int count = 0;
-        int weaponTypeValue;
         int weaponTypeIndex;
         int bossTypeMask = 1 << (int)bossType.typeName;
 
         do
         {
-            weaponTypeValue = rand.Next(0, weaponTypeMax);
-            weaponTypeIndex = (int)(weaponTypeValue / (float)weaponTypeMax * generatableWeapons.Length);
+            weaponTypeIndex = rand.Next(0, generatableWeapons.Length);
             weaponType = generatableWeapons[weaponTypeIndex];
 
             count++;
@@ -783,15 +778,13 @@ public class GeneratorScript : MonoBehaviour
     private bool GenerateWeaponOrientationMode(WeaponType weaponType, ref WeaponOrientationMode orientationMode)
     {
         bool orientationPicked = false;
-        int weaponOrientationValue;
         int orientationIndex;
         int orientationMask;
         int count = 0;
 
         do
         {
-            weaponOrientationValue = rand.Next(0, weaponOrientationMax);
-            orientationIndex = (int)(weaponOrientationValue / (float)weaponOrientationMax * System.Enum.GetNames(typeof(WeaponOrientationMode)).Length);
+            orientationIndex = rand.Next(0, System.Enum.GetNames(typeof(WeaponOrientationMode)).Length);
             orientationMode = (WeaponOrientationMode)orientationIndex;
 
             orientationMask = 1 << (int)orientationMode;
@@ -808,7 +801,7 @@ public class GeneratorScript : MonoBehaviour
                 float centreXMax = (asymmetric + centreX) / symmetryProbabilityTotal;
 
                 //if symmetry is centred, do not allow non symmetrical orientation modes
-                if (symmetryValue >= centreXMin * symmetryMax && symmetryValue < centreXMax * symmetryMax)
+                if (symmetryValue >= centreXMin * symmetryProbMax && symmetryValue < centreXMax * symmetryProbMax)
                 {
                     if (orientationMode != WeaponOrientationMode.FIXEDSIDEWAYS &&
                         orientationMode != WeaponOrientationMode.FIXEDOTHERFORWARDS &&
@@ -864,7 +857,7 @@ public class GeneratorScript : MonoBehaviour
             float centreXMax = (asymmetric + centreX) / symmetryProbabilityTotal;
 
             //if current weapon should be centred in X axis for symmetry, do so
-            if (symmetryValue >= centreXMin * symmetryMax && symmetryValue < centreXMax * symmetryMax)
+            if (symmetryValue >= centreXMin * symmetryProbMax && symmetryValue < centreXMax * symmetryProbMax)
             {
                 xSeed = 0;
             }
@@ -932,7 +925,7 @@ public class GeneratorScript : MonoBehaviour
         }
 
         //generate number of weapons
-        weaponQuantity = Mathf.RoundToInt(bossType.weaponQuantityCurve.Evaluate(rand.Next(0, weaponQuantityMax) / (float)weaponQuantityMax));
+        weaponQuantity = Mathf.RoundToInt(bossType.weaponQuantityCurve.Evaluate(rand.Next(0, weaponQuantityProbMax) / (float)weaponQuantityProbMax));
         //Debug.Log("Number of weapons: " + weaponQuantity);
 
         for (int i = 0; i < weaponQuantity; i++)
@@ -973,7 +966,7 @@ public class GeneratorScript : MonoBehaviour
                 continue;
             }
             //set up orientation mode of weapon
-            weapon.currentOrientationMode = orientationMode;
+            weapon.CurrentOrientationMode = orientationMode;
 
             //check symmetry score and if weapon should use mirror symmetry instantiate new weapon object
             GameObject mirrorWeaponObj = null;
@@ -990,7 +983,7 @@ public class GeneratorScript : MonoBehaviour
             SpriteRenderer mirrorsr = null;
             bool mirroringWeapon = false;
 
-            if (symmetryValue >= mirrorSymmetryMin * symmetryMax && symmetryValue < mirrorSymmetryMax * symmetryMax)
+            if (symmetryValue >= mirrorSymmetryMin * symmetryProbMax && symmetryValue < mirrorSymmetryMax * symmetryProbMax)
             {
                 mirroringWeapon = true;
                 mirrorWeaponObj = Instantiate(weaponPrefab, bossObj.transform);
@@ -1009,7 +1002,7 @@ public class GeneratorScript : MonoBehaviour
                 mirrorsr.gameObject.AddComponent<PolygonCollider2D>();
                 mirrorsr.gameObject.GetComponent<PolygonCollider2D>().isTrigger = true;
                 //set weapon orientation mode
-                mirrorWeapon.currentOrientationMode = orientationMode;
+                mirrorWeapon.CurrentOrientationMode = orientationMode;
             }
 
             weaponPositioningProcessComplete = false;
@@ -1134,14 +1127,12 @@ public class GeneratorScript : MonoBehaviour
     {
         bool attackPicked = false;
         int count = 0;
-        int attackTypeValue;
         int attackTypeIndex;
         int bossTypeMask = 1 << (int)bossType.typeName;
 
         do
         {
-            attackTypeValue = rand.Next(0, attackTypeMax);
-            attackTypeIndex = (int)(attackTypeValue / (float)weaponTypeMax * generatableAttackTypes.Length);
+            attackTypeIndex = rand.Next(0, generatableAttackTypes.Length);
             attackType = (IAttackType)Instantiate(generatableAttackTypes[attackTypeIndex]);
 
             if (attackType == null)
@@ -1169,14 +1160,12 @@ public class GeneratorScript : MonoBehaviour
     {
         bool weaponLocated = false;
         int count = 0;
-        int weaponValue;
         int weaponIndex;
         int weaponOrientationMask;
         
         do
         {
-            weaponValue = rand.Next(0, attackWeaponMax);
-            weaponIndex = (int)(weaponValue / (float)attackWeaponMax * bossWeapons.Count);
+            weaponIndex = rand.Next(0, bossWeapons.Count);
 
             weapon = bossWeapons[weaponIndex];
 
@@ -1185,7 +1174,7 @@ public class GeneratorScript : MonoBehaviour
                 continue;
             }
 
-            weaponOrientationMask = 1 << (int)weapon.currentOrientationMode;
+            weaponOrientationMask = 1 << (int)weapon.CurrentOrientationMode;
 
             count++;
             if (((int)attack.GetRequiredWeaponTypes() & weaponOrientationMask) == weaponOrientationMask)
@@ -1206,7 +1195,7 @@ public class GeneratorScript : MonoBehaviour
     {
         //TODO tie into boss difficulty
         //minimum quantity is largest of number of weapons or 1
-        attackQuantity = rand.Next(Mathf.Max(bossWeapons.Count, 1), 11);
+        attackQuantity = rand.Next(Mathf.Max(bossWeapons.Count, 1), attackQuantityMax);
         Debug.Log("Attack Quantity: " + attackQuantity);
 
         for (int i = 0; i < attackQuantity; i++)
@@ -1254,8 +1243,7 @@ public class GeneratorScript : MonoBehaviour
             Debug.Log("Attack Pattern Length: " + attackPatternLength);
             for (int i = 0; i < attackPatternLength; i++)
             {
-                int attack = (int)(rand.Next(0, attackTypeMax) / (float)attackTypeMax * bossAttackTypes.Count);
-
+                int attack = rand.Next(0, bossAttackTypes.Count);
                 bossAttackPattern.Add(bossAttackTypes[attack]);
             }
         }

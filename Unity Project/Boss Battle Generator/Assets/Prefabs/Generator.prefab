@@ -240,15 +240,12 @@ MonoBehaviour:
   bossTypeMax: 100
   symmetryMax: 100
   shapeComplexityMax: 100
-  shapeMax: 100
   perlinColorScaleMin: 25
   perlinColorScaleMax: 500
-  weaponQuantityMax: 100
-  weaponTypeMax: 100
-  weaponOrientationMax: 100
-  attackQuantityMax: 100
-  attackTypeMax: 100
-  attackWeaponMax: 100
+  weaponQuantityProbMax: 100
+  attackQuantityMax: 10
+  attackPatternLengthMin: 1
+  attackPatternLengthMax: 15
   bossTypeVariables:
   - typeName: 1
     spriteComplexityCurve:

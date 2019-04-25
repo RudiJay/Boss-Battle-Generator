@@ -260,6 +260,7 @@ public class GeneratorScript : MonoBehaviour
         if (bossSprite && !generationInProgress)
         {
             StopBossDemonstration();
+            ProjectileManager.Instance.DisableAllProjectiles();
 
             bossGeneration = GenerationProcess(generateNewSeed);
 

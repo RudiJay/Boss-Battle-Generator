@@ -20,16 +20,31 @@ public class ProjectileLogic : MonoBehaviour
             rb.AddForce(-transform.up * 100);
         }
 
-        Invoke("DestroyProjectile", selfDestructTime);
+        Invoke("DisableProjectile", selfDestructTime);
+    }
+
+    private void OnEnable()
+    {
+        if (rb != null)
+        {
+            rb.AddForce(-transform.up * 100);
+        }
+
+        Invoke("DisableProjectile", selfDestructTime);
+    }
+
+    private void OnDisable()
+    {
+        CancelInvoke("DisableProjectile");
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        DestroyProjectile();
+        DisableProjectile();
     }
 
-    private void DestroyProjectile()
+    private void DisableProjectile()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

@@ -287,6 +287,7 @@ public class GeneratorScript : MonoBehaviour
 
         spriteGenerationComplete = false;
         weaponGenerationComplete = false;
+        attackGenerationComplete = false;
 
         GeneratorUI.Instance.ToggleGeneratingInProgressLabel(true);
 
@@ -1238,7 +1239,8 @@ public class GeneratorScript : MonoBehaviour
     {
         if (bossAttackTypes.Count > 0)
         {
-            int attackPatternLength = rand.Next(attackPatternLengthMin, attackPatternLengthMax);
+            //minimum pattern length if highest of set minimum and attack quantity
+            int attackPatternLength = rand.Next(Mathf.Max(attackQuantity, attackPatternLengthMin), attackPatternLengthMax);
 
             Debug.Log("Attack Pattern Length: " + attackPatternLength);
             for (int i = 0; i < attackPatternLength; i++)

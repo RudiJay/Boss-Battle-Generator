@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bcef602d7588eba4494d86bcae410e68, type: 3}
-  m_Name: QuadOmniShot
+  m_Name: QuadBurst
   m_EditorClassIdentifier: 
-  requiredWeaponTypes: 0
-  compatibleBossTypes: 0
-  projectilesPerShot: 1
-  projectileShotSpread: 30
-  projectileObj: {fileID: 0}
+  requiredWeaponTypes: 32
+  compatibleBossTypes: 60
+  projectilesPerShot: 4
+  projectileShotSpread: 90
+  projectileObj: {fileID: 7902893971006019126, guid: 49244084617b64148bde0b9b6d35b199,
+    type: 3}

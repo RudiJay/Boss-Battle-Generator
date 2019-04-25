@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bcef602d7588eba4494d86bcae410e68, type: 3}
-  m_Name: SingleFourShot
+  m_Name: QuadStraightShot
   m_EditorClassIdentifier: 
   requiredWeaponTypes: 31
   compatibleBossTypes: 60

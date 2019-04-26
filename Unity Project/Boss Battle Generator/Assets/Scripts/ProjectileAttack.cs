@@ -92,8 +92,8 @@ public class ProjectileAttack : ScriptableObject, IAttackType
         {
             GameObject projectile = ProjectileManager.Instance.GetProjectileObject();
 
-            projectile.transform.position = source.transform.position;
-            projectile.transform.rotation = source.transform.rotation * Quaternion.Euler(0, 0, firingAngle);
+            projectile.transform.position = source.attackSource.position;
+            projectile.transform.rotation = source.attackSource.rotation * Quaternion.Euler(0, 0, firingAngle);
             projectile.SetActive(true);
         }
     }

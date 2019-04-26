@@ -8,13 +8,17 @@ public class Weapon : MonoBehaviour
 {
     [SerializeField]
     private WeaponOrientationMode currentOrientationMode;
+
+    public Transform pivotPoint;
+    public Transform attackSource;
+
+    public Weapon mirrorPair { get; set; }
+
     public WeaponOrientationMode CurrentOrientationMode
     {
         get { return currentOrientationMode; }
         set { currentOrientationMode = value; }
     }
-
-    public Weapon mirrorPair { get; set; }
 
     private bool isCollidingWithOtherWeapon = false;
 

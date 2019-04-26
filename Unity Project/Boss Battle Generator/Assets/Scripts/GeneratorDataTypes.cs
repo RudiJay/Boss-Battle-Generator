@@ -119,6 +119,9 @@ public struct WeaponType
 
     public float size;
 
+    public Vector3 spritePivotPointOffset;
+    public Vector3 attackSourcePositionOffset;
+
     [EnumFlags]
     public WeaponOrientationMode availableWeaponOrientations;
 

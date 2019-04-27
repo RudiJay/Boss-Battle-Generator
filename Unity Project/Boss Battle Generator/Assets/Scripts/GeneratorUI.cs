@@ -14,6 +14,9 @@ public class GeneratorUI : MonoBehaviour
     private bool uiVisible = true;
 
     [SerializeField]
+    private Color textColor, highlightColor;
+
+    [SerializeField]
     private CanvasGroup canvasGroup;
 
     [SerializeField]
@@ -22,6 +25,8 @@ public class GeneratorUI : MonoBehaviour
     private InputField seedInputField;
     [SerializeField]
     private Dropdown bossTypeDropdown;
+    [SerializeField]
+    private Text currentAttackLabel, attackPatternSizeLabel;
 
     private void Awake()
     {
@@ -81,14 +86,37 @@ public class GeneratorUI : MonoBehaviour
         return (BossTypeName)bossTypeDropdown.value;
     }
 
-    public void ToggleGeneratingInProgressLabel(bool value)
+    public void SetGeneratingInProgressLabel(bool value)
     {
         generatingInProgress.enabled = value;
     }
 
-    public void UpdateSeedUI(string inSeed)
+    public void SetCurrentAttack(int value)
     {
-        seedInputField.text = inSeed;
+        currentAttackLabel.text = value.ToString();
+    }
+
+    public void SetAttackPatternSize(int value)
+    {
+        attackPatternSizeLabel.text = value.ToString();
+    }
+
+    public void SetCurrentlyDemonstratingAttacks(bool value)
+    {
+        if (value)
+        {
+            currentAttackLabel.color = highlightColor;
+        }
+        else
+        {
+            currentAttackLabel.color = textColor;
+        }
+
+    }
+
+    public void UpdateSeedUI(string seedString)
+    {
+        seedInputField.text = seedString;
     }
 
     public void SetSeed(string inString)

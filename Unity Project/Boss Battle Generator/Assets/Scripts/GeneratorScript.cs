@@ -280,6 +280,8 @@ public class GeneratorScript : MonoBehaviour
         StopCoroutine(bossDemonstration);
 
         bossDemonstrationInProgress = false;
+
+        GeneratorUI.Instance.SetCurrentlyDemonstratingAttacks(false);
     }
 
     private IEnumerator GenerationProcess(bool generateNewSeed)
@@ -290,7 +292,7 @@ public class GeneratorScript : MonoBehaviour
         weaponGenerationComplete = false;
         attackGenerationComplete = false;
 
-        GeneratorUI.Instance.ToggleGeneratingInProgressLabel(true);
+        GeneratorUI.Instance.SetGeneratingInProgressLabel(true);
 
         yield return null;
 
@@ -346,21 +348,26 @@ public class GeneratorScript : MonoBehaviour
 
         yield return null;
 
+        GeneratorUI.Instance.SetCurrentlyDemonstratingAttacks(true);
         bossDemonstrationInProgress = true;
         bossDemonstration = DemonstrateBossFightLoop();
         StartCoroutine(bossDemonstration);        
 
-        GeneratorUI.Instance.ToggleGeneratingInProgressLabel(false);
+        GeneratorUI.Instance.SetGeneratingInProgressLabel(false);
 
         generationInProgress = false;
     }
 
     private IEnumerator DemonstrateBossFightLoop()
     {
+        GeneratorUI.Instance.SetAttackPatternSize(bossAttackPattern.Count);
+
         while (true)
         {
             for (int i = 0; i < bossAttackPattern.Count; i++)
             {
+                GeneratorUI.Instance.SetCurrentAttack(i + 1);
+
                 bossAttackPattern[i].PerformAttack();
 
                 yield return bossDemonstrationDelayTime;

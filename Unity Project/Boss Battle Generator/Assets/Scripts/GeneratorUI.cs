@@ -1,8 +1,7 @@
 ﻿/* 
  * Copyright (C) 2019 Rudi Jay Prentice - All right reserved
  */
-
-using System.Collections;
+ 
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +19,8 @@ public class GeneratorUI : MonoBehaviour
     private CanvasGroup canvasGroup;
 
     [SerializeField]
+    private Button playModeButton;
+    [SerializeField]
     private Text generatingInProgress;
     [SerializeField]
     private InputField seedInputField;
@@ -36,6 +37,8 @@ public class GeneratorUI : MonoBehaviour
     private void Start()
     {
         PopulateBossTypeDropdown();
+
+        playModeButton.interactable = false;
     }
 
     public void ToggleUI()
@@ -89,6 +92,8 @@ public class GeneratorUI : MonoBehaviour
     public void SetGeneratingInProgressLabel(bool value)
     {
         generatingInProgress.enabled = value;
+
+        playModeButton.interactable = !value;
     }
 
     public void SetCurrentAttack(int value)
@@ -137,5 +142,10 @@ public class GeneratorUI : MonoBehaviour
         {
             SetSeed(seedInputField.text);
         }
+    }
+
+    public void PlayBossFight()
+    {
+        GameManager.Instance.StartBossFight();
     }
 }

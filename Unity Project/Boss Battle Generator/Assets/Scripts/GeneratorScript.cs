@@ -10,6 +10,8 @@ public class GeneratorScript : MonoBehaviour
 {
     public static GeneratorScript Instance;
 
+    public bool GeneratorActive = true;
+
     private System.Random rand;
 
     private GameObject bossObj;
@@ -160,28 +162,31 @@ public class GeneratorScript : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("GenerateBoss"))
+        if (GeneratorActive)
         {
-            GenerateBossFight(true);
-        }
-
-        if (Input.GetButtonDown("ToggleUI"))
-        {
-            GeneratorUI.Instance.ToggleUI();
-        }
-
-        //Toggle auto generate input
-        if (Input.GetButtonDown("ToggleAutoGenerate"))
-        {
-            isAutoGenerating = !isAutoGenerating;
-
-            if (isAutoGenerating)
+            if (Input.GetButtonDown("GenerateBoss"))
             {
-                StartCoroutine(autoGenerator);
+                GenerateBossFight(true);
             }
-            else
+
+            if (Input.GetButtonDown("ToggleUI"))
             {
-                StopCoroutine(autoGenerator);
+                GeneratorUI.Instance.ToggleUI();
+            }
+
+            //Toggle auto generate input
+            if (Input.GetButtonDown("ToggleAutoGenerate"))
+            {
+                isAutoGenerating = !isAutoGenerating;
+
+                if (isAutoGenerating)
+                {
+                    StartCoroutine(autoGenerator);
+                }
+                else
+                {
+                    StopCoroutine(autoGenerator);
+                }
             }
         }
     }
@@ -287,7 +292,7 @@ public class GeneratorScript : MonoBehaviour
     private IEnumerator GenerationProcess(bool generateNewSeed)
     {
         generationInProgress = true;
-
+        
         spriteGenerationComplete = false;
         weaponGenerationComplete = false;
         attackGenerationComplete = false;
@@ -354,6 +359,8 @@ public class GeneratorScript : MonoBehaviour
         StartCoroutine(bossDemonstration);        
 
         GeneratorUI.Instance.SetGeneratingInProgressLabel(false);
+
+        yield return null;
 
         generationInProgress = false;
     }

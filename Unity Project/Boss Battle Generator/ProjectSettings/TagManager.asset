@@ -9,6 +9,7 @@ TagManager:
   - SnapshotSpriteObj
   - Weapon
   - Background
+  - Generator
   layers:
   - Default
   - TransparentFX

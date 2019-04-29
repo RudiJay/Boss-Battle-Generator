@@ -249,11 +249,14 @@ public class GeneratorScript : MonoBehaviour
     /// <param name="inSeed">the number to set the seed to</param>
     public void SetSeed(int inSeed)
     {
-        seed = inSeed;
+        if (seed != inSeed)
+        {
+            seed = inSeed;
 
-        rand = new System.Random(seed);
+            rand = new System.Random(seed);
 
-        GenerateBossFight(false);
+            GenerateBossFight(false);
+        }
     }
 
     /// <summary>

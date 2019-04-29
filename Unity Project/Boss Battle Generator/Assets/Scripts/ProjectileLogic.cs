@@ -17,7 +17,7 @@ public class ProjectileLogic : MonoBehaviour
 
         if (rb != null)
         {
-            rb.AddForce(-transform.up * 100);
+            rb.AddForce(transform.up * 100);
         }
 
         Invoke("DisableProjectile", selfDestructTime);

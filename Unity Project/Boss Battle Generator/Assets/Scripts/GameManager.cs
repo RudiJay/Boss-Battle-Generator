@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
     private bool generatorActive;
 
     private bool modeTransitionInProgress = false;
+    
+    [SerializeField]
+    private Transform bossSpawn;
 
     [SerializeField]
     private GameObject playerPrefab;
@@ -27,6 +30,7 @@ public class GameManager : MonoBehaviour
     private float camMoveTime = 1.0f;
 
     private PlayerController player;
+    private GameObject boss;
 
     private void Awake()
     {
@@ -35,6 +39,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        boss = GameObject.FindWithTag("Boss");
+        boss.transform.position = bossSpawn.position;
+
         generatorActive = true;
 
         generatorCamLocation = GameObject.FindWithTag("Generator").transform;
@@ -113,7 +120,7 @@ public class GameManager : MonoBehaviour
 
     public void StartBossFight()
     {
-        if (!modeTransitionInProgress)
+        if (!modeTransitionInProgress && generatorActive)
         {
             StartCoroutine(BossFightStartSequence());
         }
@@ -143,7 +150,7 @@ public class GameManager : MonoBehaviour
 
     public void ExitPlayMode()
     {
-        if (!modeTransitionInProgress)
+        if (!modeTransitionInProgress && !generatorActive)
         {
             StartCoroutine(EnterGeneratorSequence());
         }
@@ -164,6 +171,8 @@ public class GameManager : MonoBehaviour
         {
             yield return null;
         }
+
+        boss.transform.position = bossSpawn.position;
 
         GeneratorUI.Instance.ShowUI();
 

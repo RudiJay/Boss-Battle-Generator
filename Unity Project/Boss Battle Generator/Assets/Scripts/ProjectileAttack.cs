@@ -83,7 +83,7 @@ public class ProjectileAttack : ScriptableObject, IAttackType
             firingAngle += projectileShotSpread / 2.0f;
         }
 
-        return firingAngle;
+        return firingAngle + 180.0f;
     }
 
     private void FireProjectile(Weapon source, float firingAngle)
@@ -100,7 +100,7 @@ public class ProjectileAttack : ScriptableObject, IAttackType
             }
             else
             {
-                Debug.Log("ERROR: AvailableProjectileNotFound");
+                Debug.Log("ERROR: Available Projectile Not Found");
             }
         }
     }

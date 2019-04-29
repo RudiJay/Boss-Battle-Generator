@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float playerSpeed;
 
+    [SerializeField]
+    private Transform projectileSource;
+
     private float camBorderHeight;
     private float camBorderWidth;
     private Vector3 camPosition;
@@ -31,7 +34,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetButtonDown("Fire1"))
             {
-                
+                FireProjectile();
             }
         }
     }
@@ -48,5 +51,21 @@ public class PlayerController : MonoBehaviour
         rigidbody.position = new Vector3(
             Mathf.Clamp(rigidbody.position.x, camPosition.x - camBorderWidth, camPosition.x + camBorderWidth),
             Mathf.Clamp(rigidbody.position.y, camPosition.y - camBorderHeight, camPosition.y + camBorderHeight), 0.0f);
+    }
+
+    private void FireProjectile()
+    {
+        GameObject projectile = ProjectileManager.Instance.GetProjectileObject();
+
+        if (projectile != null)
+        {
+            projectile.transform.position = projectileSource.position;
+            projectile.transform.rotation = projectileSource.rotation;
+            projectile.SetActive(true);
+        }
+        else
+        {
+            Debug.Log("ERROR: Available Projectile Not Found");
+        }
     }
 }

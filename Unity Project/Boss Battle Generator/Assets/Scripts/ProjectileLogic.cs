@@ -40,10 +40,8 @@ public class ProjectileLogic : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("BU");
         if (other.tag == "Player")
         {
-            Debug.Log("BFHDHS");
             DisableProjectile();
         }
     }

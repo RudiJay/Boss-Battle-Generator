@@ -887,7 +887,7 @@ public class GeneratorScript : MonoBehaviour
 
             ySeed = rand.Next((int)(-weaponYLimit * 100), (int)(weaponYLimit * 100));
 
-            weaponTransform.position = new Vector3(xSeed / 100.0f, ySeed / 100.0f, -1f) + bossObj.transform.position;
+            weaponTransform.position = new Vector3(xSeed / 100.0f, ySeed / 100.0f, 0.0f) + bossObj.transform.position;
 
             //if a raycast does not hit the boss sprite collider from this weapon position, try again
             if (!Physics2D.Raycast(weaponTransform.position, weaponTransform.forward, 1000, bossSpriteLayer) && !weaponPositionFound)
@@ -909,7 +909,7 @@ public class GeneratorScript : MonoBehaviour
             {
                 mirrorXSeed = -xSeed;
 
-                mirrorWeaponTransform.position = new Vector3(mirrorXSeed / 100.0f, ySeed / 100.0f, -1f) + bossObj.transform.position;
+                mirrorWeaponTransform.position = new Vector3(mirrorXSeed / 100.0f, ySeed / 100.0f, 0.0f) + bossObj.transform.position;
 
                 if (!Physics2D.Raycast(mirrorWeaponTransform.position, mirrorWeaponTransform.forward, 1000, bossSpriteLayer) && !weaponPositionFound)
                 {

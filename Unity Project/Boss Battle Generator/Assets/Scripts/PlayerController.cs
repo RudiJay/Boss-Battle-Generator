@@ -9,10 +9,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Rigidbody2D rigidbody;
 
+    [SerializeField]
+    private float playerSpeed;
+
+    private float camBorderHeight;
+    private float camBorderWidth;
+    private Vector3 camPosition;
+
     // Start is called before the first frame update
     private void Start()
     {
-        
+        camBorderHeight = Camera.main.orthographicSize;
+        camBorderWidth = camBorderHeight * Camera.main.aspect;
+        camPosition = Camera.main.transform.position;
     }
 
     // Update is called once per frame
@@ -29,6 +38,15 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rigidbody.AddForce(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")), ForceMode2D.Force);
+        float horizontalMove = Input.GetAxis("Horizontal");
+        float verticalMove = Input.GetAxis("Vertical");
+
+        Vector3 movement = new Vector3(horizontalMove, verticalMove, 0.0f);
+        rigidbody.velocity = movement.normalized * playerSpeed;
+
+        //clamp player position
+        rigidbody.position = new Vector3(
+            Mathf.Clamp(rigidbody.position.x, camPosition.x - camBorderWidth, camPosition.x + camBorderWidth),
+            Mathf.Clamp(rigidbody.position.y, camPosition.y - camBorderHeight, camPosition.y + camBorderHeight), 0.0f);
     }
 }

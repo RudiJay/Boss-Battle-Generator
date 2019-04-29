@@ -38,9 +38,14 @@ public class ProjectileLogic : MonoBehaviour
         CancelInvoke("DisableProjectile");
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        DisableProjectile();
+        Debug.Log("BU");
+        if (other.tag == "Player")
+        {
+            Debug.Log("BFHDHS");
+            DisableProjectile();
+        }
     }
 
     private void DisableProjectile()

@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 317707579301992269}
   - component: {fileID: 317707579301992268}
   - component: {fileID: 317707579301992259}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Sprite
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68,7 +68,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 4e2fa0a1ac37783418c02a03d63eae14, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -117,9 +117,9 @@ GameObject:
   - component: {fileID: 317707579931403553}
   - component: {fileID: 3954122971027451825}
   - component: {fileID: 2878146651819891537}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,7 +147,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 317707579931403554}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -174,3 +174,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InputEnabled: 0
   rigidbody: {fileID: 3954122971027451825}
+  playerSpeed: 3

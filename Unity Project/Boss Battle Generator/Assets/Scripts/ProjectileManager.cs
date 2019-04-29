@@ -7,7 +7,7 @@ public class ProjectileManager : MonoBehaviour
     public static ProjectileManager Instance;
 
     [SerializeField]
-    private int projectilePoolSize;
+    private int projectilePoolSize = 100;
 
     [SerializeField]
     private GameObject projectilePrefab;
@@ -34,17 +34,20 @@ public class ProjectileManager : MonoBehaviour
 
     public GameObject GetProjectileObject()
     {
-        if (!projectilePool[listIndex].activeInHierarchy)
+        for (int i = 0; i < projectilePool.Count; i++)
         {
-            GameObject projectile = projectilePool[listIndex];
-
-            listIndex++;
-            if (listIndex >= projectilePool.Count)
+            if (!projectilePool[listIndex].activeInHierarchy)
             {
-                listIndex = 0;
-            }
+                GameObject projectile = projectilePool[listIndex];
 
-            return projectile;
+                listIndex++;
+                if (listIndex >= projectilePool.Count)
+                {
+                    listIndex = 0;
+                }
+
+                return projectile;
+            }
         }
 
         Debug.Log("inactive projectile not found");

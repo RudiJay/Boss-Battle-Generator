@@ -127,14 +127,14 @@ public class GameManager : MonoBehaviour
 
         GeneratorUI.Instance.HideUI();
 
-        CreatePlayer();
-
         StartCoroutine(CameraTransition(battleCamLocation, battleCamSize));
 
         while (movingCamera)
         {
             yield return null;
         }
+
+        CreatePlayer();
 
         SetPlayerInputEnabled(true);
 

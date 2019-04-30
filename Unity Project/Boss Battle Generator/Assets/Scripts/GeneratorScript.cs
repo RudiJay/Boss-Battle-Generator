@@ -300,7 +300,7 @@ public class GeneratorScript : MonoBehaviour
         weaponGenerationComplete = false;
         attackGenerationComplete = false;
 
-        GeneratorUI.Instance.SetGeneratingInProgressLabel(true);
+        GeneratorUI.Instance.SetGeneratingInProgressLabelEnabled(true);
 
         yield return null;
 
@@ -361,7 +361,7 @@ public class GeneratorScript : MonoBehaviour
         bossDemonstration = DemonstrateBossFightLoop();
         StartCoroutine(bossDemonstration);        
 
-        GeneratorUI.Instance.SetGeneratingInProgressLabel(false);
+        GeneratorUI.Instance.SetGeneratingInProgressLabelEnabled(false);
 
         yield return null;
 

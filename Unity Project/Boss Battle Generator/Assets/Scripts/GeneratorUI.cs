@@ -16,12 +16,14 @@ public class GeneratorUI : MonoBehaviour
     private Color textColor, highlightColor;
 
     [SerializeField]
-    private CanvasGroup canvasGroup;
+    private CanvasGroup generationModeCanvasGroup;
 
     [SerializeField]
     private Button playModeButton;
     [SerializeField]
     private Text generatingInProgress;
+    [SerializeField]
+    private Text exitPlayModePrompt;
     [SerializeField]
     private InputField seedInputField;
     [SerializeField]
@@ -57,14 +59,14 @@ public class GeneratorUI : MonoBehaviour
 
     public void HideUI()
     {
-        canvasGroup.alpha = 0.0f;
-        canvasGroup.blocksRaycasts = false;
+        generationModeCanvasGroup.alpha = 0.0f;
+        generationModeCanvasGroup.blocksRaycasts = false;
     }
 
     public void ShowUI()
     {
-        canvasGroup.alpha = 1.0f;
-        canvasGroup.blocksRaycasts = true;
+        generationModeCanvasGroup.alpha = 1.0f;
+        generationModeCanvasGroup.blocksRaycasts = true;
     }
 
     public void PopulateBossTypeDropdown()
@@ -89,11 +91,16 @@ public class GeneratorUI : MonoBehaviour
         return (BossTypeName)bossTypeDropdown.value;
     }
 
-    public void SetGeneratingInProgressLabel(bool value)
+    public void SetGeneratingInProgressLabelEnabled(bool value)
     {
         generatingInProgress.enabled = value;
 
         playModeButton.interactable = !value;
+    }
+
+    public void SetExitPlayModePromptEnabled(bool value)
+    {
+        exitPlayModePrompt.enabled = value;
     }
 
     public void SetCurrentAttack(int value)

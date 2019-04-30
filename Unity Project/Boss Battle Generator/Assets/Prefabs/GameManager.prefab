@@ -83,7 +83,7 @@ MonoBehaviour:
   battleCamLocation: {fileID: 4303908473235190989}
   generatorCamSize: 5
   battleCamSize: 8
-  camMoveTime: 2
+  camMoveTime: 1.5
 --- !u!1 &4125796788920470253
 GameObject:
   m_ObjectHideFlags: 0

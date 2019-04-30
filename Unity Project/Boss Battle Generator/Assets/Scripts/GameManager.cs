@@ -145,6 +145,8 @@ public class GameManager : MonoBehaviour
 
         SetPlayerInputEnabled(true);
 
+        GeneratorUI.Instance.SetExitPlayModePromptEnabled(true);
+
         modeTransitionInProgress = false;
     }
 
@@ -159,6 +161,8 @@ public class GameManager : MonoBehaviour
     private IEnumerator EnterGeneratorSequence()
     {
         modeTransitionInProgress = true;
+
+        GeneratorUI.Instance.SetExitPlayModePromptEnabled(false);
 
         if (player != null)
         {

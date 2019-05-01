@@ -995,7 +995,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Play Boss Battle
+  m_Text: 'Test Boss Battle
 
 '
 --- !u!1 &2977018172525700112
@@ -1340,7 +1340,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Press Esc to exit Play Mode
+  m_Text: Press Esc to exit Playtest Mode
 --- !u!1 &3867899771107120994
 GameObject:
   m_ObjectHideFlags: 0

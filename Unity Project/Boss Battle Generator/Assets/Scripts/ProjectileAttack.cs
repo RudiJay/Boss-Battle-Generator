@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿/* 
+ * Copyright (C) 2019 Rudi Jay Prentice - All right reserved
+ */
+
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewProjectileAttack", menuName = "AttackTypes/ProjectileAttack")]

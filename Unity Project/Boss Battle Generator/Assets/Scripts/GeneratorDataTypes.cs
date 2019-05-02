@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/* 
+ * Copyright (C) 2019 Rudi Jay Prentice - All right reserved
+ */
+
+using UnityEngine;
 
 /// <summary>
 /// Set up enum flags attribute

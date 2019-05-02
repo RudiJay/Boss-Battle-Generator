@@ -145,9 +145,10 @@ public class GeneratorUI : MonoBehaviour
         {
             GeneratorScript.Instance.GenerateBossFight(true);
         }
-        else
+        else if (seedInputField.text.Length > 0)
         {
             SetSeed(seedInputField.text);
+            GeneratorScript.Instance.GenerateBossFight(false);            
         }
     }
 

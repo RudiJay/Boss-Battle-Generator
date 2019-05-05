@@ -13,25 +13,14 @@ public class ProjectileLogic : MonoBehaviour
     [SerializeField]
     private float selfDestructTime = 10.0f;
 
+    [SerializeField]
     private Rigidbody2D rb;
-
-    private void Start()
-    {
-        rb = gameObject.GetComponent<Rigidbody2D>();
-
-        if (rb != null)
-        {
-            rb.AddForce(transform.up * 100);
-        }
-
-        Invoke("DisableProjectile", selfDestructTime);
-    }
 
     private void OnEnable()
     {
         if (rb != null)
         {
-            rb.AddForce(-transform.up * 100);
+            rb.AddForce(transform.up * 100);
         }
 
         Invoke("DisableProjectile", selfDestructTime);

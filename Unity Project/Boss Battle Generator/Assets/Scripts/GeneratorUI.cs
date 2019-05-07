@@ -103,6 +103,12 @@ public class GeneratorUI : MonoBehaviour
         exitPlayModePrompt.enabled = value;
     }
 
+    public void ResetAttackUI()
+    {
+        currentAttackLabel.text = "0";
+        attackPatternSizeLabel.text = "?";
+    }
+
     public void SetCurrentAttack(int value)
     {
         currentAttackLabel.text = value.ToString();

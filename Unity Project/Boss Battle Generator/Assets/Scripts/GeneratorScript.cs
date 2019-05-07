@@ -307,6 +307,7 @@ public class GeneratorScript : MonoBehaviour
         //clean up potential previous boss
         ClearWeapons();
         ClearAttacks();
+        GeneratorUI.Instance.ResetAttackUI();
 
         yield return null;
 

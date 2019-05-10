@@ -40,13 +40,13 @@ public class ProjectileManager : MonoBehaviour
             {
                 GameObject projectile = projectilePool[listIndex];
 
-                listIndex++;
-                if (listIndex >= projectilePool.Count)
-                {
-                    listIndex = 0;
-                }
-
                 return projectile;
+            }
+
+            listIndex++;
+            if (listIndex >= projectilePool.Count)
+            {
+                listIndex = 0;
             }
         }
 

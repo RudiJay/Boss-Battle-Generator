@@ -21,17 +21,13 @@ public class PlayerController : MonoBehaviour
 
     private float camBorderHeight;
     private float camBorderWidth;
-    private Vector3 camPosition;
+    private Vector3 centrepoint;
 
-    // Start is called before the first frame update
     private void Start()
     {
-        camBorderHeight = Camera.main.orthographicSize;
-        camBorderWidth = camBorderHeight * Camera.main.aspect;
-        camPosition = Camera.main.transform.position;
+        
     }
 
-    // Update is called once per frame
     private void Update()
     {
         if (InputEnabled)
@@ -45,16 +41,26 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float horizontalMove = Input.GetAxis("Horizontal");
-        float verticalMove = Input.GetAxis("Vertical");
+        if (InputEnabled)
+        {
+            float horizontalMove = Input.GetAxis("Horizontal");
+            float verticalMove = Input.GetAxis("Vertical");
 
-        Vector3 movement = new Vector3(horizontalMove, verticalMove, 0.0f);
-        rigidbody.velocity = movement.normalized * playerSpeed;
+            Vector3 movement = new Vector3(horizontalMove, verticalMove, 0.0f);
+            rigidbody.velocity = movement.normalized * playerSpeed;
 
-        //clamp player position
-        rigidbody.position = new Vector3(
-            Mathf.Clamp(rigidbody.position.x, camPosition.x - camBorderWidth, camPosition.x + camBorderWidth),
-            Mathf.Clamp(rigidbody.position.y, camPosition.y - camBorderHeight, camPosition.y + camBorderHeight), 0.0f);
+            //clamp player position
+            rigidbody.position = new Vector3(
+                Mathf.Clamp(rigidbody.position.x, centrepoint.x - camBorderWidth, centrepoint.x + camBorderWidth),
+                Mathf.Clamp(rigidbody.position.y, centrepoint.y - camBorderHeight, centrepoint.y + camBorderHeight), 0.0f);
+        }
+    }
+
+    public void SetUpEdgeBoundaries(Vector3 position)
+    {
+        centrepoint = position;
+        camBorderHeight = Camera.main.orthographicSize;
+        camBorderWidth = camBorderHeight * Camera.main.aspect;
     }
 
     private void FireProjectile()

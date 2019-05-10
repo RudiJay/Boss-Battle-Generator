@@ -16,14 +16,12 @@ public class GeneratorUI : MonoBehaviour
     private Color textColor, highlightColor;
 
     [SerializeField]
-    private CanvasGroup generationModeCanvasGroup;
+    private CanvasGroup generationModeCanvasGroup, playModeCanvasGroup;
 
     [SerializeField]
     private Button playModeButton;
     [SerializeField]
     private Text generatingInProgress;
-    [SerializeField]
-    private Text exitPlayModePrompt;
     [SerializeField]
     private InputField seedInputField;
     [SerializeField]
@@ -43,30 +41,39 @@ public class GeneratorUI : MonoBehaviour
         playModeButton.interactable = false;
     }
 
-    public void ToggleUI()
+    public void ToggleGeneratorUI()
     {
         uiVisible = !uiVisible;
 
-        if (!uiVisible)
+        ShowGeneratorUI(uiVisible);
+    }
+
+    public void ShowGeneratorUI(bool value)
+    {
+        if (value)
         {
-            HideUI();
+            generationModeCanvasGroup.alpha = 1.0f;
+            generationModeCanvasGroup.blocksRaycasts = true;
         }
         else
         {
-            ShowUI();
+            generationModeCanvasGroup.alpha = 0.0f;
+            generationModeCanvasGroup.blocksRaycasts = false;
         }
     }
 
-    public void HideUI()
+    public void ShowPlayModeUI(bool value)
     {
-        generationModeCanvasGroup.alpha = 0.0f;
-        generationModeCanvasGroup.blocksRaycasts = false;
-    }
-
-    public void ShowUI()
-    {
-        generationModeCanvasGroup.alpha = 1.0f;
-        generationModeCanvasGroup.blocksRaycasts = true;
+        if (value)
+        {
+            playModeCanvasGroup.alpha = 1.0f;
+            playModeCanvasGroup.blocksRaycasts = true;
+        }
+        else
+        {
+            playModeCanvasGroup.alpha = 0.0f;
+            playModeCanvasGroup.blocksRaycasts = false;
+        }
     }
 
     public void PopulateBossTypeDropdown()
@@ -96,11 +103,6 @@ public class GeneratorUI : MonoBehaviour
         generatingInProgress.enabled = value;
 
         playModeButton.interactable = !value;
-    }
-
-    public void SetExitPlayModePromptEnabled(bool value)
-    {
-        exitPlayModePrompt.enabled = value;
     }
 
     public void ResetAttackUI()

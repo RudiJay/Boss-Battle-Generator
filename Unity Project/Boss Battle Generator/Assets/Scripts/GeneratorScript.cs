@@ -180,7 +180,7 @@ public class GeneratorScript : MonoBehaviour
 
             if (Input.GetButtonDown("ToggleUI"))
             {
-                GeneratorUI.Instance.ToggleUI();
+                GeneratorUI.Instance.ToggleGeneratorUI();
             }
 
             //Toggle auto generate input

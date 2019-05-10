@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 953644342780748383}
   - component: {fileID: 953644342780748382}
   - component: {fileID: 6517878175400826900}
+  - component: {fileID: 2119550250630632731}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Boss
@@ -148,3 +149,15 @@ MonoBehaviour:
   weaponPoolSize: 20
   weaponPrefab: {fileID: 6663881351590808801, guid: 907643923dc0e2644b1d692852f2fed4,
     type: 3}
+--- !u!114 &2119550250630632731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953644342780748380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9513c952ad416d41bba76ddcb21e8d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

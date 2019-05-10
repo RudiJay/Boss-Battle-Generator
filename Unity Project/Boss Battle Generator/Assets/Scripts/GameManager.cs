@@ -189,18 +189,20 @@ public class GameManager : MonoBehaviour
 
         SetGeneratorActive(false);
 
-        GeneratorUI.Instance.HideUI();
+        GeneratorUI.Instance.ShowGeneratorUI(false);
 
-        GeneratorUI.Instance.SetExitPlayModePromptEnabled(true);
+        GeneratorUI.Instance.ShowPlayModeUI(true);
 
         StartCoroutine(CameraTransition(battleCamLocation, battleCamSize));
+
+        EnablePlayer();
 
         while (movingCamera)
         {
             yield return null;
         }
 
-        EnablePlayer();
+        playerController.SetUpEdgeBoundaries(battleCamLocation.position);
 
         SetPlayerInputEnabled(true);
 
@@ -220,12 +222,7 @@ public class GameManager : MonoBehaviour
     {
         modeTransitionInProgress = exitingPlayMode = true;
 
-        GeneratorUI.Instance.SetExitPlayModePromptEnabled(false);
-
-        if (player != null)
-        {
-            DisablePlayer();
-        }
+        GeneratorUI.Instance.ShowPlayModeUI(false);
 
         StartCoroutine(CameraTransition(generatorCamLocation, generatorCamSize));
 
@@ -234,9 +231,11 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
+        DisablePlayer();
+
         boss.transform.position = bossSpawn.position;
 
-        GeneratorUI.Instance.ShowUI();
+        GeneratorUI.Instance.ShowGeneratorUI(true);
 
         SetGeneratorActive(true);
 

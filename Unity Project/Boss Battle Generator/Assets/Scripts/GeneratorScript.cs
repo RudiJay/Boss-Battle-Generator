@@ -10,7 +10,7 @@ public class GeneratorScript : MonoBehaviour
 {
     public static GeneratorScript Instance;
 
-    public bool GeneratorActive = true;
+    private bool generatorActive = true;
 
     private System.Random rand;
 
@@ -120,6 +120,11 @@ public class GeneratorScript : MonoBehaviour
     private List<IAttackType> bossAttackPattern;
     private int attackQuantity = 3;
 
+    public void CheckGeneratorActive()
+    {
+        generatorActive = GameManager.Instance.GetGeneratorActive();
+    }
+
     private void Awake()
     {
         //initialise singleton pattern
@@ -128,6 +133,10 @@ public class GeneratorScript : MonoBehaviour
 
     private void Start()
     {
+        CheckGeneratorActive();
+        //apply as listener to generator activation on gamemanager
+        GameManager.Instance.RegisterAsGeneratorListener(CheckGeneratorActive);
+
         //initialise references
         rand = new System.Random();
 
@@ -162,7 +171,7 @@ public class GeneratorScript : MonoBehaviour
 
     private void Update()
     {
-        if (GeneratorActive)
+        if (generatorActive)
         {
             if (Input.GetButtonDown("GenerateBoss"))
             {

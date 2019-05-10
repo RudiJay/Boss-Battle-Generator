@@ -2,6 +2,7 @@
  * Copyright (C) 2019 Rudi Jay Prentice - All right reserved
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    private bool generatorActive;
+    private bool generatorActive = true;
+    private static List<Action> generatorListeners;
 
     private bool modeTransitionInProgress = false;
     private bool exitingPlayMode = false;
@@ -68,10 +70,44 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void RegisterAsGeneratorListener(Action actionToRegister)
+    {
+        if (generatorListeners == null)
+        {
+            generatorListeners = new List<Action>();
+        }
+
+        generatorListeners.Add(actionToRegister);
+    }
+
+    public void DeregisterAsGeneratorListener(Action actionToDeregister)
+    {
+        if (generatorListeners.Contains(actionToDeregister))
+        {
+            generatorListeners.Remove(actionToDeregister);
+        }
+    }
+
+    private void UpdateGeneratorListeners()
+    {
+        if (generatorListeners != null)
+        {
+            foreach (Action listener in generatorListeners)
+            {
+                listener();
+            }
+        }
+    }
+
     public void SetGeneratorActive(bool value)
     {
         generatorActive = value;
-        GeneratorScript.Instance.GeneratorActive = value;
+        UpdateGeneratorListeners();
+    }
+
+    public bool GetGeneratorActive()
+    {
+        return generatorActive;
     }
 
     private IEnumerator CameraTransition(Transform targetLocation, float targetSize)

@@ -143,7 +143,7 @@ MonoBehaviour:
   attackSource: {fileID: 8907273495315690600}
   fakeTarget: {fileID: 288365106590931023}
   randomiseSwivelThreshold: 5
-  rotationSpeed: 1
+  rotationSpeed: 2.5
 --- !u!50 &2356973522992522243
 Rigidbody2D:
   serializedVersion: 4

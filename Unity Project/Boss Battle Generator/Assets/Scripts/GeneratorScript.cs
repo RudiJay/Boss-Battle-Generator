@@ -1109,12 +1109,24 @@ public class GeneratorScript : MonoBehaviour
             {
                 case WeaponOrientationMode.FIXEDFORWARD:
                 case WeaponOrientationMode.NONORIENTED:
+                    weapon.SetWeaponRotation(0);
+                    break;
                 case WeaponOrientationMode.ROTATABLE:
-                    weapon.SetRotatable();
+                    weapon.SetWeaponRotation(0);
+                    weapon.SetRotatable(false);
 
                     if (mirroringWeapon)
                     {
-                        mirrorWeapon.SetRotatable();
+                        mirrorWeapon.SetRotatable(false);
+                    }
+                    break;
+                case WeaponOrientationMode.TRACKSPLAYER:
+                    weapon.SetWeaponRotation(0);
+                    weapon.SetRotatable(true);
+
+                    if (mirroringWeapon)
+                    {
+                        mirrorWeapon.SetRotatable(true);
                     }
                     break;
                 case WeaponOrientationMode.FIXEDSIDEWAYS:

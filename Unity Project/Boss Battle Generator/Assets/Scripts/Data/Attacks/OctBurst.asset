@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcef602d7588eba4494d86bcae410e68, type: 3}
   m_Name: OctBurst
   m_EditorClassIdentifier: 
-  requiredWeaponTypes: 32
+  requiredWeaponTypes: 64
   compatibleBossTypes: 60
   projectilesPerShot: 8
   projectileShotSpread: 45

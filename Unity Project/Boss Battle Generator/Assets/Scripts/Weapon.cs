@@ -27,7 +27,7 @@ public class Weapon : MonoBehaviour
     private float randomiseSwivelThreshold = 5f;
 
     [SerializeField]
-    private float rotationSpeed = 1.0f;
+    private float rotationSpeed = 2.5f, trackPlayerSpeed = 5f;
 
     public Weapon mirrorPair { get; set; }
 
@@ -60,6 +60,13 @@ public class Weapon : MonoBehaviour
         //apply as listener to generator activation on gamemanager
         GameManager.Instance.RegisterAsGeneratorListener(CheckGeneratorActive);
 
+        if (target == null)
+        {
+            target = GameManager.Instance.GetPlayerTransform();
+        }
+
+        mirrorPair = null;
+
         pivot.rotation = Quaternion.identity;
         rotatable = false;
         tracksPlayer = false;
@@ -68,7 +75,6 @@ public class Weapon : MonoBehaviour
 
     private void OnDisable()
     {
-        mirrorPair = null;
         GameManager.Instance.DeregisterAsGeneratorListener(CheckGeneratorActive);        
     }
 
@@ -77,14 +83,14 @@ public class Weapon : MonoBehaviour
         if (rotatable)
         {
             float targetAngle = 0.0f;
-            float rotationStrength = Mathf.Min(rotationSpeed * Time.deltaTime, 1);
+            float speed = 0.0f;
 
             Vector3 dir = Vector3.zero;
 
             if (generatorActive || !tracksPlayer)
             {
+                speed = rotationSpeed;
                 dir = fakeTarget.position - pivot.position;
-                targetAngle = Vector3.SignedAngle(Vector3.down, dir, Vector3.forward);
 
                 float targetDelta = Vector3.Angle(-pivot.up, dir);
 
@@ -93,6 +99,15 @@ public class Weapon : MonoBehaviour
                     RandomiseFakeTargetPosition();
                 }
             }
+            else if (!generatorActive && tracksPlayer && target != null)
+            {
+                speed = trackPlayerSpeed;
+                dir = target.position - pivot.position;
+            }
+
+            float rotationStrength = Mathf.Min(speed * Time.deltaTime, 1);
+
+            targetAngle = Vector3.SignedAngle(Vector3.down, dir, Vector3.forward);
 
             Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
 

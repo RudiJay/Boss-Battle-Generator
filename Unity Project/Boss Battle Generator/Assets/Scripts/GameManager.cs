@@ -36,8 +36,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private float camMoveTime = 1.0f;
 
-    private PlayerController player;
     private GameObject boss;
+
+    private GameObject player;
+    private PlayerController playerController;
+    
 
     private void Awake()
     {
@@ -57,6 +60,9 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("ERROR: Generator Location not found");
         }
+
+        player = Instantiate(playerPrefab);
+        playerController = player.GetComponent<PlayerController>();
     }
 
     private void Update()
@@ -110,6 +116,16 @@ public class GameManager : MonoBehaviour
         return generatorActive;
     }
 
+    public Transform GetPlayerTransform()
+    {
+        if (player != null)
+        {
+            return player.transform;
+        }
+
+        return null;
+    }
+
     private IEnumerator CameraTransition(Transform targetLocation, float targetSize)
     {
         movingCamera = true;
@@ -140,23 +156,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void CreatePlayer()
-    {
-        GameObject playerRef = Instantiate(playerPrefab, playerSpawn.position, playerSpawn.rotation);
-        player = playerRef.GetComponent<PlayerController>();
-    }
-
     private void SetPlayerInputEnabled(bool value)
     {
-        if (player != null)
+        if (playerController != null)
         {
-            player.InputEnabled = value;
+            playerController.InputEnabled = value;
         }
     }
 
-    private void DestroyPlayer()
+    private void EnablePlayer()
     {
-        Destroy(player.gameObject);
+        player.transform.SetPositionAndRotation(playerSpawn.position, playerSpawn.rotation);
+        player.SetActive(true);
+    }
+
+    private void DisablePlayer()
+    {
+        player.SetActive(false);
     }
 
     public void StartBossFight()
@@ -184,7 +200,7 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        CreatePlayer();
+        EnablePlayer();
 
         SetPlayerInputEnabled(true);
 
@@ -208,7 +224,7 @@ public class GameManager : MonoBehaviour
 
         if (player != null)
         {
-            DestroyPlayer();
+            DisablePlayer();
         }
 
         StartCoroutine(CameraTransition(generatorCamLocation, generatorCamSize));

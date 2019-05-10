@@ -62,6 +62,7 @@ public enum WeaponOrientationMode
     FIXEDOTHERFORWARDS,
     FIXEDOTHER,
     ROTATABLE,
+    TRACKSPLAYER,
     NONORIENTED
 }
 

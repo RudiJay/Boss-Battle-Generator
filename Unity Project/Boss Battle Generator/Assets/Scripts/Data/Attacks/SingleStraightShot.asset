@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcef602d7588eba4494d86bcae410e68, type: 3}
   m_Name: SingleStraightShot
   m_EditorClassIdentifier: 
-  requiredWeaponTypes: 31
+  requiredWeaponTypes: 63
   compatibleBossTypes: 60
   projectilesPerShot: 1
   projectileShotSpread: 30

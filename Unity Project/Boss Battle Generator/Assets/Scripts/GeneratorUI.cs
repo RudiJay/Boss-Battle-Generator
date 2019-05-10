@@ -29,7 +29,7 @@ public class GeneratorUI : MonoBehaviour
     [SerializeField]
     private Dropdown bossTypeDropdown;
     [SerializeField]
-    private Text currentAttackLabel, attackPatternSizeLabel;
+    private Text attackQuantityLabel, currentAttackLabel, attackPatternSizeLabel;
 
     private void Awake()
     {
@@ -105,8 +105,15 @@ public class GeneratorUI : MonoBehaviour
 
     public void ResetAttackUI()
     {
+        attackQuantityLabel.text = "?";
+
         currentAttackLabel.text = "0";
         attackPatternSizeLabel.text = "?";
+    }
+
+    public void SetAttackQuantity(int value)
+    {
+        attackQuantityLabel.text = value.ToString();
     }
 
     public void SetCurrentAttack(int value)

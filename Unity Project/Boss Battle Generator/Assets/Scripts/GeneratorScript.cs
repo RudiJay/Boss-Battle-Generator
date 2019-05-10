@@ -353,6 +353,8 @@ public class GeneratorScript : MonoBehaviour
             yield return null;
         }
 
+        GeneratorUI.Instance.SetAttackQuantity(attackQuantity);
+
         GenerateAttackPattern();
 
         yield return null;
@@ -1224,15 +1226,18 @@ public class GeneratorScript : MonoBehaviour
         //TODO tie into boss difficulty
         //minimum quantity is largest of number of weapons or 1
         attackQuantity = rand.Next(Mathf.Max(bossWeapons.Count, 1), attackQuantityMax);
-        Debug.Log("Attack Quantity: " + attackQuantity);
+        //Debug.Log("Attack Quantity: " + attackQuantity);
 
-        for (int i = 0; i < attackQuantity; i++)
+        int iterations = attackQuantity;
+
+        for (int i = 0; i < iterations; i++)
         {
             IAttackType attackType = null;
             bool attackTypeFound = GenerateAttackType(ref attackType);
 
             if (!attackTypeFound)
             {
+                attackQuantity--;
                 continue;
             }
 
@@ -1269,7 +1274,7 @@ public class GeneratorScript : MonoBehaviour
             //minimum pattern length if highest of set minimum and attack quantity
             int attackPatternLength = rand.Next(Mathf.Max(attackQuantity, attackPatternLengthMin), attackPatternLengthMax);
 
-            Debug.Log("Attack Pattern Length: " + attackPatternLength);
+            //Debug.Log("Attack Pattern Length: " + attackPatternLength);
             for (int i = 0; i < attackPatternLength; i++)
             {
                 int attack = rand.Next(0, bossAttackTypes.Count);

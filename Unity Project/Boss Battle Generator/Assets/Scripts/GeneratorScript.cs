@@ -983,7 +983,7 @@ public class GeneratorScript : MonoBehaviour
             //set weapon size
             weaponObj.transform.localScale = new Vector3(weaponType.size, weaponType.size);
             //offset sprite to pivot
-            weapon.pivotPoint.localPosition = weaponType.spritePivotPointOffset;
+            weapon.sprite.localPosition = weaponType.spritePivotPointOffset;
             //set offset for where attack will spawn from
             weapon.attackSource.localPosition = weaponType.attackSourcePositionOffset;
             //add collider
@@ -1034,7 +1034,7 @@ public class GeneratorScript : MonoBehaviour
                 //set weapon size
                 mirrorWeaponObj.transform.localScale = new Vector3(weaponType.size, weaponType.size);
                 //offset sprite to pivot
-                mirrorWeapon.pivotPoint.localPosition = weaponType.spritePivotPointOffset;
+                mirrorWeapon.sprite.localPosition = weaponType.spritePivotPointOffset;
                 //set offset for where attack will spawn from
                 mirrorWeapon.attackSource.localPosition = weaponType.attackSourcePositionOffset;
                 //add collider

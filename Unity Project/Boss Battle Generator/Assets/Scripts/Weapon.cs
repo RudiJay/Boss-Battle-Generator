@@ -7,9 +7,11 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     private bool generatorActive = false;
+    private bool behaviourActive = false;
 
     [SerializeField]
     private WeaponOrientationMode currentOrientationMode;
+    private bool rotatable = false;
 
     [SerializeField]
     private Transform pivot;
@@ -17,7 +19,7 @@ public class Weapon : MonoBehaviour
     public Transform attackSource;
 
     private Transform target;
-    private bool trackTarget = false;
+    private bool tracksPlayer = false;
 
     [SerializeField]
     private Transform fakeTarget;
@@ -41,37 +43,45 @@ public class Weapon : MonoBehaviour
         target = value;
     }
 
+    public void SetRotatable(bool inTracksPlayer = false)
+    {
+        rotatable = true;
+        tracksPlayer = inTracksPlayer;
+    }
+
     public bool GetCollidingWithOtherWeapon()
     {
         return isCollidingWithOtherWeapon;
     }
 
-    private void Start()
+    private void OnEnable()
     {
         CheckGeneratorActive();
         //apply as listener to generator activation on gamemanager
         GameManager.Instance.RegisterAsGeneratorListener(CheckGeneratorActive);
 
+        pivot.rotation = Quaternion.identity;
+        rotatable = false;
+        tracksPlayer = false;
         isCollidingWithOtherWeapon = false;
-
-        RandomiseFakeTargetPosition();
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        GameManager.Instance.DeregisterAsGeneratorListener(CheckGeneratorActive);
+        mirrorPair = null;
+        GameManager.Instance.DeregisterAsGeneratorListener(CheckGeneratorActive);        
     }
 
     private void Update()
     {
-        if (trackTarget)
+        if (rotatable)
         {
             float targetAngle = 0.0f;
             float rotationStrength = Mathf.Min(rotationSpeed * Time.deltaTime, 1);
 
             Vector3 dir = Vector3.zero;
 
-            if (generatorActive)
+            if (generatorActive || !tracksPlayer)
             {
                 dir = fakeTarget.position - pivot.position;
                 targetAngle = Vector3.SignedAngle(Vector3.down, dir, Vector3.forward);
@@ -93,17 +103,7 @@ public class Weapon : MonoBehaviour
     public WeaponOrientationMode CurrentOrientationMode
     {
         get { return currentOrientationMode; }
-
-        set
-        {
-            currentOrientationMode = value;
-
-            if (currentOrientationMode == WeaponOrientationMode.ROTATABLE)
-            {
-                Debug.Log("BUG");
-                trackTarget = true;
-            }
-        }
+        set { currentOrientationMode = value; }
     }
 
     private void RandomiseFakeTargetPosition()

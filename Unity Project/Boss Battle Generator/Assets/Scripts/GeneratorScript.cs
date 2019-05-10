@@ -16,6 +16,7 @@ public class GeneratorScript : MonoBehaviour
 
     private GameObject bossObj;
     private SpriteRenderer bossSprite;
+    private WeaponManager weaponManager;
 
     private Camera spriteSnapshotCam;
 
@@ -102,8 +103,6 @@ public class GeneratorScript : MonoBehaviour
     private bool weaponPositionFound = false;
     [Header("Weapons")]
     [SerializeField][Space(10)]
-    private GameObject weaponPrefab;
-    [SerializeField]
     private LayerMask bossSpriteLayer;
     [SerializeField]
     private int maxWeaponTypeAttempts = 10, maxWeaponOrientationAttempts = 10, maxWeaponPosAttempts = 15;
@@ -152,6 +151,7 @@ public class GeneratorScript : MonoBehaviour
         if (bossObj)
         {
             bossSprite = bossObj.GetComponentInChildren<SpriteRenderer>();
+            weaponManager = bossObj.GetComponent<WeaponManager>();
         }
 
         spriteSnapshotCam = GameObject.FindWithTag("SpriteSnapshotCam").GetComponent<Camera>();
@@ -770,11 +770,7 @@ public class GeneratorScript : MonoBehaviour
     /// </summary>
     private void ClearWeapons()
     {
-        //clear previous weapons
-        foreach (Weapon weapon in bossWeapons)
-        {
-            Destroy(weapon.gameObject);
-        }
+        weaponManager.DisableAllWeapons();
 
         bossWeapons.Clear();
     }
@@ -974,8 +970,9 @@ public class GeneratorScript : MonoBehaviour
             }
 
             //create weapon gameobject
-            GameObject weaponObj = Instantiate(weaponPrefab, bossObj.transform);
-            Weapon weapon = weaponObj.GetComponent<Weapon>();
+            GameObject weaponObj = weaponManager.GetWeaponObject();
+            weaponObj.SetActive(true);
+            Weapon weapon = weaponObj.GetComponent<Weapon>();            
 
             //set up weapon sprite
             SpriteRenderer sr = weaponObj.GetComponentInChildren<SpriteRenderer>();
@@ -997,7 +994,7 @@ public class GeneratorScript : MonoBehaviour
             //if setting orientation mode failed, destroy weapon and move on
             if (!orientationModeFound)
             {
-                Destroy(weaponObj);
+                weaponObj.SetActive(false);
                 continue;
             }
             //set up orientation mode of weapon
@@ -1021,7 +1018,8 @@ public class GeneratorScript : MonoBehaviour
             if (symmetryValue >= mirrorSymmetryMin * symmetryProbMax && symmetryValue < mirrorSymmetryMax * symmetryProbMax)
             {
                 mirroringWeapon = true;
-                mirrorWeaponObj = Instantiate(weaponPrefab, bossObj.transform);
+                mirrorWeaponObj = weaponManager.GetWeaponObject();
+                mirrorWeaponObj.SetActive(true);
                 mirrorWeapon = mirrorWeaponObj.GetComponent<Weapon>();
 
                 //set up weapons as mirrored pairs
@@ -1064,8 +1062,11 @@ public class GeneratorScript : MonoBehaviour
             //if weapon could not find a position, destroy weapons
             if (!weaponPositionFound)
             {
-                Destroy(weaponObj);
-                Destroy(mirrorWeaponObj);
+                weaponObj.SetActive(false);
+                if (mirrorWeaponObj != null)
+                {
+                    mirrorWeaponObj.SetActive(false);
+                }
                 continue;
             }
 
@@ -1109,6 +1110,12 @@ public class GeneratorScript : MonoBehaviour
                 case WeaponOrientationMode.FIXEDFORWARD:
                 case WeaponOrientationMode.NONORIENTED:
                 case WeaponOrientationMode.ROTATABLE:
+                    weapon.SetRotatable();
+
+                    if (mirroringWeapon)
+                    {
+                        mirrorWeapon.SetRotatable();
+                    }
                     break;
                 case WeaponOrientationMode.FIXEDSIDEWAYS:
                     {

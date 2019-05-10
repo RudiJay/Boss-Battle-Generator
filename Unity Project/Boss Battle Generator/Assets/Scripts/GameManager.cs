@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviour
     private bool generatorActive;
 
     private bool modeTransitionInProgress = false;
-    
+    private bool exitingPlayMode = false;
+
     [SerializeField]
     private Transform bossSpawn;
 
@@ -138,6 +139,8 @@ public class GameManager : MonoBehaviour
 
         GeneratorUI.Instance.HideUI();
 
+        GeneratorUI.Instance.SetExitPlayModePromptEnabled(true);
+
         StartCoroutine(CameraTransition(battleCamLocation, battleCamSize));
 
         while (movingCamera)
@@ -149,22 +152,21 @@ public class GameManager : MonoBehaviour
 
         SetPlayerInputEnabled(true);
 
-        GeneratorUI.Instance.SetExitPlayModePromptEnabled(true);
-
         modeTransitionInProgress = false;
     }
 
     public void ExitPlayMode()
     {
-        if (!modeTransitionInProgress && !generatorActive)
+        if (!generatorActive && !exitingPlayMode)
         {
+            StopAllCoroutines();
             StartCoroutine(EnterGeneratorSequence());
         }
     }
 
     private IEnumerator EnterGeneratorSequence()
     {
-        modeTransitionInProgress = true;
+        modeTransitionInProgress = exitingPlayMode = true;
 
         GeneratorUI.Instance.SetExitPlayModePromptEnabled(false);
 
@@ -186,6 +188,6 @@ public class GameManager : MonoBehaviour
 
         SetGeneratorActive(true);
 
-        modeTransitionInProgress = false;
+        modeTransitionInProgress = exitingPlayMode = false;
     }
 }

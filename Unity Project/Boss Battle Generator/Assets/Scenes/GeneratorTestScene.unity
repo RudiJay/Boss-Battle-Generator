@@ -477,6 +477,17 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2119550250630632731, guid: 3ff212ea6ae32fd4ebba88f28f34f69c,
+        type: 3}
+      propertyPath: movementPatternSequence.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2119550250630632731, guid: 3ff212ea6ae32fd4ebba88f28f34f69c,
+        type: 3}
+      propertyPath: movementPatternSequence.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2e7563897c2b2d44b9014f061a448372,
+        type: 2}
     m_RemovedComponents:
     - {fileID: 3490567924360612930, guid: 3ff212ea6ae32fd4ebba88f28f34f69c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3ff212ea6ae32fd4ebba88f28f34f69c, type: 3}

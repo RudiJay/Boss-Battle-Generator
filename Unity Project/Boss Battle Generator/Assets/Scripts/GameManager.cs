@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     private float camMoveTime = 1.0f;
 
     private GameObject boss;
+    private BossLogic bossLogic;
 
     private GameObject player;
     private PlayerController playerController;
@@ -51,6 +52,7 @@ public class GameManager : MonoBehaviour
     {
         boss = GameObject.FindWithTag("Boss");
         boss.transform.position = bossSpawn.position;
+        bossLogic = boss.GetComponent<BossLogic>();
 
         generatorActive = true;
 
@@ -206,6 +208,8 @@ public class GameManager : MonoBehaviour
 
         SetPlayerInputEnabled(true);
 
+        bossLogic.StartBossFight();
+
         modeTransitionInProgress = false;
     }
 
@@ -223,6 +227,8 @@ public class GameManager : MonoBehaviour
         modeTransitionInProgress = exitingPlayMode = true;
 
         GeneratorUI.Instance.ShowPlayModeUI(false);
+
+        bossLogic.StopBossFight();
 
         StartCoroutine(CameraTransition(generatorCamLocation, generatorCamSize));
 

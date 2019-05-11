@@ -5,6 +5,9 @@ using UnityEngine;
 public class WeaponManager : MonoBehaviour
 {
     [SerializeField]
+    private GameObject weaponParentObject;
+
+    [SerializeField]
     private int weaponPoolSize = 20;
 
     [SerializeField]
@@ -19,7 +22,7 @@ public class WeaponManager : MonoBehaviour
         
         for (int i = 0; i < weaponPoolSize; i++)
         {
-            GameObject weapon = Instantiate(weaponPrefab, transform);
+            GameObject weapon = Instantiate(weaponPrefab, weaponParentObject.transform);
             weapon.SetActive(false);
             weaponObjPool.Add(weapon);
         }

@@ -6,6 +6,8 @@ public class BossLogic : MonoBehaviour
 {
     [SerializeField]
     private GameObject bodyObject;
+    [SerializeField]
+    private Rigidbody2D rb;
 
     private bool logicActive = false;
 
@@ -16,6 +18,9 @@ public class BossLogic : MonoBehaviour
     private MovementPatternType currentMovementPattern;
 
     [SerializeField]
+    private float destinationReachedDistanceThreshold = 0.5f;
+
+    [SerializeField]
     private float movementSpeed = 1.0f;
 
     private int maxHealth = 100;
@@ -24,11 +29,6 @@ public class BossLogic : MonoBehaviour
     public void SetMaxHealth(int value)
     {
         maxHealth = value;
-    }
-
-    private void Update()
-    {
-        //bodyObject.transform.rotation = Quaternion.identity;
     }
 
     public void StartBossFight()
@@ -50,8 +50,6 @@ public class BossLogic : MonoBehaviour
     private IEnumerator BossFightLogicSequence()
     {
         int patternIndex = -1;
-
-        bool atDestination = false;
 
         int numberOfMovements = 0;
         int movementsCompleted = 0;
@@ -80,15 +78,15 @@ public class BossLogic : MonoBehaviour
             }
 
             Vector3 targetDirection = nextDestination - transform.position;
-            float targetAngle = Vector3.SignedAngle(Vector3.down, targetDirection, Vector3.forward);
-            Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 0.5f);
-
-            float targetDelta = Vector3.Angle(-transform.up, targetDirection);
-            if (targetDelta <= 5)
+            
+            if (targetDirection.magnitude <= destinationReachedDistanceThreshold)
             {
                 movementsCompleted++;
                 nextDestination = currentMovementPattern.GetNextDestinationPoint(movementsCompleted);
+            }
+            else
+            {
+                rb.MovePosition(transform.position + (targetDirection.normalized * movementSpeed * Time.deltaTime));
             }
 
             yield return null;

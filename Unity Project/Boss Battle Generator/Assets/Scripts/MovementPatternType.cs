@@ -47,23 +47,27 @@ public class MovementPatternType : ScriptableObject
 
     public Vector3 GetNextDestinationPoint(int nextDestinationIndex)
     {
-        Vector3 nextDestination;
-        int arraySize = destinationPoints.Length;
+        int arraySize = includeStartPointInDestinations ? destinationPoints.Length + 1 : destinationPoints.Length;
+        
+        if (nextDestinationIndex >= arraySize)
+        {
+            nextDestinationIndex = 0;
+        }
 
         if (includeStartPointInDestinations)
         {
-            arraySize += 1;
-        }
-
-        if (nextDestinationIndex < arraySize)
-        {
-            nextDestination = destinationPoints[nextDestinationIndex];
+            if (nextDestinationIndex == 0)
+            {
+                return startPoint;
+            }
+            else
+            {
+                return destinationPoints[nextDestinationIndex - 1];
+            }
         }
         else
         {
-            nextDestination = includeStartPointInDestinations ? startPoint : destinationPoints[0];
+            return destinationPoints[nextDestinationIndex];
         }
-
-        return nextDestination;
     }
 }

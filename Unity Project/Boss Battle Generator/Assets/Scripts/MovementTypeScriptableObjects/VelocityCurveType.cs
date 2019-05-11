@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewVelocityCurveType", menuName = "VelocityCurveType")]
+[CreateAssetMenu(fileName = "NewVelocityCurveType", menuName = "MovementTypeData/VelocityCurveType")]
 public class VelocityCurveType : ScriptableObject
 {
     [SerializeField]

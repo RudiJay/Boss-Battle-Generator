@@ -166,7 +166,7 @@ MonoBehaviour:
   rb: {fileID: 953644342780748382}
   movementPatternSequence:
   - {fileID: 11400000, guid: 2e7563897c2b2d44b9014f061a448372, type: 2}
-  destinationReachedDistanceThreshold: 0.5
+  destinationReachedDistanceThreshold: 0.1
   movementSpeed: 5
 --- !u!1 &4245498521172482571
 GameObject:

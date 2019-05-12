@@ -49,25 +49,16 @@ public class MovementPatternType : ScriptableObject
     {
         int arraySize = includeStartPointInDestinations ? destinationPoints.Length + 1 : destinationPoints.Length;
         
-        if (nextDestinationIndex >= arraySize)
+        while (nextDestinationIndex >= arraySize)
         {
-            nextDestinationIndex = 0;
+            nextDestinationIndex -= arraySize;
         }
 
-        if (includeStartPointInDestinations)
+        if (includeStartPointInDestinations && nextDestinationIndex == arraySize - 1)
         {
-            if (nextDestinationIndex == 0)
-            {
-                return startPoint;
-            }
-            else
-            {
-                return destinationPoints[nextDestinationIndex - 1];
-            }
+            return startPoint;
         }
-        else
-        {
-            return destinationPoints[nextDestinationIndex];
-        }
+
+        return destinationPoints[nextDestinationIndex];
     }
 }

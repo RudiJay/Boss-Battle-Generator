@@ -21,7 +21,9 @@ public class BossLogic : MonoBehaviour
     private float destinationReachedDistanceThreshold = 0.5f;
 
     [SerializeField]
-    private float movementSpeed = 1.0f;
+    private float movementSpeed = 5.0f;
+    [SerializeField]
+    private float accelerationFactor = 1.0f;
 
     private int maxHealth = 100;
     private int currentHealth;
@@ -75,6 +77,8 @@ public class BossLogic : MonoBehaviour
         SetupNextPattern(patternIndex);
         bool changed = true;
 
+        float timeOnMovement = 0.0f;
+
         while (logicActive)
         {
             if (changed)
@@ -86,8 +90,8 @@ public class BossLogic : MonoBehaviour
             Vector3 targetDirection = nextDestination - transform.position;
             float currentDistance = targetDirection.magnitude;
 
-            currentVelocity = movementSpeed * Time.deltaTime;
-            currentVelocity += (currentVelocity * currentMovementPattern.GetAccelerationType().GetCurve().Evaluate((distanceToNextDestination - currentDistance) / distanceToNextDestination));
+            timeOnMovement += Time.deltaTime;
+            currentVelocity = movementSpeed * Time.deltaTime * currentMovementPattern.GetAccelerationType().GetCurve().Evaluate(timeOnMovement * accelerationFactor);
 
             if (currentDistance <= destinationReachedDistanceThreshold)
             {

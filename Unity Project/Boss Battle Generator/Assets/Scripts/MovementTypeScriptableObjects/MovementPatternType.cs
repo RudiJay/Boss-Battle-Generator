@@ -53,10 +53,17 @@ public class MovementPatternType : ScriptableObject
     public Vector3 GetNextDestinationPoint(int nextDestinationIndex)
     {
         int arraySize = includeStartPointInDestinations ? destinationPoints.Length + 1 : destinationPoints.Length;
-        
-        while (nextDestinationIndex >= arraySize)
+
+        if (!randomlyDecideNextDestination)
         {
-            nextDestinationIndex -= arraySize;
+            while (nextDestinationIndex >= arraySize)
+            {
+                nextDestinationIndex -= arraySize;
+            }
+        }
+        else
+        {
+            nextDestinationIndex = Random.Range(0, arraySize);
         }
 
         if (includeStartPointInDestinations && nextDestinationIndex == arraySize - 1)

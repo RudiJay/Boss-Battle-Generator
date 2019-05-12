@@ -87,7 +87,7 @@ public class BossLogic : MonoBehaviour
             float currentDistance = targetDirection.magnitude;
 
             currentVelocity = movementSpeed * Time.deltaTime;
-            //speed *= currentMovementPattern.GetAccelerationType().GetCurve().Evaluate()
+            currentVelocity += (currentVelocity * currentMovementPattern.GetAccelerationType().GetCurve().Evaluate((distanceToNextDestination - currentDistance) / distanceToNextDestination));
 
             if (currentDistance <= destinationReachedDistanceThreshold)
             {
@@ -114,7 +114,7 @@ public class BossLogic : MonoBehaviour
             }
             else
             {
-                rb.MovePosition(transform.position + (targetDirection.normalized * movementSpeed * Time.deltaTime));
+                rb.MovePosition(transform.position + (targetDirection.normalized * currentVelocity));
             }
 
             yield return null;

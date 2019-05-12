@@ -33,6 +33,7 @@ public class BossLogic : MonoBehaviour
     private int numberOfMovements = 0;
     private Vector3 nextDestination = Vector3.zero;
     private float distanceToNextDestination = 0.0f;
+    private WaitForSeconds destinationWaitTime;
 
     public void SetMaxHealth(int value)
     {
@@ -67,6 +68,8 @@ public class BossLogic : MonoBehaviour
         {
             currentMovementPattern.SetStartPoint(transform.position);
         }
+
+        destinationWaitTime = new WaitForSeconds(currentMovementPattern.GetWaitTimeAtDestination());
     }
 
     private IEnumerator BossFightLogicSequence()
@@ -82,7 +85,6 @@ public class BossLogic : MonoBehaviour
 
         while (logicActive)
         {
-
             Vector3 targetDirection = nextDestination - transform.position;
             float currentDistance = targetDirection.magnitude;
 
@@ -90,7 +92,10 @@ public class BossLogic : MonoBehaviour
             VelocityCurveType accelerationType = currentMovementPattern.GetAccelerationType();
             if (accelerationType.GetAccelerationProportionalToDistanceTravelled())
             {
-                currentVelocity = movementSpeedMultiplier * 0.01f * (minSpeedBuffer + accelerationType.GetCurve().Evaluate((distanceToNextDestination - currentDistance) / distanceToNextDestination));
+                if (distanceToNextDestination > 0)
+                {
+                    currentVelocity = movementSpeedMultiplier * 0.01f * (minSpeedBuffer + accelerationType.GetCurve().Evaluate((distanceToNextDestination - currentDistance) / distanceToNextDestination));
+                }
             }
             else
             {
@@ -119,6 +124,8 @@ public class BossLogic : MonoBehaviour
                     nextDestination = currentMovementPattern.GetNextDestinationPoint(movementsCompleted);
                     distanceToNextDestination = (nextDestination - transform.position).magnitude;
                 }
+
+                yield return destinationWaitTime;
             }
             else
             {

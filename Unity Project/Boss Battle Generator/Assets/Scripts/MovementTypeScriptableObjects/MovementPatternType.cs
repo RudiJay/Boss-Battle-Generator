@@ -18,9 +18,11 @@ public class MovementPatternType : ScriptableObject
     private bool includeStartPointInDestinations;
     private Vector3 startPoint;
     [SerializeField]
-    private bool useXAxis, useYAxis;
+    private bool useXAxis = true, useYAxis = true;
     [SerializeField]
     private bool randomlyDecideNextDestination;
+    [SerializeField]
+    private float waitTimeAtDestination = 0.0f;
 
     [SerializeField]
     private VelocityCurveType accelerationType;
@@ -45,6 +47,11 @@ public class MovementPatternType : ScriptableObject
         return includeStartPointInDestinations;
     }
 
+    public float GetWaitTimeAtDestination()
+    {
+        return waitTimeAtDestination;
+    }
+
     public VelocityCurveType GetAccelerationType()
     {
         return accelerationType;
@@ -52,6 +59,8 @@ public class MovementPatternType : ScriptableObject
 
     public Vector3 GetNextDestinationPoint(int nextDestinationIndex)
     {
+        Vector3 returnVector;
+
         int arraySize = includeStartPointInDestinations ? destinationPoints.Length + 1 : destinationPoints.Length;
 
         if (!randomlyDecideNextDestination)
@@ -68,9 +77,23 @@ public class MovementPatternType : ScriptableObject
 
         if (includeStartPointInDestinations && nextDestinationIndex == arraySize - 1)
         {
-            return startPoint;
+            returnVector = startPoint;
+        }
+        else
+        {
+            returnVector = destinationPoints[nextDestinationIndex];
         }
 
-        return destinationPoints[nextDestinationIndex];
+        if (!useXAxis)
+        {
+            returnVector.x = startPoint.x;
+        }
+
+        if (!useYAxis)
+        {
+            returnVector.y = startPoint.y;
+        }
+
+        return returnVector;
     }
 }

@@ -72,7 +72,7 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField]
     private int attackQuantityMax = 10;
     [SerializeField]
-    private int attackPatternLengthMin = 1, attackPatternLengthMax = 15;
+    private int attackSequenceLengthMin = 1, attackSequenceLengthMax = 15;
 
     [Header("Boss Type")]
     [SerializeField][Space(10)]
@@ -116,7 +116,7 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField][Space(10)]
     private ScriptableObject[] generatableAttackTypes;
     private List<IAttackType> bossAttackTypes;
-    private List<IAttackType> bossAttackPattern;
+    private List<IAttackType> bossAttackSequence;
     private int attackQuantity = 3;
 
     public void CheckGeneratorActive()
@@ -160,7 +160,7 @@ public class GeneratorScript : MonoBehaviour
         
         bossWeapons = new List<Weapon>();
         bossAttackTypes = new List<IAttackType>();
-        bossAttackPattern = new List<IAttackType>();
+        bossAttackSequence = new List<IAttackType>();
 
         //calculate determinant sizes
         textureWidth = (int)(maxBossWidth * 1.25f);
@@ -364,7 +364,7 @@ public class GeneratorScript : MonoBehaviour
 
         GeneratorUI.Instance.SetAttackQuantity(attackQuantity);
 
-        GenerateAttackPattern();
+        GenerateAttackSequence();
 
         yield return null;
 
@@ -382,15 +382,15 @@ public class GeneratorScript : MonoBehaviour
 
     private IEnumerator DemonstrateBossFightLoop()
     {
-        GeneratorUI.Instance.SetAttackPatternSize(bossAttackPattern.Count);
+        GeneratorUI.Instance.SetAttackSequenceSize(bossAttackSequence.Count);
 
         while (true)
         {
-            for (int i = 0; i < bossAttackPattern.Count; i++)
+            for (int i = 0; i < bossAttackSequence.Count; i++)
             {
                 GeneratorUI.Instance.SetCurrentAttack(i + 1);
 
-                bossAttackPattern[i].PerformAttack();
+                bossAttackSequence[i].PerformAttack();
 
                 yield return bossDemonstrationDelayTime;
             }
@@ -1178,7 +1178,7 @@ public class GeneratorScript : MonoBehaviour
     private void ClearAttacks()
     {
         bossAttackTypes.Clear();
-        bossAttackPattern.Clear();
+        bossAttackSequence.Clear();
     }
 
     private bool GenerateAttackType(ref IAttackType attackType)
@@ -1295,18 +1295,17 @@ public class GeneratorScript : MonoBehaviour
         attackGenerationComplete = true;
     }
 
-    private void GenerateAttackPattern()
+    private void GenerateAttackSequence()
     {
         if (bossAttackTypes.Count > 0)
         {
-            //minimum pattern length if highest of set minimum and attack quantity
-            int attackPatternLength = rand.Next(Mathf.Max(attackQuantity, attackPatternLengthMin), attackPatternLengthMax);
-
-            //Debug.Log("Attack Pattern Length: " + attackPatternLength);
-            for (int i = 0; i < attackPatternLength; i++)
+            //minimum sequence length if highest of set minimum and attack quantity
+            int attackSequenceLength = rand.Next(Mathf.Max(attackQuantity, attackSequenceLengthMin), attackSequenceLengthMax);
+            
+            for (int i = 0; i < attackSequenceLength; i++)
             {
                 int attack = rand.Next(0, bossAttackTypes.Count);
-                bossAttackPattern.Add(bossAttackTypes[attack]);
+                bossAttackSequence.Add(bossAttackTypes[attack]);
             }
         }
     }

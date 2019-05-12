@@ -168,7 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6174266886998804904}
   m_Layer: 5
-  m_Name: Attack Pattern Indicator
+  m_Name: Attack Sequence Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -192,7 +192,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50.000004, y: -50}
+  m_AnchoredPosition: {x: 49.999996, y: -50}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1037812563214528375
@@ -229,7 +229,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -50}
+  m_AnchoredPosition: {x: 0.0000076293945, y: -50}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1180317824614343119
@@ -465,7 +465,7 @@ MonoBehaviour:
   bossTypeDropdown: {fileID: 7110540268013162496}
   attackQuantityLabel: {fileID: 8506349162947296294}
   currentAttackLabel: {fileID: 7638300552626331675}
-  attackPatternSizeLabel: {fileID: 4470018316386484377}
+  attackSequenceLengthLabel: {fileID: 4470018316386484377}
 --- !u!1 &2115265429497990486
 GameObject:
   m_ObjectHideFlags: 0
@@ -966,7 +966,7 @@ GameObject:
   - component: {fileID: 8508623191764670186}
   - component: {fileID: 3446533927973214874}
   m_Layer: 5
-  m_Name: Attack Pattern Delimiter Label
+  m_Name: Attack Sequence Delimiter Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1175,7 +1175,7 @@ GameObject:
   - component: {fileID: 3024036322046395736}
   - component: {fileID: 115978866460912836}
   m_Layer: 5
-  m_Name: Pattern Label
+  m_Name: Sequence Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1243,7 +1243,7 @@ MonoBehaviour:
     m_LineSpacing: 0.75
   m_Text: 'Attack
 
-    Pattern:'
+    Sequence:'
 --- !u!1 &3314765499738875746
 GameObject:
   m_ObjectHideFlags: 0
@@ -1627,7 +1627,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4933037043320280200}
   m_Layer: 5
-  m_Name: Attack Pattern Label
+  m_Name: Attack Sequence Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2339,7 +2339,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -454.05637, y: 57.36946}
+  m_AnchoredPosition: {x: -463, y: 54}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6838443013854622355
@@ -2354,7 +2354,7 @@ GameObject:
   - component: {fileID: 6294431878245165795}
   - component: {fileID: 4470018316386484377}
   m_Layer: 5
-  m_Name: Attack Pattern Size Label
+  m_Name: Attack Sequence Length Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

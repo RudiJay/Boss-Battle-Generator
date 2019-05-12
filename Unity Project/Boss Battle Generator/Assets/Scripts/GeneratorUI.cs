@@ -27,7 +27,7 @@ public class GeneratorUI : MonoBehaviour
     [SerializeField]
     private Dropdown bossTypeDropdown;
     [SerializeField]
-    private Text attackQuantityLabel, currentAttackLabel, attackPatternSizeLabel;
+    private Text attackQuantityLabel, currentAttackLabel, attackSequenceLengthLabel;
 
     private void Awake()
     {
@@ -110,7 +110,7 @@ public class GeneratorUI : MonoBehaviour
         attackQuantityLabel.text = "?";
 
         currentAttackLabel.text = "0";
-        attackPatternSizeLabel.text = "?";
+        attackSequenceLengthLabel.text = "?";
     }
 
     public void SetAttackQuantity(int value)
@@ -123,9 +123,9 @@ public class GeneratorUI : MonoBehaviour
         currentAttackLabel.text = value.ToString();
     }
 
-    public void SetAttackPatternSize(int value)
+    public void SetAttackSequenceSize(int value)
     {
-        attackPatternSizeLabel.text = value.ToString();
+        attackSequenceLengthLabel.text = value.ToString();
     }
 
     public void SetCurrentlyDemonstratingAttacks(bool value)

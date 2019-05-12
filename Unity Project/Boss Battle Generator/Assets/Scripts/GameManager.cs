@@ -239,6 +239,8 @@ public class GameManager : MonoBehaviour
 
         DisablePlayer();
 
+        ProjectileManager.Instance.DisableAllProjectiles();
+
         boss.transform.position = bossSpawn.position;
 
         GeneratorUI.Instance.ShowGeneratorUI(true);

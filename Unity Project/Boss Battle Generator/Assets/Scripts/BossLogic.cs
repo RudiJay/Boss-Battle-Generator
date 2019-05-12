@@ -21,9 +21,11 @@ public class BossLogic : MonoBehaviour
     private float destinationReachedDistanceThreshold = 0.5f;
 
     [SerializeField]
-    private float movementSpeed = 5.0f;
+    private float movementSpeedMultiplier = 5.0f;
     [SerializeField]
-    private float accelerationFactor = 1.0f;
+    private float accelerationMultiplier = 1.0f;
+    [SerializeField]
+    private float minSpeedBuffer = 0.5f;
 
     private int maxHealth = 100;
     private int currentHealth;
@@ -75,27 +77,30 @@ public class BossLogic : MonoBehaviour
         float currentVelocity = 0.0f;
 
         SetupNextPattern(patternIndex);
-        bool changed = true;
 
         float timeOnMovement = 0.0f;
 
         while (logicActive)
         {
-            if (changed)
-            {
-                Debug.Log(movementsCompleted+1 + "/" + numberOfMovements + " " + nextDestination);
-                changed = false;
-            }
 
             Vector3 targetDirection = nextDestination - transform.position;
             float currentDistance = targetDirection.magnitude;
 
             timeOnMovement += Time.deltaTime;
-            currentVelocity = movementSpeed * Time.deltaTime * currentMovementPattern.GetAccelerationType().GetCurve().Evaluate(timeOnMovement * accelerationFactor);
+            VelocityCurveType accelerationType = currentMovementPattern.GetAccelerationType();
+            if (accelerationType.GetAccelerationProportionalToDistanceTravelled())
+            {
+                currentVelocity = movementSpeedMultiplier * 0.01f * (minSpeedBuffer + accelerationType.GetCurve().Evaluate((distanceToNextDestination - currentDistance) / distanceToNextDestination));
+            }
+            else
+            {
+                currentVelocity = movementSpeedMultiplier * 0.01f * accelerationType.GetCurve().Evaluate(timeOnMovement * accelerationMultiplier);
+            }
 
             if (currentDistance <= destinationReachedDistanceThreshold)
             {
                 movementsCompleted++;
+                timeOnMovement = 0;
 
                 if (movementsCompleted >= numberOfMovements)
                 {
@@ -114,7 +119,6 @@ public class BossLogic : MonoBehaviour
                     nextDestination = currentMovementPattern.GetNextDestinationPoint(movementsCompleted);
                     distanceToNextDestination = (nextDestination - transform.position).magnitude;
                 }
-                changed = true;
             }
             else
             {

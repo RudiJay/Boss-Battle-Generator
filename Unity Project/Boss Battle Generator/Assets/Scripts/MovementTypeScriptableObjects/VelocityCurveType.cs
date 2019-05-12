@@ -11,6 +11,13 @@ public class VelocityCurveType : ScriptableObject
 {
     [SerializeField]
     private AnimationCurve velocityCurve;
+    [SerializeField]
+    private bool accelerationProportionalToDistanceTravelled;
+
+    public bool GetAccelerationProportionalToDistanceTravelled()
+    {
+        return accelerationProportionalToDistanceTravelled;
+    }
 
     public AnimationCurve GetCurve()
     {

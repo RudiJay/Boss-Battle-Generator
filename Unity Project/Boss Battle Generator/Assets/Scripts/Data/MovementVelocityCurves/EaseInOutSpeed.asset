@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f3e64d4d56d42f49bc1995fca1bf653, type: 3}
-  m_Name: EaseInAcceleration
+  m_Name: EaseInOutSpeed
   m_EditorClassIdentifier: 
   velocityCurve:
     serializedVersion: 2
@@ -25,10 +25,19 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
+      time: 0.5
+      value: 0.99997956
+      inSlope: -0.000026901222
+      outSlope: -0.000026901222
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
+      value: 0
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -36,3 +45,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  accelerationProportionalToDistanceTravelled: 1

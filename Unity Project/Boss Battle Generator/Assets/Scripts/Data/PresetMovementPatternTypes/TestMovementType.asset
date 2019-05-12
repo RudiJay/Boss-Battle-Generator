@@ -21,5 +21,5 @@ MonoBehaviour:
   useXAxis: 0
   useYAxis: 0
   randomlyDecideNextDestination: 1
-  accelerationType: {fileID: 11400000, guid: b2cfdcb4a5ac6c84a9b3c7f9e6645c2a, type: 2}
+  accelerationType: {fileID: 11400000, guid: 75aaf08ee15273d43bdc0ff7bd946e72, type: 2}
   lateralMovement: {fileID: 0}

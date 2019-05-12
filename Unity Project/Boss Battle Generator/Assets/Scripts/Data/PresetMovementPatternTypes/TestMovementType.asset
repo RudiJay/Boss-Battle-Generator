@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f7ca22eddc1f14eb49ef6cdbf68104, type: 3}
   m_Name: TestMovementType
   m_EditorClassIdentifier: 
-  numberOfMovements: 5
+  numberOfMovements: 4
   destinationPoints:
   - {x: 5, y: 0, z: 0}
   - {x: 0, y: -5, z: 0}
   - {x: -5, y: 0, z: 0}
   includeStartPointInDestinations: 1
-  useXAxis: 1
-  useYAxis: 1
+  constrainXAxis: 0
+  constrainYAxis: 0
   randomlyDecideNextDestination: 0
   waitTimeAtDestination: 0.5
   accelerationType: {fileID: 11400000, guid: 75aaf08ee15273d43bdc0ff7bd946e72, type: 2}

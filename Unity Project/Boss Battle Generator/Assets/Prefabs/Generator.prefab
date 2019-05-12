@@ -228,7 +228,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e165a98502e1ec44b9e1816e2d28ef57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GeneratorActive: 1
   generationStepDelay: 0.1
   bossDemonstrationDelay: 1
   autoGeneratorDelay: 5
@@ -238,14 +237,7 @@ MonoBehaviour:
   shapeSizeLimiter: 0.7
   weaponXLimit: 3
   weaponYLimit: 3
-  symmetryProbMax: 100
-  shapeComplexityProbMax: 100
-  perlinColorScaleMin: 25
-  perlinColorScaleMax: 500
-  weaponQuantityProbMax: 100
-  attackQuantityMax: 10
-  attackPatternLengthMin: 1
-  attackPatternLengthMax: 15
+  maxProbabilityValue: 100
   bossTypeVariables:
   - typeName: 1
     spriteComplexityCurve:
@@ -700,12 +692,12 @@ MonoBehaviour:
     MirrorProbability: 0.5
   nonComplementaryColorChance: 0.5
   asymmetricColorChance: 0.05
+  perlinColorScaleMin: 25
+  perlinColorScaleMax: 500
   bossSpriteOutlineWidth: 2
   weaponSpriteOutlineWidth: 2
   weaponBrightnessTintAmount: 0.25
   useColorSchemeForBackground: 0
-  weaponPrefab: {fileID: 6663881351590808801, guid: 907643923dc0e2644b1d692852f2fed4,
-    type: 3}
   bossSpriteLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -717,7 +709,7 @@ MonoBehaviour:
     size: 0.6
     spritePivotPointOffset: {x: -0.005, y: -0.18, z: 0}
     attackSourcePositionOffset: {x: 0, y: -0.55, z: 0}
-    availableWeaponOrientations: 31
+    availableWeaponOrientations: 63
     bossTypesWeaponWieldableBy: 30
     generateWeaponColor: 1
     canWeaponFloat: 0
@@ -728,7 +720,7 @@ MonoBehaviour:
     size: 1
     spritePivotPointOffset: {x: -0.01, y: -0.085, z: 0}
     attackSourcePositionOffset: {x: 0, y: -0.55, z: 0}
-    availableWeaponOrientations: 31
+    availableWeaponOrientations: 63
     bossTypesWeaponWieldableBy: 52
     generateWeaponColor: 1
     canWeaponFloat: 0
@@ -739,7 +731,7 @@ MonoBehaviour:
     size: 0.9
     spritePivotPointOffset: {x: -0.005, y: -0.175, z: 0}
     attackSourcePositionOffset: {x: 0, y: -0.6, z: 0}
-    availableWeaponOrientations: 31
+    availableWeaponOrientations: 63
     bossTypesWeaponWieldableBy: 30
     generateWeaponColor: 1
     canWeaponFloat: 0
@@ -750,16 +742,69 @@ MonoBehaviour:
     size: 0.9
     spritePivotPointOffset: {x: 0, y: 0, z: 0}
     attackSourcePositionOffset: {x: 0, y: 0, z: 0}
-    availableWeaponOrientations: 47
+    availableWeaponOrientations: 79
     bossTypesWeaponWieldableBy: 32
     generateWeaponColor: 0
     canWeaponFloat: 0
     AsymmetricProbability: 0.01
     CentreXProbability: 0.5
     MirrorProbability: 0.5
+  attackQuantityMax: 10
+  attackSequenceLengthMin: 1
+  attackSequenceLengthMax: 15
   generatableAttackTypes:
   - {fileID: 11400000, guid: 73b4e2ab11a892d439b4fedfbb472fa3, type: 2}
   - {fileID: 11400000, guid: 9e850a362727d35479071aa6df6886fe, type: 2}
   - {fileID: 11400000, guid: f7c08aa3ccaa65a48bed0bf1db8f128d, type: 2}
   - {fileID: 11400000, guid: d3367c9b2dce13b4b9603eeabf8cf6a2, type: 2}
   - {fileID: 11400000, guid: a36c547b7063c674e97134207021fbae, type: 2}
+  availableAccelerationTypes:
+  - {fileID: 11400000, guid: 6cd8ced43c3a6544f862a8160c700029, type: 2}
+  - {fileID: 11400000, guid: b44b9533264f85845a3f5d50c5e128ba, type: 2}
+  - {fileID: 11400000, guid: a545f09c85218cc4a82e0806990633e1, type: 2}
+  - {fileID: 11400000, guid: 83f7f1258ff64b242bc48b05b8ead1fb, type: 2}
+  - {fileID: 11400000, guid: 75aaf08ee15273d43bdc0ff7bd946e72, type: 2}
+  - {fileID: 11400000, guid: b9d9bcbfcf1e24540928f7d10fedef17, type: 2}
+  generatedMovementPatterns: []
+  movementPatternQuantityMin: 3
+  movementPatternQuantityMax: 10
+  movementPatternSequenceLengthMin: 1
+  movementPatternSequenceLengthMax: 15
+  movementsPerPatternProbabilityWeighting:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.00724246
+      outSlope: -0.00724246
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 1
+    - serializedVersion: 3
+      time: 1
+      value: 7
+      inSlope: 16.561663
+      outSlope: 16.561663
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.048433125
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  minDestinationX: -10.5
+  minDestinationY: -8
+  maxDestinationX: 10.5
+  maxDestinationY: 1.5
+  constrainXAxisChance: 0.3
+  constrainYAxisChance: 0.15
+  includeStartPointChance: 0.5
+  randomlyNextDestinationChance: 0
+  destinationWaitTimeProbabilityWeighting:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

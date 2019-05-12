@@ -228,26 +228,6 @@ PrefabInstance:
       propertyPath: GeneratableAttacks.Array.data[0].BehaviourCharacteristics.Array.data[0]
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 3559644559656656188, guid: 34b138ede5f3c84438d98468f6950130,
-        type: 3}
-      propertyPath: generatableWeapons.Array.data[0].availableWeaponOrientations
-      value: 63
-      objectReference: {fileID: 0}
-    - target: {fileID: 3559644559656656188, guid: 34b138ede5f3c84438d98468f6950130,
-        type: 3}
-      propertyPath: generatableWeapons.Array.data[1].availableWeaponOrientations
-      value: 63
-      objectReference: {fileID: 0}
-    - target: {fileID: 3559644559656656188, guid: 34b138ede5f3c84438d98468f6950130,
-        type: 3}
-      propertyPath: generatableWeapons.Array.data[2].availableWeaponOrientations
-      value: 63
-      objectReference: {fileID: 0}
-    - target: {fileID: 3559644559656656188, guid: 34b138ede5f3c84438d98468f6950130,
-        type: 3}
-      propertyPath: generatableWeapons.Array.data[3].availableWeaponOrientations
-      value: 79
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34b138ede5f3c84438d98468f6950130, type: 3}
 --- !u!1001 &1823425862

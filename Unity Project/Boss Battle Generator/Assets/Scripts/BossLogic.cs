@@ -12,9 +12,8 @@ public class BossLogic : MonoBehaviour
     private bool logicActive = false;
 
     private IEnumerator bossFightLogicSequence;
-
-    [SerializeField]
-    private MovementPatternType[] movementPatternSequence;
+    
+    public MovementPatternType[] movementPatternSequence;
     private MovementPatternType currentMovementPattern;
 
     [SerializeField]
@@ -60,16 +59,16 @@ public class BossLogic : MonoBehaviour
     {
         currentMovementPattern = movementPatternSequence[patternIndex];
 
-        numberOfMovements = currentMovementPattern.GetNumberOfMovements();
+        numberOfMovements = currentMovementPattern.numberOfMovements;
         nextDestination = currentMovementPattern.GetNextDestinationPoint(0);
         distanceToNextDestination = (nextDestination - transform.position).magnitude;
 
-        if (currentMovementPattern.GetIncludeStartPoint())
+        if (currentMovementPattern.includeStartPointInDestinations)
         {
             currentMovementPattern.SetStartPoint(transform.position);
         }
 
-        destinationWaitTime = new WaitForSeconds(currentMovementPattern.GetWaitTimeAtDestination());
+        destinationWaitTime = new WaitForSeconds(currentMovementPattern.waitTimeAtDestination);
     }
 
     private IEnumerator BossFightLogicSequence()
@@ -89,7 +88,12 @@ public class BossLogic : MonoBehaviour
             float currentDistance = targetDirection.magnitude;
 
             timeOnMovement += Time.deltaTime;
-            VelocityCurveType accelerationType = currentMovementPattern.GetAccelerationType();
+            VelocityCurveType accelerationType = currentMovementPattern.accelerationType;
+            if (accelerationType == null)
+            {
+                Debug.Log("Missing acceleration type");
+                yield break;
+            }
             if (accelerationType.GetAccelerationProportionalToDistanceTravelled())
             {
                 if (distanceToNextDestination > 0)

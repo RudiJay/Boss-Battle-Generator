@@ -58,21 +58,9 @@ public class GeneratorScript : MonoBehaviour
     private float shapeSizeLimiter = 0.75f; 
     [SerializeField]
     private float weaponXLimit = 3, weaponYLimit = 3;
-
-    [Header("Randomisation Scales")]
+    
     [SerializeField]
-    [Space(10)]
-    private int symmetryProbMax = 100;
-    [SerializeField]
-    private int shapeComplexityProbMax = 100;
-    [SerializeField]
-    private int perlinColorScaleMin = 25, perlinColorScaleMax = 100;
-    [SerializeField]
-    private int weaponQuantityProbMax = 100;
-    [SerializeField]
-    private int attackQuantityMax = 10;
-    [SerializeField]
-    private int attackSequenceLengthMin = 1, attackSequenceLengthMax = 15;
+    private int maxProbabilityValue = 100;
 
     [Header("Boss Type")]
     [SerializeField][Space(10)]
@@ -90,6 +78,8 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField]
     [Range(0, 1)]
     private float nonComplementaryColorChance = 0.5f, asymmetricColorChance = 0.25f;
+    [SerializeField]
+    private int perlinColorScaleMin = 25, perlinColorScaleMax = 100;
     [SerializeField]
     private int bossSpriteOutlineWidth = 1, weaponSpriteOutlineWidth = 1;
     [SerializeField]
@@ -113,11 +103,43 @@ public class GeneratorScript : MonoBehaviour
 
     private bool attackGenerationComplete = false;
     [Header("Attacks")]
-    [SerializeField][Space(10)]
+    [SerializeField]
+    [Space(10)]
+    private int attackQuantityMax = 10;
+    [SerializeField]
+    private int attackSequenceLengthMin = 1, attackSequenceLengthMax = 15;
+    [SerializeField]
     private ScriptableObject[] generatableAttackTypes;
     private List<IAttackType> bossAttackTypes;
     private List<IAttackType> bossAttackSequence;
     private int attackQuantity = 3;
+
+    private bool movementPatternGenerationComplete = false;
+    [Header("Movement Patterns")]
+    [SerializeField]
+    [Space(10)]
+    private List<VelocityCurveType> availableAccelerationTypes;
+    [SerializeField]
+    private List<MovementPatternType> generatedMovementPatterns;
+    private int movementPatternQuantity = 5;
+    
+
+    [SerializeField]
+    private int movementPatternQuantityMin = 1, movementPatternQuantityMax = 5;
+    [SerializeField]
+    private int movementPatternSequenceLengthMin = 1, movementPatternSequenceLengthMax = 15;
+    [SerializeField]
+    private AnimationCurve movementsPerPatternProbabilityWeighting;
+    [SerializeField]
+    private float minDestinationX = -10.5f, minDestinationY = -8.0f, maxDestinationX = 10.5f, maxDestinationY = 1.5f;
+    [SerializeField]
+    private float constrainXAxisChance = 0.3f, constrainYAxisChance = 0.15f;
+    [SerializeField]
+    private float includeStartPointChance = 0.5f;
+    [SerializeField]
+    private float randomlyNextDestinationChance = 0.0f;
+    [SerializeField]
+    private AnimationCurve destinationWaitTimeProbabilityWeighting;
 
     public void CheckGeneratorActive()
     {
@@ -308,6 +330,7 @@ public class GeneratorScript : MonoBehaviour
         spriteGenerationComplete = false;
         weaponGenerationComplete = false;
         attackGenerationComplete = false;
+        movementPatternGenerationComplete = false;
 
         GeneratorUI.Instance.SetGeneratingInProgressLabelEnabled(true);
 
@@ -368,6 +391,17 @@ public class GeneratorScript : MonoBehaviour
 
         yield return null;
 
+        StartCoroutine(GenerateMovementPatterns());
+
+        while (!movementPatternGenerationComplete)
+        {
+            yield return null;
+        }
+
+        //setmovement ui
+
+        //generate movement pattern sequence
+
         GeneratorUI.Instance.SetCurrentlyDemonstratingAttacks(true);
         bossDemonstrationInProgress = true;
         bossDemonstration = DemonstrateBossFightLoop();
@@ -422,7 +456,7 @@ public class GeneratorScript : MonoBehaviour
     /// </summary>
     private void GenerateRandomSymmetryScore()
     {
-        symmetryValue = rand.Next(0, symmetryProbMax);
+        symmetryValue = rand.Next(0, maxProbabilityValue);
         //Debug.Log("Symmetric seed (0, " + symmetryMax + "): " + symmetryValue);
     }
 
@@ -446,7 +480,7 @@ public class GeneratorScript : MonoBehaviour
         colorPalette[colorQuantity] = Color.HSVToRGB(hue, saturation, weaponBrightness);
 
         GenerateRandomSymmetryScore();
-        bool useComplementaryColors = symmetryValue / (float)symmetryProbMax > nonComplementaryColorChance;
+        bool useComplementaryColors = symmetryValue / (float)maxProbabilityValue > nonComplementaryColorChance;
         float offset = 0;
         for (int i = 1; i < colorQuantity; i++)
         {
@@ -530,7 +564,7 @@ public class GeneratorScript : MonoBehaviour
 
         bool symmetricColor = false;
         GenerateRandomSymmetryScore();
-        if (symmetryValue / (float)symmetryProbMax > asymmetricColorChance)
+        if (symmetryValue / (float)maxProbabilityValue > asymmetricColorChance)
         {
             symmetricColor = true;
         }
@@ -615,7 +649,7 @@ public class GeneratorScript : MonoBehaviour
             }
 
             //generate sprite complexity
-            spriteShapeComplexity = Mathf.RoundToInt(bossType.spriteComplexityCurve.Evaluate(rand.Next(0, shapeComplexityProbMax) / (float)shapeComplexityProbMax));
+            spriteShapeComplexity = Mathf.RoundToInt(bossType.spriteComplexityCurve.Evaluate(rand.Next(0, maxProbabilityValue) / (float)maxProbabilityValue));
             //Debug.Log("Sprite Shape Complexity: " + spriteShapeComplexity);
             //make sure there is at least one shape
             spriteShapeComplexity = Mathf.Max(spriteShapeComplexity, 1);
@@ -695,19 +729,19 @@ public class GeneratorScript : MonoBehaviour
                 float mirrorMax = centreXMax + (mirror / symmetryProbabilityTotal);
 
                 //determine which symmetry probability bound the shape belongs in
-                if (symmetryValue >= asymmetricMax * symmetryProbMax && symmetryValue < normaliseRotMax * symmetryProbMax && spriteShape.generateRotation)
+                if (symmetryValue >= asymmetricMax * maxProbabilityValue && symmetryValue < normaliseRotMax * maxProbabilityValue && spriteShape.generateRotation)
                 {
                     //normalise rotation
                     rotValue = (int)(Mathf.Round(rotValue / spriteShape.nearestSymmetricalRot) * spriteShape.nearestSymmetricalRot * Mathf.Sign(rotValue));
                 }
-                else if (symmetryValue >= normaliseRotMax * symmetryProbMax && symmetryValue < centreXMax * symmetryProbMax)
+                else if (symmetryValue >= normaliseRotMax * maxProbabilityValue && symmetryValue < centreXMax * maxProbabilityValue)
                 {
                     //normalise rotation
                     rotValue = spriteShape.generateRotation ? (int)(Mathf.Round(rotValue / spriteShape.nearestSymmetricalRot) * spriteShape.nearestSymmetricalRot * Mathf.Sign(rotValue)) : 0;
                     //centre shape in x axis
                     xValue = textureWidth / 2;
                 }
-                else if (symmetryValue >= centreXMax * symmetryProbMax && symmetryValue < mirrorMax * symmetryProbMax)
+                else if (symmetryValue >= centreXMax * maxProbabilityValue && symmetryValue < mirrorMax * maxProbabilityValue)
                 {
                     //get opposite x value
                     int x2 = textureWidth - xValue;
@@ -828,7 +862,7 @@ public class GeneratorScript : MonoBehaviour
                 float centreXMax = (asymmetric + centreX) / symmetryProbabilityTotal;
 
                 //if symmetry is centred, do not allow non symmetrical orientation modes
-                if (symmetryValue >= centreXMin * symmetryProbMax && symmetryValue < centreXMax * symmetryProbMax)
+                if (symmetryValue >= centreXMin * maxProbabilityValue && symmetryValue < centreXMax * maxProbabilityValue)
                 {
                     if (orientationMode != WeaponOrientationMode.FIXEDSIDEWAYS &&
                         orientationMode != WeaponOrientationMode.FIXEDOTHERFORWARDS &&
@@ -884,7 +918,7 @@ public class GeneratorScript : MonoBehaviour
             float centreXMax = (asymmetric + centreX) / symmetryProbabilityTotal;
 
             //if current weapon should be centred in X axis for symmetry, do so
-            if (symmetryValue >= centreXMin * symmetryProbMax && symmetryValue < centreXMax * symmetryProbMax)
+            if (symmetryValue >= centreXMin * maxProbabilityValue && symmetryValue < centreXMax * maxProbabilityValue)
             {
                 xSeed = 0;
             }
@@ -952,7 +986,7 @@ public class GeneratorScript : MonoBehaviour
         }
 
         //generate number of weapons
-        weaponQuantity = Mathf.RoundToInt(bossType.weaponQuantityCurve.Evaluate(rand.Next(0, weaponQuantityProbMax) / (float)weaponQuantityProbMax));
+        weaponQuantity = Mathf.RoundToInt(bossType.weaponQuantityCurve.Evaluate(rand.Next(0, maxProbabilityValue) / (float)maxProbabilityValue));
         //Debug.Log("Number of weapons: " + weaponQuantity);
 
         for (int i = 0; i < weaponQuantity; i++)
@@ -1015,7 +1049,7 @@ public class GeneratorScript : MonoBehaviour
             SpriteRenderer mirrorsr = null;
             bool mirroringWeapon = false;
 
-            if (symmetryValue >= mirrorSymmetryMin * symmetryProbMax && symmetryValue < mirrorSymmetryMax * symmetryProbMax)
+            if (symmetryValue >= mirrorSymmetryMin * maxProbabilityValue && symmetryValue < mirrorSymmetryMax * maxProbabilityValue)
             {
                 mirroringWeapon = true;
                 mirrorWeaponObj = weaponManager.GetWeaponObject();
@@ -1308,5 +1342,45 @@ public class GeneratorScript : MonoBehaviour
                 bossAttackSequence.Add(bossAttackTypes[attack]);
             }
         }
+    }
+
+    private IEnumerator GenerateMovementPatterns()
+    {
+        movementPatternQuantity = rand.Next(movementPatternQuantityMin, movementPatternQuantityMax);
+        
+        for (int i = 0; i < movementPatternQuantity; i++)
+        {
+            MovementPatternType movementPattern = new MovementPatternType();
+
+            //make sure there is a complexity curve
+            if (movementsPerPatternProbabilityWeighting.length == 0)
+            {
+                Debug.Log("ERROR: Missing movements per pattern curve");
+                movementPatternGenerationComplete = true;
+                yield break;
+            }
+
+            //generate number of weapons
+            int patternMovementQuantity = Mathf.RoundToInt(movementsPerPatternProbabilityWeighting.Evaluate(rand.Next(0, maxProbabilityValue) / (float)maxProbabilityValue));
+            movementPattern.numberOfMovements = patternMovementQuantity;
+
+            Vector3[] points = new Vector3[patternMovementQuantity];
+            for (int j = 0; j < patternMovementQuantity; j++)
+            {
+                float x = rand.Next((int)(minDestinationX * 100), (int)(maxDestinationX * 100));
+                float y = rand.Next((int)(minDestinationY * 100), (int)(maxDestinationY * 100));
+                points[j] = new Vector3(x / 100.0f, y / 100.0f, 0.0f);
+            }
+            movementPattern.SetDestinationPoints(points);
+            MovementPatternType[] array = new MovementPatternType[1];
+            array[0] = movementPattern;
+            bossObj.GetComponent<BossLogic>().movementPatternSequence = array;
+
+            movementPattern.accelerationType = availableAccelerationTypes[4];
+        }
+
+        movementPatternGenerationComplete = true;
+
+        yield return null; 
     }
 }

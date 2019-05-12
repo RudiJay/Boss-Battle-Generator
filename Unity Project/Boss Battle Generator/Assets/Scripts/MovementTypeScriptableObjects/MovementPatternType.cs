@@ -9,52 +9,44 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewMovementPatternType", menuName = "MovementTypeData/MovementPatternType")]
 public class MovementPatternType : ScriptableObject
 {
-    [SerializeField]
-    private int numberOfMovements;
+    public int numberOfMovements;
 
     [SerializeField]
     private Vector3[] destinationPoints;
-    [SerializeField]
-    private bool includeStartPointInDestinations;
+    public bool includeStartPointInDestinations;
     private Vector3 startPoint;
     [SerializeField]
-    private bool useXAxis = true, useYAxis = true;
+    private bool constrainXAxis = false, constrainYAxis = false;
     [SerializeField]
     private bool randomlyDecideNextDestination;
-    [SerializeField]
-    private float waitTimeAtDestination = 0.0f;
+    public float waitTimeAtDestination = 0.0f;
 
-    [SerializeField]
-    private VelocityCurveType accelerationType;
+    public VelocityCurveType accelerationType;
 
     [SerializeField]
     private LateralMovementType lateralMovement;
 
     //rotation?
 
-    public int GetNumberOfMovements()
+    public void SetDestinationPoints(Vector3[] inPoints)
     {
-        return numberOfMovements;
+        destinationPoints = inPoints;
+    }
+
+    public void SetAxisConstraints(bool xAxis, bool yAxis)
+    {
+        constrainXAxis = xAxis;
+        constrainYAxis = yAxis;
+    }
+
+    public void SetRandomlyDecideNextDestination(bool value)
+    {
+        randomlyDecideNextDestination = value;
     }
 
     public void SetStartPoint(Vector3 value)
     {
         startPoint = value;
-    }
-
-    public bool GetIncludeStartPoint()
-    {
-        return includeStartPointInDestinations;
-    }
-
-    public float GetWaitTimeAtDestination()
-    {
-        return waitTimeAtDestination;
-    }
-
-    public VelocityCurveType GetAccelerationType()
-    {
-        return accelerationType;
     }
 
     public Vector3 GetNextDestinationPoint(int nextDestinationIndex)
@@ -84,12 +76,12 @@ public class MovementPatternType : ScriptableObject
             returnVector = destinationPoints[nextDestinationIndex];
         }
 
-        if (!useXAxis)
+        if (constrainXAxis)
         {
             returnVector.x = startPoint.x;
         }
 
-        if (!useYAxis)
+        if (constrainYAxis)
         {
             returnVector.y = startPoint.y;
         }

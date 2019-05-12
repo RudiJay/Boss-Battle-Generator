@@ -26,6 +26,10 @@ public class BossLogic : MonoBehaviour
     private int maxHealth = 100;
     private int currentHealth;
 
+    private int numberOfMovements = 0;
+    private Vector3 nextDestination = Vector3.zero;
+    private float distanceToNextDestination = 0.0f;
+
     public void SetMaxHealth(int value)
     {
         maxHealth = value;
@@ -47,42 +51,66 @@ public class BossLogic : MonoBehaviour
         StopCoroutine(bossFightLogicSequence);
     }
 
+    private void SetupNextPattern(int patternIndex)
+    {
+        currentMovementPattern = movementPatternSequence[patternIndex];
+
+        numberOfMovements = currentMovementPattern.GetNumberOfMovements();
+        nextDestination = currentMovementPattern.GetNextDestinationPoint(0);
+        distanceToNextDestination = (nextDestination - transform.position).magnitude;
+
+        if (currentMovementPattern.GetIncludeStartPoint())
+        {
+            currentMovementPattern.SetStartPoint(transform.position);
+        }
+    }
+
     private IEnumerator BossFightLogicSequence()
     {
-        int patternIndex = -1;
-
-        int numberOfMovements = 0;
+        int patternIndex = 0;
+        
         int movementsCompleted = 0;
-        Vector3 nextDestination = Vector3.zero;
+        float currentVelocity = 0.0f;
+
+        SetupNextPattern(patternIndex);
+        bool changed = true;
 
         while (logicActive)
         {
-            if (movementsCompleted >= numberOfMovements)
+            if (changed)
             {
-                patternIndex++;
-                if (patternIndex >= movementPatternSequence.Length)
-                {
-                    patternIndex = 0;
-                }
-
-                currentMovementPattern = movementPatternSequence[patternIndex];
-
-                numberOfMovements = currentMovementPattern.GetNumberOfMovements();
-                movementsCompleted = 0;
-                nextDestination = currentMovementPattern.GetNextDestinationPoint(movementsCompleted);
-
-                if (currentMovementPattern.GetIncludeStartPoint())
-                {
-                    currentMovementPattern.SetStartPoint(transform.position);
-                }
+                Debug.Log(movementsCompleted+1 + "/" + numberOfMovements + " " + nextDestination);
+                changed = false;
             }
 
             Vector3 targetDirection = nextDestination - transform.position;
-            
-            if (targetDirection.magnitude <= destinationReachedDistanceThreshold)
+            float currentDistance = targetDirection.magnitude;
+
+            currentVelocity = movementSpeed * Time.deltaTime;
+            //speed *= currentMovementPattern.GetAccelerationType().GetCurve().Evaluate()
+
+            if (currentDistance <= destinationReachedDistanceThreshold)
             {
                 movementsCompleted++;
-                nextDestination = currentMovementPattern.GetNextDestinationPoint(movementsCompleted);
+
+                if (movementsCompleted >= numberOfMovements)
+                {
+                    patternIndex++;
+                    if (patternIndex >= movementPatternSequence.Length)
+                    {
+                        patternIndex = 0;
+                    }
+
+                    movementsCompleted = 0;
+
+                    SetupNextPattern(patternIndex);
+                }
+                else
+                {
+                    nextDestination = currentMovementPattern.GetNextDestinationPoint(movementsCompleted);
+                    distanceToNextDestination = (nextDestination - transform.position).magnitude;
+                }
+                changed = true;
             }
             else
             {

@@ -45,6 +45,11 @@ public class MovementPatternType : ScriptableObject
         return includeStartPointInDestinations;
     }
 
+    public VelocityCurveType GetAccelerationType()
+    {
+        return accelerationType;
+    }
+
     public Vector3 GetNextDestinationPoint(int nextDestinationIndex)
     {
         int arraySize = includeStartPointInDestinations ? destinationPoints.Length + 1 : destinationPoints.Length;

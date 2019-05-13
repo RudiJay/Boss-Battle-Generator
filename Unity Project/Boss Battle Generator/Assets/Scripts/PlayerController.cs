@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        rigidbody.angularVelocity = 0.0f;
+
         if (InputEnabled)
         {
             float horizontalMove = Input.GetAxis("Horizontal");

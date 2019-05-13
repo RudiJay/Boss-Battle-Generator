@@ -61,4 +61,12 @@ public class ProjectileManager : MonoBehaviour
             projectilePool[i].SetActive(false);
         }
     }
+
+    public void SendPlayerTransformToProjectiles(Transform transform)
+    {
+        for (int i = 0; i < projectilePool.Count; i++)
+        {
+            projectilePool[i].GetComponent<ProjectileLogic>().SetTargetTransform(transform);
+        }
+    }
 }

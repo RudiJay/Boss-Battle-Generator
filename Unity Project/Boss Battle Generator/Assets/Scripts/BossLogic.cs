@@ -50,6 +50,7 @@ public class BossLogic : MonoBehaviour
     private void Start()
     {
         bossAttackSequence = BossAttackSequenceLogic();
+        bossMovementSequence = BossMovementSequenceLogic();
 
         attackSequence = new List<IAttackType>();
         movementPatternSequence = new List<MovementPatternType>();

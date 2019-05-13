@@ -181,6 +181,7 @@ public class GameManager : MonoBehaviour
         player.transform.SetPositionAndRotation(playerSpawn.position, playerSpawn.rotation);
         player.SetActive(true);
         playerController.SetBossTransform(boss.transform);
+        ProjectileManager.Instance.SendPlayerTransformToProjectiles(player.transform);
     }
 
     private void DisablePlayer()
@@ -269,6 +270,7 @@ public class GameManager : MonoBehaviour
 
         DisablePlayer();
 
+        ProjectileManager.Instance.SendPlayerTransformToProjectiles(null);
         ProjectileManager.Instance.DisableAllProjectiles();
 
         boss.transform.position = bossSpawn.position;

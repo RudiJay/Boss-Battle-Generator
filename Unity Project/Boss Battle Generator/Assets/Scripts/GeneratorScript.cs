@@ -16,6 +16,7 @@ public class GeneratorScript : MonoBehaviour
 
     private GameObject bossObj;
     private SpriteRenderer bossSprite;
+    private BossLogic bossLogic;
     private WeaponManager weaponManager;
 
     private Camera spriteSnapshotCam;
@@ -121,6 +122,7 @@ public class GeneratorScript : MonoBehaviour
     private List<VelocityCurveType> availableAccelerationTypes;
     [SerializeField]
     private List<MovementPatternType> generatedMovementPatterns;
+    private List<MovementPatternType> bossMovementPatternSequence;
     private int movementPatternQuantity = 5;
     
 
@@ -131,13 +133,15 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField]
     private AnimationCurve movementsPerPatternProbabilityWeighting;
     [SerializeField]
+    private int destinationPointCountMin = 2, destinationPointCountMax = 9;
+    [SerializeField]
     private float minDestinationX = -10.5f, minDestinationY = -8.0f, maxDestinationX = 10.5f, maxDestinationY = 1.5f;
     [SerializeField]
-    private float constrainXAxisChance = 0.3f, constrainYAxisChance = 0.15f;
+    private float constrainXAxisChance = 0.15f, constrainYAxisChance = 0.3f;
     [SerializeField]
     private float includeStartPointChance = 0.5f;
     [SerializeField]
-    private float randomlyNextDestinationChance = 0.0f;
+    private float randomlyDecideNextDestinationChance = 0.0f;
     [SerializeField]
     private AnimationCurve destinationWaitTimeProbabilityWeighting;
 
@@ -173,6 +177,7 @@ public class GeneratorScript : MonoBehaviour
         if (bossObj)
         {
             bossSprite = bossObj.GetComponentInChildren<SpriteRenderer>();
+            bossLogic = bossObj.GetComponent<BossLogic>();
             weaponManager = bossObj.GetComponent<WeaponManager>();
         }
 
@@ -183,6 +188,8 @@ public class GeneratorScript : MonoBehaviour
         bossWeapons = new List<Weapon>();
         bossAttackTypes = new List<IAttackType>();
         bossAttackSequence = new List<IAttackType>();
+        generatedMovementPatterns = new List<MovementPatternType>();
+        bossMovementPatternSequence = new List<MovementPatternType>();
 
         //calculate determinant sizes
         textureWidth = (int)(maxBossWidth * 1.25f);
@@ -339,6 +346,7 @@ public class GeneratorScript : MonoBehaviour
         //clean up potential previous boss
         ClearWeapons();
         ClearAttacks();
+        ClearMovementPatterns();
         GeneratorUI.Instance.ResetAttackUI();
 
         yield return null;
@@ -398,9 +406,9 @@ public class GeneratorScript : MonoBehaviour
             yield return null;
         }
 
-        //setmovement ui
+        GenerateMovementPatternSequence();
 
-        //generate movement pattern sequence
+        yield return null;
 
         GeneratorUI.Instance.SetCurrentlyDemonstratingAttacks(true);
         bossDemonstrationInProgress = true;
@@ -1333,7 +1341,7 @@ public class GeneratorScript : MonoBehaviour
     {
         if (bossAttackTypes.Count > 0)
         {
-            //minimum sequence length if highest of set minimum and attack quantity
+            //minimum sequence length is highest of set minimum and attack quantity
             int attackSequenceLength = rand.Next(Mathf.Max(attackQuantity, attackSequenceLengthMin), attackSequenceLengthMax);
             
             for (int i = 0; i < attackSequenceLength; i++)
@@ -1344,13 +1352,19 @@ public class GeneratorScript : MonoBehaviour
         }
     }
 
+    private void ClearMovementPatterns()
+    {
+        generatedMovementPatterns.Clear();
+        bossMovementPatternSequence.Clear();
+    }
+
     private IEnumerator GenerateMovementPatterns()
     {
         movementPatternQuantity = rand.Next(movementPatternQuantityMin, movementPatternQuantityMax);
         
         for (int i = 0; i < movementPatternQuantity; i++)
         {
-            MovementPatternType movementPattern = new MovementPatternType();
+            MovementPatternType movementPattern = ScriptableObject.CreateInstance<MovementPatternType>(); ;
 
             //make sure there is a complexity curve
             if (movementsPerPatternProbabilityWeighting.length == 0)
@@ -1359,28 +1373,70 @@ public class GeneratorScript : MonoBehaviour
                 movementPatternGenerationComplete = true;
                 yield break;
             }
-
-            //generate number of weapons
+            
             int patternMovementQuantity = Mathf.RoundToInt(movementsPerPatternProbabilityWeighting.Evaluate(rand.Next(0, maxProbabilityValue) / (float)maxProbabilityValue));
             movementPattern.numberOfMovements = patternMovementQuantity;
 
-            Vector3[] points = new Vector3[patternMovementQuantity];
-            for (int j = 0; j < patternMovementQuantity; j++)
+            int destinationCount = rand.Next(destinationPointCountMin, destinationPointCountMax);
+            Vector3[] points = new Vector3[destinationCount];
+            for (int j = 0; j < destinationCount; j++)
             {
                 float x = rand.Next((int)(minDestinationX * 100), (int)(maxDestinationX * 100));
                 float y = rand.Next((int)(minDestinationY * 100), (int)(maxDestinationY * 100));
                 points[j] = new Vector3(x / 100.0f, y / 100.0f, 0.0f);
             }
             movementPattern.SetDestinationPoints(points);
-            MovementPatternType[] array = new MovementPatternType[1];
-            array[0] = movementPattern;
-            bossObj.GetComponent<BossLogic>().movementPatternSequence = array;
+            
+            if (rand.Next(0, maxProbabilityValue) / (float)maxProbabilityValue < includeStartPointChance)
+            {
+                movementPattern.includeStartPointInDestinations = true;
+            }
 
-            movementPattern.accelerationType = availableAccelerationTypes[4];
+            bool constrainX = false;
+            bool constrainY = false;
+            if (rand.Next(0, maxProbabilityValue) / (float)maxProbabilityValue < constrainXAxisChance)
+            {
+                constrainX = true;
+            }
+            else if (rand.Next(0, maxProbabilityValue) / (float)maxProbabilityValue < constrainYAxisChance)
+            {
+                constrainY = true;
+            }
+            movementPattern.SetAxisConstraints(constrainX, constrainY);
+            
+            if (rand.Next(0, maxProbabilityValue) / (float)maxProbabilityValue < randomlyDecideNextDestinationChance)
+            {
+                movementPattern.SetRandomlyDecideNextDestination(true);
+            }
+
+            float destinationWaitTime = destinationWaitTimeProbabilityWeighting.Evaluate(rand.Next(0, maxProbabilityValue) / (float)maxProbabilityValue);
+            movementPattern.waitTimeAtDestination = destinationWaitTime;
+
+            int accelerationIndex = rand.Next(0, availableAccelerationTypes.Count);
+            movementPattern.accelerationType = availableAccelerationTypes[accelerationIndex];
+
+            generatedMovementPatterns.Add(movementPattern);
         }
 
         movementPatternGenerationComplete = true;
 
         yield return null; 
+    }
+
+    private void GenerateMovementPatternSequence()
+    {
+        if (generatedMovementPatterns.Count > 0)
+        {
+            //minimum sequence length is highest of set minimum and attack quantity
+            int movementPatternSequenceLength = rand.Next(Mathf.Max(movementPatternQuantity, movementPatternSequenceLengthMin), movementPatternSequenceLengthMax);
+
+            for (int i = 0; i < movementPatternSequenceLength; i++)
+            {
+                int pattern = rand.Next(0, generatedMovementPatterns.Count);
+                bossMovementPatternSequence.Add(generatedMovementPatterns[pattern]);
+            }
+
+            bossLogic.SetupMovementPatternSequence(generatedMovementPatterns);
+        }
     }
 }

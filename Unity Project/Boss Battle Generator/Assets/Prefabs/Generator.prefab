@@ -767,44 +767,64 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b9d9bcbfcf1e24540928f7d10fedef17, type: 2}
   generatedMovementPatterns: []
   movementPatternQuantityMin: 3
-  movementPatternQuantityMax: 10
+  movementPatternQuantityMax: 5
   movementPatternSequenceLengthMin: 1
   movementPatternSequenceLengthMax: 15
   movementsPerPatternProbabilityWeighting:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -0.00724246
-      outSlope: -0.00724246
+      time: 0.00869751
+      value: 2
+      inSlope: 11.368189
+      outSlope: 11.368189
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 1
+      outWeight: 0.0849553
     - serializedVersion: 3
       time: 1
       value: 7
-      inSlope: 16.561663
-      outSlope: 16.561663
+      inSlope: 17.57266
+      outSlope: 17.57266
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.048433125
+      inWeight: 0.054959215
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  destinationPointCountMin: 2
+  destinationPointCountMax: 7
   minDestinationX: -10.5
   minDestinationY: -8
   maxDestinationX: 10.5
   maxDestinationY: 1.5
-  constrainXAxisChance: 0.3
-  constrainYAxisChance: 0.15
+  constrainXAxisChance: 0.15
+  constrainYAxisChance: 0.3
   includeStartPointChance: 0.5
-  randomlyNextDestinationChance: 0
+  randomlyDecideNextDestinationChance: 0
   destinationWaitTimeProbabilityWeighting:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.110306464
+      outSlope: 0.110306464
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.49101558
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 3.3060248
+      outSlope: 3.3060248
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.07655263
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4

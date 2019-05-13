@@ -13,7 +13,7 @@ public class BossLogic : MonoBehaviour
 
     private IEnumerator bossFightLogicSequence;
     
-    public MovementPatternType[] movementPatternSequence;
+    private List<MovementPatternType> movementPatternSequence;
     private MovementPatternType currentMovementPattern;
 
     [SerializeField]
@@ -53,6 +53,16 @@ public class BossLogic : MonoBehaviour
     {
         logicActive = false;
         StopCoroutine(bossFightLogicSequence);
+    }
+
+    public void SetupMovementPatternSequence(List<MovementPatternType> sequence)
+    {
+        if (movementPatternSequence == null)
+        {
+            movementPatternSequence = new List<MovementPatternType>();
+        }
+
+        movementPatternSequence = sequence;
     }
 
     private void SetupNextPattern(int patternIndex)
@@ -114,7 +124,7 @@ public class BossLogic : MonoBehaviour
                 if (movementsCompleted >= numberOfMovements)
                 {
                     patternIndex++;
-                    if (patternIndex >= movementPatternSequence.Length)
+                    if (patternIndex >= movementPatternSequence.Count)
                     {
                         patternIndex = 0;
                     }

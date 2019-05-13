@@ -14,14 +14,23 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rigidbody;
 
     [SerializeField]
-    private float playerSpeed;
+    private float playerMovementSpeed = 1.0f;
+    [SerializeField]
+    private float rotationSpeed = 0.5f;
 
     [SerializeField]
     private Transform projectileSource;
 
+    private Transform bossTransform;
+
     private float camBorderHeight;
     private float camBorderWidth;
     private Vector3 centrepoint;
+
+    public void SetBossTransform(Transform transform)
+    {
+        bossTransform = transform;
+    }
 
     private void Start()
     {
@@ -47,12 +56,23 @@ public class PlayerController : MonoBehaviour
             float verticalMove = Input.GetAxis("Vertical");
 
             Vector3 movement = new Vector3(horizontalMove, verticalMove, 0.0f);
-            rigidbody.velocity = movement.normalized * playerSpeed;
+            rigidbody.velocity = movement.normalized * playerMovementSpeed;
 
             //clamp player position
-            rigidbody.position = new Vector3(
-                Mathf.Clamp(rigidbody.position.x, centrepoint.x - camBorderWidth, centrepoint.x + camBorderWidth),
-                Mathf.Clamp(rigidbody.position.y, centrepoint.y - camBorderHeight, centrepoint.y + camBorderHeight), 0.0f);
+            transform.position = new Vector3(
+                Mathf.Clamp(transform.position.x, centrepoint.x - camBorderWidth, centrepoint.x + camBorderWidth),
+                Mathf.Clamp(transform.position.y, centrepoint.y - camBorderHeight, centrepoint.y + camBorderHeight), 0.0f);
+
+            if (bossTransform != null)
+            {
+                float rotationStrength = Mathf.Min(rotationSpeed * Time.deltaTime, 1);
+
+                Vector3 bossDirection = bossTransform.position - transform.position;
+                float targetAngle = Vector3.SignedAngle(Vector3.up, bossDirection, Vector3.forward);
+                Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
+
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationStrength);
+            }
         }
     }
 

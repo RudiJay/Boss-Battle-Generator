@@ -180,6 +180,7 @@ public class GameManager : MonoBehaviour
     {
         player.transform.SetPositionAndRotation(playerSpawn.position, playerSpawn.rotation);
         player.SetActive(true);
+        playerController.SetBossTransform(boss.transform);
     }
 
     private void DisablePlayer()

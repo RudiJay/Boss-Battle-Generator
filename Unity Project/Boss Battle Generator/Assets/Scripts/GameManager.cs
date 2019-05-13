@@ -76,6 +76,16 @@ public class GameManager : MonoBehaviour
                 ExitPlayMode();
             }
         }
+
+        if (Input.GetButtonDown("ToggleUI"))
+        {
+            if (generatorActive)
+            {
+                UIManager.Instance.ToggleGeneratorUI();
+            }
+
+            UIManager.Instance.ToggleIndicators();
+        }
     }
 
     public void RegisterAsGeneratorListener(Action actionToRegister)
@@ -177,6 +187,19 @@ public class GameManager : MonoBehaviour
         player.SetActive(false);
     }
 
+    public void StartAttackSequence()
+    {
+        if (!bossLogic.GetCurrentlyPerformingAttackSequence())
+        {
+            bossLogic.StartAttackSequence();
+        }
+    }
+
+    public void StopAttackSequence()
+    {
+        bossLogic.StopAttackSequence();
+    }
+
     public void StartBossFight()
     {
         if (!modeTransitionInProgress && generatorActive)
@@ -191,9 +214,9 @@ public class GameManager : MonoBehaviour
 
         SetGeneratorActive(false);
 
-        GeneratorUI.Instance.ShowGeneratorUI(false);
+        UIManager.Instance.ShowGeneratorUI(false);
 
-        GeneratorUI.Instance.ShowPlayModeUI(true);
+        UIManager.Instance.ShowPlayModeUI(true);
 
         StartCoroutine(CameraTransition(battleCamLocation, battleCamSize));
 
@@ -207,6 +230,11 @@ public class GameManager : MonoBehaviour
         playerController.SetUpEdgeBoundaries(battleCamLocation.position);
 
         SetPlayerInputEnabled(true);
+
+        if (!bossLogic.GetCurrentlyPerformingAttackSequence())
+        {
+            bossLogic.StartAttackSequence();
+        }
 
         bossLogic.StartBossFight();
 
@@ -226,8 +254,9 @@ public class GameManager : MonoBehaviour
     {
         modeTransitionInProgress = exitingPlayMode = true;
 
-        GeneratorUI.Instance.ShowPlayModeUI(false);
+        UIManager.Instance.ShowPlayModeUI(false);
 
+        bossLogic.StopAttackSequence();
         bossLogic.StopBossFight();
 
         StartCoroutine(CameraTransition(generatorCamLocation, generatorCamSize));
@@ -243,9 +272,12 @@ public class GameManager : MonoBehaviour
 
         boss.transform.position = bossSpawn.position;
 
-        GeneratorUI.Instance.ShowGeneratorUI(true);
+        UIManager.Instance.ShowGeneratorUI(true);
+        UIManager.Instance.ShowIndicators(true);
 
         SetGeneratorActive(true);
+
+        bossLogic.StartAttackSequence();
 
         modeTransitionInProgress = exitingPlayMode = false;
     }

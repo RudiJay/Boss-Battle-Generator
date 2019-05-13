@@ -6,17 +6,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GeneratorUI : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
-    public static GeneratorUI Instance;
+    public static UIManager Instance;
 
-    private bool uiVisible = true;
+    private bool generatorUIVisible = true;
+    private bool indicatorsVisible = true;
 
     [SerializeField]
     private Color textColor, highlightColor;
 
     [SerializeField]
-    private CanvasGroup generationModeCanvasGroup, playModeCanvasGroup;
+    private CanvasGroup generationModeCanvasGroup, playModeCanvasGroup, indicatorCanvasGroup;
 
     [SerializeField]
     private Button playModeButton;
@@ -28,6 +29,8 @@ public class GeneratorUI : MonoBehaviour
     private Dropdown bossTypeDropdown;
     [SerializeField]
     private Text attackQuantityLabel, currentAttackLabel, attackSequenceLengthLabel;
+    [SerializeField]
+    private Text currentMovementPatternLabel, movementPatternSequenceLengthLabel;
 
     private void Awake()
     {
@@ -43,13 +46,21 @@ public class GeneratorUI : MonoBehaviour
 
     public void ToggleGeneratorUI()
     {
-        uiVisible = !uiVisible;
+        generatorUIVisible = !generatorUIVisible;
 
-        ShowGeneratorUI(uiVisible);
+        ShowGeneratorUI(generatorUIVisible);
+    }
+
+    public void ToggleIndicators()
+    {
+        indicatorsVisible = !indicatorsVisible;
+
+        ShowIndicators(indicatorsVisible);
     }
 
     public void ShowGeneratorUI(bool value)
     {
+        generatorUIVisible = value;
         if (value)
         {
             generationModeCanvasGroup.alpha = 1.0f;
@@ -67,12 +78,23 @@ public class GeneratorUI : MonoBehaviour
         if (value)
         {
             playModeCanvasGroup.alpha = 1.0f;
-            playModeCanvasGroup.blocksRaycasts = true;
         }
         else
         {
             playModeCanvasGroup.alpha = 0.0f;
-            playModeCanvasGroup.blocksRaycasts = false;
+        }
+    }
+
+    public void ShowIndicators(bool value)
+    {
+        indicatorsVisible = value;
+        if (value)
+        {
+            indicatorCanvasGroup.alpha = 1.0f;
+        }
+        else
+        {
+            indicatorCanvasGroup.alpha = 0.0f;
         }
     }
 
@@ -113,6 +135,12 @@ public class GeneratorUI : MonoBehaviour
         attackSequenceLengthLabel.text = "?";
     }
 
+    public void ResetMovementPatternUI()
+    {
+        currentMovementPatternLabel.text = "0";
+        movementPatternSequenceLengthLabel.text = "?";
+    }
+
     public void SetAttackQuantity(int value)
     {
         attackQuantityLabel.text = value.ToString();
@@ -128,7 +156,7 @@ public class GeneratorUI : MonoBehaviour
         attackSequenceLengthLabel.text = value.ToString();
     }
 
-    public void SetCurrentlyDemonstratingAttacks(bool value)
+    public void SetCurrentlyPerformingAttacks(bool value)
     {
         if (value)
         {
@@ -138,7 +166,28 @@ public class GeneratorUI : MonoBehaviour
         {
             currentAttackLabel.color = textColor;
         }
+    }
 
+    public void SetCurrentMovementPattern(int value)
+    {
+        currentMovementPatternLabel.text = value.ToString();
+    }
+
+    public void SetMovementPatternSequenceSize(int value)
+    {
+        movementPatternSequenceLengthLabel.text = value.ToString();
+    }
+
+    public void SetCurrentlyPerformingMovement(bool value)
+    {
+        if (value)
+        {
+            currentMovementPatternLabel.color = highlightColor;
+        }
+        else
+        {
+            currentMovementPatternLabel.color = textColor;
+        }
     }
 
     public void UpdateSeedUI(string seedString)

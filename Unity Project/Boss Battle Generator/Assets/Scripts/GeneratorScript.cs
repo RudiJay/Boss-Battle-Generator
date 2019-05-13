@@ -29,10 +29,6 @@ public class GeneratorScript : MonoBehaviour
     private bool generationInProgress = false;
     private WaitForSeconds generationStepDelayTime;
 
-    private IEnumerator bossDemonstration;
-    private bool bossDemonstrationInProgress = false;
-    private WaitForSeconds bossDemonstrationDelayTime;
-
     private IEnumerator autoGenerator;
     private bool isAutoGenerating = false;
     private WaitForSeconds autoGenerateWaitForSeconds;
@@ -167,9 +163,6 @@ public class GeneratorScript : MonoBehaviour
 
         generationStepDelayTime = new WaitForSeconds(generationStepDelay);
 
-        bossDemonstrationDelayTime = new WaitForSeconds(bossDemonstrationDelay);
-        bossDemonstration = DemonstrateBossFightLoop();
-
         autoGenerateWaitForSeconds = new WaitForSeconds(autoGeneratorDelay);
         autoGenerator = AutoGenerateBossFights();
 
@@ -205,11 +198,6 @@ public class GeneratorScript : MonoBehaviour
             if (Input.GetButtonDown("GenerateBoss"))
             {
                 GenerateBossFight(true);
-            }
-
-            if (Input.GetButtonDown("ToggleUI"))
-            {
-                GeneratorUI.Instance.ToggleGeneratorUI();
             }
 
             //Toggle auto generate input
@@ -276,7 +264,7 @@ public class GeneratorScript : MonoBehaviour
     {
         seed = System.Environment.TickCount;
 
-        GeneratorUI.Instance.UpdateSeedUI(seed.ToString());
+        UIManager.Instance.UpdateSeedUI(seed.ToString());
 
         rand = new System.Random(seed);
     }
@@ -305,7 +293,7 @@ public class GeneratorScript : MonoBehaviour
     {
         if (bossSprite && !generationInProgress)
         {
-            StopBossDemonstration();
+            GameManager.Instance.StopAttackSequence();
             ProjectileManager.Instance.DisableAllProjectiles();
 
             bossGeneration = GenerationProcess(generateNewSeed);
@@ -321,15 +309,6 @@ public class GeneratorScript : MonoBehaviour
         generationInProgress = false;
     }
 
-    private void StopBossDemonstration()
-    {
-        StopCoroutine(bossDemonstration);
-
-        bossDemonstrationInProgress = false;
-
-        GeneratorUI.Instance.SetCurrentlyDemonstratingAttacks(false);
-    }
-
     private IEnumerator GenerationProcess(bool generateNewSeed)
     {
         generationInProgress = true;
@@ -339,7 +318,7 @@ public class GeneratorScript : MonoBehaviour
         attackGenerationComplete = false;
         movementPatternGenerationComplete = false;
 
-        GeneratorUI.Instance.SetGeneratingInProgressLabelEnabled(true);
+        UIManager.Instance.SetGeneratingInProgressLabelEnabled(true);
 
         yield return null;
 
@@ -347,7 +326,8 @@ public class GeneratorScript : MonoBehaviour
         ClearWeapons();
         ClearAttacks();
         ClearMovementPatterns();
-        GeneratorUI.Instance.ResetAttackUI();
+        UIManager.Instance.ResetAttackUI();
+        UIManager.Instance.ResetMovementPatternUI();
 
         yield return null;
 
@@ -393,7 +373,7 @@ public class GeneratorScript : MonoBehaviour
             yield return null;
         }
 
-        GeneratorUI.Instance.SetAttackQuantity(attackQuantity);
+        UIManager.Instance.SetAttackQuantity(attackQuantity);
 
         GenerateAttackSequence();
 
@@ -409,36 +389,14 @@ public class GeneratorScript : MonoBehaviour
         GenerateMovementPatternSequence();
 
         yield return null;
+        
+        GameManager.Instance.StartAttackSequence();
 
-        GeneratorUI.Instance.SetCurrentlyDemonstratingAttacks(true);
-        bossDemonstrationInProgress = true;
-        bossDemonstration = DemonstrateBossFightLoop();
-        StartCoroutine(bossDemonstration);        
-
-        GeneratorUI.Instance.SetGeneratingInProgressLabelEnabled(false);
+        UIManager.Instance.SetGeneratingInProgressLabelEnabled(false);
 
         yield return null;
 
         generationInProgress = false;
-    }
-
-    private IEnumerator DemonstrateBossFightLoop()
-    {
-        GeneratorUI.Instance.SetAttackSequenceSize(bossAttackSequence.Count);
-
-        while (true)
-        {
-            for (int i = 0; i < bossAttackSequence.Count; i++)
-            {
-                GeneratorUI.Instance.SetCurrentAttack(i + 1);
-
-                bossAttackSequence[i].PerformAttack();
-
-                yield return bossDemonstrationDelayTime;
-            }
-
-            yield return bossDemonstrationDelayTime;
-        }
     }
 
     /// <summary>
@@ -447,13 +405,13 @@ public class GeneratorScript : MonoBehaviour
     private void SetBossType()
     {
         BossTypeName typeName;
-        typeName = GeneratorUI.Instance.GetBossTypeName();
+        typeName = UIManager.Instance.GetBossTypeName();
 
         if (typeName == BossTypeName.Random)
         {
             int index = rand.Next(0, System.Enum.GetNames(typeof(BossTypeName)).Length - 1) + 1; //-1 and +1 to avoid setting boss type to RANDOM again
             typeName = (BossTypeName)index;
-            GeneratorUI.Instance.ShowRandomBossType(typeName.ToString());
+            UIManager.Instance.ShowRandomBossType(typeName.ToString());
         }
 
         bossType = System.Array.Find<BossType>(bossTypeVariables, BossTypeVariables => BossTypeVariables.typeName == typeName);
@@ -1349,6 +1307,8 @@ public class GeneratorScript : MonoBehaviour
                 int attack = rand.Next(0, bossAttackTypes.Count);
                 bossAttackSequence.Add(bossAttackTypes[attack]);
             }
+
+            bossLogic.SetupAttackSequence(bossAttackSequence);
         }
     }
 
@@ -1436,6 +1396,7 @@ public class GeneratorScript : MonoBehaviour
                 bossMovementPatternSequence.Add(generatedMovementPatterns[pattern]);
             }
 
+            UIManager.Instance.SetMovementPatternSequenceSize(generatedMovementPatterns.Count);
             bossLogic.SetupMovementPatternSequence(generatedMovementPatterns);
         }
     }

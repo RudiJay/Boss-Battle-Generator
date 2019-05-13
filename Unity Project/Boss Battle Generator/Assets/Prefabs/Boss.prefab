@@ -164,12 +164,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyObject: {fileID: 4245498521172482571}
   rb: {fileID: 953644342780748382}
-  movementPatternSequence:
-  - {fileID: 11400000, guid: 2e7563897c2b2d44b9014f061a448372, type: 2}
   destinationReachedDistanceThreshold: 0.05
   movementSpeedMultiplier: 5
   accelerationMultiplier: 1
   minSpeedBuffer: 0.5
+  delayBetweenAttackSequenceLoop: 1
 --- !u!1 &4245498521172482571
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,9 +10,12 @@ public class BossLogic : MonoBehaviour
     private Rigidbody2D rb;
 
     private bool logicActive = false;
+    private bool performingAttacks = false;
 
-    private IEnumerator bossFightLogicSequence;
-    
+    private IEnumerator bossAttackSequence, bossMovementSequence;
+
+    private List<IAttackType> attackSequence;
+
     private List<MovementPatternType> movementPatternSequence;
     private MovementPatternType currentMovementPattern;
 
@@ -29,14 +32,46 @@ public class BossLogic : MonoBehaviour
     private int maxHealth = 100;
     private int currentHealth;
 
-    private int numberOfMovements = 0;
-    private Vector3 nextDestination = Vector3.zero;
-    private float distanceToNextDestination = 0.0f;
-    private WaitForSeconds destinationWaitTime;
+    [SerializeField]
+    private float delayBetweenAttackSequenceLoop;
+    private WaitForSeconds delayBetweenAttackSequenceLoopTime;
+    private WaitForSeconds delayBetweenAttackTime;
+
+    public bool GetCurrentlyPerformingAttackSequence()
+    {
+        return performingAttacks;
+    }
 
     public void SetMaxHealth(int value)
     {
         maxHealth = value;
+    }
+
+    private void Start()
+    {
+        bossAttackSequence = BossAttackSequenceLogic();
+
+        attackSequence = new List<IAttackType>();
+        movementPatternSequence = new List<MovementPatternType>();
+    }
+
+    public void StartAttackSequence()
+    {
+        performingAttacks = true;
+
+        UIManager.Instance.SetCurrentlyPerformingAttacks(true);
+
+        bossAttackSequence = BossAttackSequenceLogic();
+        StartCoroutine(bossAttackSequence);
+    }
+
+    public void StopAttackSequence()
+    {
+        performingAttacks = false;
+
+        UIManager.Instance.SetCurrentlyPerformingAttacks(false);
+
+        StopCoroutine(bossAttackSequence);
     }
 
     public void StartBossFight()
@@ -45,108 +80,127 @@ public class BossLogic : MonoBehaviour
 
         logicActive = true;
 
-        bossFightLogicSequence = BossFightLogicSequence();
-        StartCoroutine(bossFightLogicSequence);
+        UIManager.Instance.SetCurrentlyPerformingMovement(true);
+
+        bossMovementSequence = BossMovementSequenceLogic();
+        StartCoroutine(bossMovementSequence);
     }
 
     public void StopBossFight()
     {
         logicActive = false;
-        StopCoroutine(bossFightLogicSequence);
+
+        UIManager.Instance.SetCurrentlyPerformingMovement(false);
+
+        StopCoroutine(bossMovementSequence);
+    }
+
+    public void SetupAttackSequence(List<IAttackType> sequence)
+    {
+        attackSequence = sequence;
     }
 
     public void SetupMovementPatternSequence(List<MovementPatternType> sequence)
     {
-        if (movementPatternSequence == null)
-        {
-            movementPatternSequence = new List<MovementPatternType>();
-        }
-
         movementPatternSequence = sequence;
     }
 
-    private void SetupNextPattern(int patternIndex)
+    private IEnumerator BossAttackSequenceLogic()
     {
-        currentMovementPattern = movementPatternSequence[patternIndex];
+        UIManager.Instance.SetAttackSequenceSize(attackSequence.Count);
+        delayBetweenAttackSequenceLoopTime = new WaitForSeconds(delayBetweenAttackSequenceLoop);
 
-        numberOfMovements = currentMovementPattern.numberOfMovements;
-        nextDestination = currentMovementPattern.GetNextDestinationPoint(0);
-        distanceToNextDestination = (nextDestination - transform.position).magnitude;
-
-        if (currentMovementPattern.includeStartPointInDestinations)
+        while (performingAttacks)
         {
-            currentMovementPattern.SetStartPoint(transform.position);
-        }
+            for (int i = 0; i < attackSequence.Count; i++)
+            {
+                UIManager.Instance.SetCurrentAttack(i + 1);
 
-        destinationWaitTime = new WaitForSeconds(currentMovementPattern.waitTimeAtDestination);
+                delayBetweenAttackTime = new WaitForSeconds(attackSequence[i].DelayAfterAttack);
+
+                attackSequence[i].PerformAttack();
+
+                yield return delayBetweenAttackTime;
+            }
+
+            yield return delayBetweenAttackSequenceLoopTime;
+        }
     }
 
-    private IEnumerator BossFightLogicSequence()
+    private IEnumerator BossMovementSequenceLogic()
     {
-        int patternIndex = 0;
-        
-        int movementsCompleted = 0;
-        float currentVelocity = 0.0f;
+        UIManager.Instance.SetMovementPatternSequenceSize(movementPatternSequence.Count);
 
-        SetupNextPattern(patternIndex);
+        WaitForSeconds destinationWaitTime;
+
+        Vector3 nextDestination;
+        Vector3 targetDirection;
+
+        float distanceToNextDestination = 0.0f;
+        float currentDistance = 0.0f;
+
+        float currentVelocity = 0.0f;
 
         float timeOnMovement = 0.0f;
 
         while (logicActive)
         {
-            Vector3 targetDirection = nextDestination - transform.position;
-            float currentDistance = targetDirection.magnitude;
+            for (int i = 0; i < movementPatternSequence.Count; i++)
+            {
+                UIManager.Instance.SetCurrentMovementPattern(i + 1);
 
-            timeOnMovement += Time.deltaTime;
-            VelocityCurveType accelerationType = currentMovementPattern.accelerationType;
-            if (accelerationType == null)
-            {
-                Debug.Log("Missing acceleration type");
-                yield break;
-            }
-            if (accelerationType.GetAccelerationProportionalToDistanceTravelled())
-            {
-                if (distanceToNextDestination > 0)
+                currentMovementPattern = movementPatternSequence[i];
+                if (currentMovementPattern.includeStartPointInDestinations)
                 {
-                    currentVelocity = movementSpeedMultiplier * 0.01f * (minSpeedBuffer + accelerationType.GetCurve().Evaluate((distanceToNextDestination - currentDistance) / distanceToNextDestination));
+                    currentMovementPattern.SetStartPoint(transform.position);
                 }
-            }
-            else
-            {
-                currentVelocity = movementSpeedMultiplier * 0.01f * accelerationType.GetCurve().Evaluate(timeOnMovement * accelerationMultiplier);
-            }
+                destinationWaitTime = new WaitForSeconds(currentMovementPattern.waitTimeAtDestination);
 
-            if (currentDistance <= destinationReachedDistanceThreshold)
-            {
-                movementsCompleted++;
-                timeOnMovement = 0;
-
-                if (movementsCompleted >= numberOfMovements)
+                VelocityCurveType accelerationType = currentMovementPattern.accelerationType;
+                if (accelerationType == null)
                 {
-                    patternIndex++;
-                    if (patternIndex >= movementPatternSequence.Count)
+                    Debug.Log("Missing acceleration type");
+                    yield break;
+                }
+
+                for (int j = 0; j < currentMovementPattern.numberOfMovements; j++)
+                {
+                    nextDestination = currentMovementPattern.GetNextDestinationPoint(j);
+                    targetDirection = nextDestination - transform.position;
+
+                    distanceToNextDestination = targetDirection.magnitude;
+
+                    currentDistance = distanceToNextDestination;
+
+                    while (currentDistance > destinationReachedDistanceThreshold)
                     {
-                        patternIndex = 0;
+                        targetDirection = nextDestination - transform.position;
+                        currentDistance = targetDirection.magnitude;
+
+                        timeOnMovement += Time.deltaTime;
+
+                        if (accelerationType.GetAccelerationProportionalToDistanceTravelled())
+                        {
+                            if (distanceToNextDestination > 0)
+                            {
+                                currentVelocity = movementSpeedMultiplier * 0.01f * (minSpeedBuffer + accelerationType.GetCurve().Evaluate((distanceToNextDestination - currentDistance) / distanceToNextDestination));
+                            }
+                        }
+                        else
+                        {
+                            currentVelocity = movementSpeedMultiplier * 0.01f * accelerationType.GetCurve().Evaluate(timeOnMovement * accelerationMultiplier);
+                        }
+
+                        rb.MovePosition(transform.position + (targetDirection.normalized * currentVelocity));
+
+                        yield return null;
                     }
 
-                    movementsCompleted = 0;
+                    timeOnMovement = 0;
 
-                    SetupNextPattern(patternIndex);
+                    yield return destinationWaitTime;
                 }
-                else
-                {
-                    nextDestination = currentMovementPattern.GetNextDestinationPoint(movementsCompleted);
-                    distanceToNextDestination = (nextDestination - transform.position).magnitude;
-                }
-
-                yield return destinationWaitTime;
             }
-            else
-            {
-                rb.MovePosition(transform.position + (targetDirection.normalized * currentVelocity));
-            }
-
-            yield return null;
         }
 
         yield return null;

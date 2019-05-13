@@ -8,6 +8,8 @@ using UnityEngine;
 
 public interface IAttackType
 {
+    float DelayAfterAttack { get; set; }
+
     //the weapon orientation mode required to perform this attack. if empty, does not use a weapon
     WeaponOrientationMode GetRequiredWeaponTypes();
 

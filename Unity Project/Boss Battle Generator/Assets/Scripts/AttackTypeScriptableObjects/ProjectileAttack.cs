@@ -8,6 +8,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewProjectileAttack", menuName = "AttackTypes/ProjectileAttack")]
 public class ProjectileAttack : ScriptableObject, IAttackType
 {
+    [SerializeField]
+    private float delayAfterAttack;
+
     [SerializeField][EnumFlags]
     private WeaponOrientationMode requiredWeaponTypes;
 
@@ -33,6 +36,18 @@ public class ProjectileAttack : ScriptableObject, IAttackType
     //weapon movement behavior (spin weapon while shooting) (move 30 degrees between shots)
 
     private List<Weapon> assignedWeapons = new List<Weapon>();
+
+    public float DelayAfterAttack
+    {
+        get
+        {
+            return delayAfterAttack;
+        }
+        set
+        {
+            delayAfterAttack = value;
+        }
+    }
 
     public WeaponOrientationMode GetRequiredWeaponTypes()
     {

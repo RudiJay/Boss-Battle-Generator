@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcef602d7588eba4494d86bcae410e68, type: 3}
   m_Name: QuadBurst
   m_EditorClassIdentifier: 
+  delayAfterAttack: 1
   requiredWeaponTypes: 64
   compatibleBossTypes: 60
   projectilesPerShot: 4

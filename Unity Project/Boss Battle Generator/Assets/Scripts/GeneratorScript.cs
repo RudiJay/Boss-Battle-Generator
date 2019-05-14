@@ -78,6 +78,8 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField]
     private int perlinColorScaleMin = 25, perlinColorScaleMax = 100;
     [SerializeField]
+    private int perlinOriginPointResolution = 100;
+    [SerializeField]
     private int bossSpriteOutlineWidth = 1, weaponSpriteOutlineWidth = 1;
     [SerializeField]
     [Range(0, 1)]
@@ -527,6 +529,8 @@ public class GeneratorScript : MonoBehaviour
     {
         float scaleX = rand.Next(perlinColorScaleMin, perlinColorScaleMax);
         float scaleY = rand.Next(perlinColorScaleMin, perlinColorScaleMax);
+        float originX = rand.Next(-perlinOriginPointResolution, perlinOriginPointResolution);
+        float originY = rand.Next(-perlinOriginPointResolution, perlinOriginPointResolution);
 
         bool symmetricColor = false;
         GenerateRandomSymmetryScore();
@@ -550,7 +554,7 @@ public class GeneratorScript : MonoBehaviour
                         xCoord = Mathf.Abs(x - bossTexture.width / 2.0f);
                     }
 
-                    float noise = Mathf.PerlinNoise(xCoord / scaleX, yCoord / scaleY);
+                    float noise = Mathf.PerlinNoise((xCoord / scaleX) + originX, (yCoord / scaleY) + originY);
 
                     bossTexture.SetPixel(x, y, colorPalette[(int)(noise / noiseColorBoundaryWidth)]);
                 }

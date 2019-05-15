@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delayAfterAttack: 1
   requiredWeaponTypes: 64
-  compatibleBossTypes: 60
+  compatibleBossTypes: 62
   projectilesPerShot: 8
   projectileShotSpread: 45
   projectileObj: {fileID: 7902893971006019126, guid: 49244084617b64148bde0b9b6d35b199,

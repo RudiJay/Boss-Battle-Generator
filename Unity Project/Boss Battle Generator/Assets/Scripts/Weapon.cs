@@ -38,11 +38,6 @@ public class Weapon : MonoBehaviour
         generatorActive = GameManager.Instance.GetGeneratorActive();
     }
 
-    public void SetTargetTransform(Transform value)
-    {
-        target = value;
-    }
-
     public void SetRotatable(bool inTracksPlayer = false)
     {
         rotatable = true;

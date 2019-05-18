@@ -293,7 +293,7 @@ public class GeneratorScript : MonoBehaviour
     /// <param name="generateNewSeed">whether the new boss needs to generate a new seed or not</param>
     public void GenerateBossFight(bool generateNewSeed)
     {
-        if (bossSprite && !generationInProgress)
+        if (bossSprite && !generationInProgress && generatorActive)
         {
             GameManager.Instance.StopAttackSequence();
             ProjectileManager.Instance.DisableAllProjectiles();

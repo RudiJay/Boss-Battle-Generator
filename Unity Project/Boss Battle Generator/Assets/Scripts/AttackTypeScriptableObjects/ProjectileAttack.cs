@@ -25,10 +25,7 @@ public class ProjectileAttack : ScriptableObject, IAttackType
     //shot interval(s)
 
     [SerializeField]
-    private GameObject projectileObj;
-    //scale of projectiles
-    //projectile sprite
-    //projectile color(?)
+    private Projectile projectileToFire;
 
     //projectile behavior (burst?)
     //projectile damage

@@ -143,3 +143,24 @@ public struct WeaponType
     public float CentreXProbability;
     public float MirrorProbability;
 }
+
+/// <summary>
+/// Serialisable struct containing variables determining projectile behaviour
+/// </summary>
+[System.Serializable]
+public struct Projectile
+{
+    public Vector2 scale;
+    public Sprite projectileSprite;
+    public Color colorOverlay;
+
+    public float travelSpeed;
+
+    public float rotationSpeed;
+
+    public bool tracksPlayer;
+    public float trackingTime;
+    public float trackingStartupTime;
+
+    public float selfDestructTime;
+}

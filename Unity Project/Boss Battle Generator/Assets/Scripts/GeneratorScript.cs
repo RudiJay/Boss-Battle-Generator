@@ -68,6 +68,8 @@ public class GeneratorScript : MonoBehaviour
     [Header("Appearance")]
     [SerializeField][Space(10)]
     private ShapeType[] spriteGenerationShapes;
+    [SerializeField]
+    private float minShapeFractionOfMax = 7.5f;
     private int spriteShapeComplexity = 3;
 
     private int colorQuantity = 3;
@@ -637,7 +639,7 @@ public class GeneratorScript : MonoBehaviour
                 snapshotSprite.sprite = spriteShape.sprite;
 
                 //set width of shape
-                int minWidth = maxBossWidth / 10;
+                int minWidth = (int)(maxBossWidth / minShapeFractionOfMax);
                 int widthValue = rand.Next(minWidth, (int)(maxBossWidth * shapeSizeLimiter));
                 float objWidth = widthValue / (float)maxBossWidth;
 
@@ -647,7 +649,7 @@ public class GeneratorScript : MonoBehaviour
                 //if the shape is scaled in two dimensions instead of just one, set height
                 if (generateHeight)
                 {
-                    int minHeight = maxBossHeight / 10;
+                    int minHeight = (int)(maxBossHeight / minShapeFractionOfMax);
                     heightValue = rand.Next(minHeight, (int)(maxBossHeight * shapeSizeLimiter));
                     objHeight = heightValue / (float)maxBossHeight;
                 }

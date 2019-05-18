@@ -49,8 +49,19 @@ public class Weapon : MonoBehaviour
         return isCollidingWithOtherWeapon;
     }
 
+    private void ResetWeapon()
+    {
+        mirrorPair = null;
+        rotatable = false;
+        pivot.rotation = Quaternion.Euler(0, 0, 0);
+        tracksPlayer = false;
+        isCollidingWithOtherWeapon = false;
+    }
+
     private void OnEnable()
     {
+        ResetWeapon();
+
         CheckGeneratorActive();
         //apply as listener to generator activation on gamemanager
         GameManager.Instance.RegisterAsGeneratorListener(CheckGeneratorActive);
@@ -59,18 +70,13 @@ public class Weapon : MonoBehaviour
         {
             target = GameManager.Instance.GetPlayerTransform();
         }
-
-        mirrorPair = null;
-
-        pivot.rotation = Quaternion.identity;
-        rotatable = false;
-        tracksPlayer = false;
-        isCollidingWithOtherWeapon = false;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.DeregisterAsGeneratorListener(CheckGeneratorActive);        
+        GameManager.Instance.DeregisterAsGeneratorListener(CheckGeneratorActive);
+
+        ResetWeapon();
     }
 
     private void Update()
@@ -126,7 +132,7 @@ public class Weapon : MonoBehaviour
 
     public void SetWeaponRotation(float rot)
     {
-        transform.rotation = Quaternion.Euler(0, 0, rot);
+        pivot.rotation = Quaternion.Euler(0, 0, rot);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

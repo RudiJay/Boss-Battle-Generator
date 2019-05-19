@@ -3,6 +3,7 @@
  */
  
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,12 +13,16 @@ public class UIManager : MonoBehaviour
 
     private bool generatorUIVisible = true;
     private bool indicatorsVisible = true;
+    private bool playModeUIVisible = false;
 
     [SerializeField]
     private Color textColor, highlightColor;
 
     [SerializeField]
     private CanvasGroup generationModeCanvasGroup, playModeCanvasGroup, indicatorCanvasGroup;
+
+    [SerializeField]
+    private GameObject exitDialogue;
 
     [SerializeField]
     private Button playModeButton;
@@ -75,13 +80,16 @@ public class UIManager : MonoBehaviour
 
     public void ShowPlayModeUI(bool value)
     {
+        playModeUIVisible = value;
         if (value)
         {
             playModeCanvasGroup.alpha = 1.0f;
+            playModeCanvasGroup.blocksRaycasts = true;
         }
         else
         {
             playModeCanvasGroup.alpha = 0.0f;
+            playModeCanvasGroup.blocksRaycasts = false;
         }
     }
 
@@ -216,8 +224,30 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void PlayBossFight()
+    public void TestBossFight()
     {
         GameManager.Instance.StartBossFight();
+    }
+
+    public void ExitPlaytestMode()
+    {
+        GameManager.Instance.ExitPlayMode();
+    }
+
+    public void ShowExitDialogue(bool value)
+    {
+        ShowGeneratorUI(!value);
+        ShowIndicators(!value);
+
+        exitDialogue.SetActive(value);
+    }
+
+    public void ExitApplication()
+    {
+        Application.Quit();
+
+        #if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+        #endif
     }
 }

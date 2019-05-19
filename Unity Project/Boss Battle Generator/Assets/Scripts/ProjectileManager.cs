@@ -54,6 +54,28 @@ public class ProjectileManager : MonoBehaviour
         return null;
     }
 
+    public ProjectileLogic GetProjectile()
+    {
+        for (int i = 0; i < projectilePool.Count; i++)
+        {
+            if (!projectilePool[listIndex].activeInHierarchy)
+            {
+                ProjectileLogic projectile = projectilePool[listIndex].GetComponent<ProjectileLogic>();
+
+                return projectile;
+            }
+
+            listIndex++;
+            if (listIndex >= projectilePool.Count)
+            {
+                listIndex = 0;
+            }
+        }
+
+        Debug.Log("inactive projectile not found");
+        return null;
+    }
+
     public void DisableAllProjectiles()
     {
         for (int i = 0; i < projectilePool.Count; i++)

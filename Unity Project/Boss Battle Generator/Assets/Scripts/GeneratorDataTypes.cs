@@ -148,7 +148,7 @@ public struct WeaponType
 /// Serialisable struct containing variables determining projectile behaviour
 /// </summary>
 [System.Serializable]
-public struct Projectile
+public struct ProjectileData
 {
     public Vector2 scale;
     public Sprite projectileSprite;

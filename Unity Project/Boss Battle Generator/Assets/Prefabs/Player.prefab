@@ -208,4 +208,14 @@ MonoBehaviour:
   playerMovementSpeed: 3
   rotationSpeed: 10
   projectileSource: {fileID: 8292902366717225825}
+  playerProjectile:
+    scale: {x: 0.25, y: 0.5}
+    projectileSprite: {fileID: 21300000, guid: 17aadb2cccb4a3e4b88c711dd1b2be7c, type: 3}
+    colorOverlay: {r: 0, g: 0, b: 0, a: 0}
+    travelSpeed: 5
+    rotationSpeed: 1
+    tracksPlayer: 0
+    trackingTime: 1
+    trackingStartupTime: 1
+    selfDestructTime: 10
   camBorderOffset: 2

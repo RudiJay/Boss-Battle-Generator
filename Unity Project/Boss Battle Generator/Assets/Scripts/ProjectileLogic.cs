@@ -8,50 +8,38 @@ using UnityEngine;
 
 public class ProjectileLogic : MonoBehaviour
 {
-    private Vector3 travelVector;
-
-    [SerializeField]
-    private float travelSpeed = 1.0f;
-    [SerializeField]
-    private float rotationSpeed = 5.0f;
-
-    [SerializeField]
-    private bool trackPlayer = false;
-    [SerializeField]
-    private float trackingTime = 5.0f;
-    [SerializeField]
-    private float trackingStartupTime = 1.0f;
-    [SerializeField]
-    private float currentTime = 0.0f;
-    
-    [SerializeField]
-    private float selfDestructTime = 10.0f;
-
     [SerializeField]
     private Rigidbody2D rb;
+    [SerializeField]
+    private SpriteRenderer sr;
+
+    [SerializeField]
+    private ProjectileData data;
 
     private Transform targetTransform;
 
-    public void SetTravelSpeed(float value)
-    {
-        travelSpeed = value;
-    }
+    private Vector3 travelVector;
 
-    public void SetRotationSpeed(float value)
-    {
-        rotationSpeed = value;
-    }
+    private float currentTime = 0.0f;
 
     public void SetTargetTransform(Transform transform)
     {
         targetTransform = transform;
     }
 
+    public void SetupProjectileData(ProjectileData value)
+    {
+        data = value;
+
+        sr.sprite = data.projectileSprite;
+        sr.transform.localScale = data.scale;
+    }
+
     private void OnEnable()
     {
         travelVector = transform.up;
         currentTime = 0.0f;
-        Invoke("DisableProjectile", selfDestructTime);
+        Invoke("DisableProjectile", data.selfDestructTime);
     }
 
     private void OnDisable()
@@ -65,18 +53,18 @@ public class ProjectileLogic : MonoBehaviour
         {
             currentTime += Time.fixedDeltaTime;
 
-            if (trackPlayer && targetTransform != null)
+            if (data.tracksPlayer && targetTransform != null)
             {
-                if (currentTime > trackingStartupTime && currentTime < trackingTime)
+                if (currentTime > data.trackingStartupTime && currentTime < data.trackingTime)
                 {
-                    float rotationStrength = Mathf.Min(rotationSpeed * Time.deltaTime, 1);
+                    float rotationStrength = Mathf.Min(data.rotationSpeed * Time.deltaTime, 1);
 
                     Vector3 dir = targetTransform.position - transform.position;
                     travelVector = transform.up + dir;
                 }
             }
 
-            rb.MovePosition(transform.position + (travelVector.normalized * travelSpeed * Time.fixedDeltaTime));
+            rb.MovePosition(transform.position + (travelVector.normalized * data.travelSpeed * Time.fixedDeltaTime));
         }
     }
 

@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private Transform projectileSource;
+    [SerializeField]
+    private ProjectileData playerProjectile;
 
     private Transform bossTransform;
 
@@ -89,13 +91,14 @@ public class PlayerController : MonoBehaviour
 
     private void FireProjectile()
     {
-        GameObject projectile = ProjectileManager.Instance.GetProjectileObject();
+        ProjectileLogic projectile = ProjectileManager.Instance.GetProjectile();
 
         if (projectile != null)
         {
+            projectile.SetupProjectileData(playerProjectile);
             projectile.transform.position = projectileSource.position;
             projectile.transform.rotation = projectileSource.rotation;
-            projectile.SetActive(true);
+            projectile.gameObject.SetActive(true);
         }
         else
         {

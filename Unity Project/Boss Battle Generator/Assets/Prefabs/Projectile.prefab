@@ -69,7 +69,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 17aadb2cccb4a3e4b88c711dd1b2be7c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d86135e5bffc7934aa510a9b239da663, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -151,14 +151,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d17cbddd98b1374abc64a089f313f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  travelSpeed: 2
-  rotationSpeed: 1
-  trackPlayer: 0
-  trackingTime: 5
-  trackingStartupTime: 1
-  currentTime: 0
-  selfDestructTime: 10
   rb: {fileID: 1412751666060139472}
+  sr: {fileID: 8836042372298820022}
+  data:
+    scale: {x: 0, y: 0}
+    projectileSprite: {fileID: 0}
+    colorOverlay: {r: 0, g: 0, b: 0, a: 0}
+    travelSpeed: 0
+    rotationSpeed: 0
+    tracksPlayer: 0
+    trackingTime: 0
+    trackingStartupTime: 0
+    selfDestructTime: 0
 --- !u!50 &1412751666060139472
 Rigidbody2D:
   serializedVersion: 4

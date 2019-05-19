@@ -25,7 +25,7 @@ public class ProjectileAttack : ScriptableObject, IAttackType
     //shot interval(s)
 
     [SerializeField]
-    private Projectile projectileToFire;
+    private ProjectileData projectileToFire;
 
     //projectile behavior (burst?)
     //projectile damage
@@ -106,13 +106,14 @@ public class ProjectileAttack : ScriptableObject, IAttackType
     {
         if (source != null)
         {
-            GameObject projectile = ProjectileManager.Instance.GetProjectileObject();
+            ProjectileLogic projectile = ProjectileManager.Instance.GetProjectile();
 
             if (projectile != null)
             {
+                projectile.SetupProjectileData(projectileToFire);
                 projectile.transform.position = source.attackSource.position;
                 projectile.transform.rotation = source.attackSource.rotation * Quaternion.Euler(0, 0, firingAngle);
-                projectile.SetActive(true);
+                projectile.gameObject.SetActive(true);
             }
             else
             {

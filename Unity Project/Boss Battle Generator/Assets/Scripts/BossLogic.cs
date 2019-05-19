@@ -72,7 +72,7 @@ public class BossLogic : MonoBehaviour
         UIManager.Instance.SetBossLife(1.0f);
     }
 
-    private void DamageBoss(int dmg)
+    public void DamageBoss(int dmg)
     {
         currentLife -= dmg;
         UIManager.Instance.SetBossLife(currentLife / (float)maxLife);

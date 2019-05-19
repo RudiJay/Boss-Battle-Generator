@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4318000715311781875}
   - component: {fileID: 8836042372298820022}
   - component: {fileID: 4246464954948371649}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 7902893971006019121}
   - component: {fileID: 8542988492018484445}
   - component: {fileID: 1412751666060139472}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,6 +154,10 @@ MonoBehaviour:
   rb: {fileID: 1412751666060139472}
   sr: {fileID: 8836042372298820022}
   data:
+    layer:
+      serializedVersion: 2
+      m_Bits: 0
+    damage: 0
     scale: {x: 0, y: 0}
     projectileSprite: {fileID: 0}
     colorOverlay: {r: 0, g: 0, b: 0, a: 0}

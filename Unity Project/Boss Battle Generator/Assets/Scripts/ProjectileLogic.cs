@@ -31,6 +31,7 @@ public class ProjectileLogic : MonoBehaviour
     {
         data = value;
 
+        gameObject.layer = (int)Mathf.Log(data.layer.value, 2);
         sr.sprite = data.projectileSprite;
         sr.transform.localScale = data.scale;
     }
@@ -73,6 +74,22 @@ public class ProjectileLogic : MonoBehaviour
         if (other.tag == "Player")
         {
             DisableProjectile();
+
+            PlayerController player = other.attachedRigidbody.GetComponent<PlayerController>();
+            if (player != null)
+            {
+                player.DamagePlayer();
+            }
+        }
+        else if (other.tag == "Boss")
+        {
+            DisableProjectile();
+
+            BossLogic bossLogic = other.attachedRigidbody.GetComponent<BossLogic>();
+            if (bossLogic != null)
+            {
+                bossLogic.DamageBoss(data.damage);
+            }
         }
     }
 

@@ -150,6 +150,9 @@ public struct WeaponType
 [System.Serializable]
 public struct ProjectileData
 {
+    public LayerMask layer;
+    public int damage;
+
     public Vector2 scale;
     public Sprite projectileSprite;
     public Color colorOverlay;

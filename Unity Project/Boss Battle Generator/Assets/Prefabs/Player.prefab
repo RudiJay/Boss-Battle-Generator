@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8292902366717225825}
-  m_Layer: 13
+  m_Layer: 12
   m_Name: ProjectileSource
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 317707579301992269}
   - component: {fileID: 317707579301992268}
   - component: {fileID: 317707579301992259}
-  m_Layer: 13
+  m_Layer: 12
   m_Name: Sprite
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 317707579931403553}
   - component: {fileID: 3954122971027451825}
   - component: {fileID: 2878146651819891537}
-  m_Layer: 13
+  m_Layer: 12
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -209,6 +209,10 @@ MonoBehaviour:
   rotationSpeed: 10
   projectileSource: {fileID: 8292902366717225825}
   playerProjectile:
+    layer:
+      serializedVersion: 2
+      m_Bits: 8192
+    damage: 10
     scale: {x: 0.25, y: 0.5}
     projectileSprite: {fileID: 21300000, guid: 17aadb2cccb4a3e4b88c711dd1b2be7c, type: 3}
     colorOverlay: {r: 0, g: 0, b: 0, a: 0}

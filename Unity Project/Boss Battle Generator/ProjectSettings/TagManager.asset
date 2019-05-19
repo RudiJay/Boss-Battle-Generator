@@ -22,9 +22,9 @@ TagManager:
   - PostProcessing
   - SpriteSnapshot
   - BossSprite
-  - WeaponSprite
   - BossAttack
   - Player
+  - PlayerAttack
   - 
   - 
   - 

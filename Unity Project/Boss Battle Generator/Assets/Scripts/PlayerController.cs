@@ -36,11 +36,6 @@ public class PlayerController : MonoBehaviour
         bossTransform = transform;
     }
 
-    private void Start()
-    {
-        
-    }
-
     private void Update()
     {
         if (InputEnabled)
@@ -80,6 +75,13 @@ public class PlayerController : MonoBehaviour
                 transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationStrength);
             }
         }
+    }
+
+    public void DamagePlayer()
+    {
+        InputEnabled = false;
+        gameObject.SetActive(false);
+        GameManager.Instance.ExitPlayMode();
     }
 
     public void SetUpEdgeBoundaries(Vector3 position)

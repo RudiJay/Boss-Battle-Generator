@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
 
     private Transform bossTransform;
 
+    [SerializeField]
+    private float camBorderOffset = 2.5f;
     private float camBorderHeight;
     private float camBorderWidth;
     private Vector3 centrepoint;
@@ -62,8 +64,8 @@ public class PlayerController : MonoBehaviour
 
             //clamp player position
             transform.position = new Vector3(
-                Mathf.Clamp(transform.position.x, centrepoint.x - camBorderWidth, centrepoint.x + camBorderWidth),
-                Mathf.Clamp(transform.position.y, centrepoint.y - camBorderHeight, centrepoint.y + camBorderHeight), 0.0f);
+                Mathf.Clamp(transform.position.x, centrepoint.x - camBorderWidth + camBorderOffset, centrepoint.x + camBorderWidth - camBorderOffset),
+                Mathf.Clamp(transform.position.y, centrepoint.y - camBorderHeight + camBorderOffset, centrepoint.y + camBorderHeight - camBorderOffset), 0.0f);
 
             if (bossTransform != null)
             {

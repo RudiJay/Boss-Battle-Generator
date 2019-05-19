@@ -299,6 +299,7 @@ public class GeneratorScript : MonoBehaviour
         {
             GameManager.Instance.StopAttackSequence();
             ProjectileManager.Instance.DisableAllProjectiles();
+            UIManager.Instance.SetBossLifebarActive(false);
 
             bossGeneration = GenerationProcess(generateNewSeed);
 
@@ -393,6 +394,10 @@ public class GeneratorScript : MonoBehaviour
         GenerateMovementPatternSequence();
 
         yield return null;
+
+        //TODO: Generate health
+        GameManager.Instance.SetBossLife(150);
+        UIManager.Instance.SetBossLifebarActive(true);
         
         GameManager.Instance.StartAttackSequence();
 

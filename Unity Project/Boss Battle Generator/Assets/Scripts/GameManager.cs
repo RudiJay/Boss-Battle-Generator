@@ -128,6 +128,11 @@ public class GameManager : MonoBehaviour
         return generatorActive;
     }
 
+    public void SetBossLife(int value)
+    {
+        bossLogic.SetMaxLife(value);
+    }
+
     public Transform GetPlayerTransform()
     {
         if (player != null)
@@ -274,6 +279,7 @@ public class GameManager : MonoBehaviour
         ProjectileManager.Instance.DisableAllProjectiles();
 
         boss.transform.position = bossSpawn.position;
+        bossLogic.ResetBoss();
 
         UIManager.Instance.ShowGeneratorUI(true);
         UIManager.Instance.ShowIndicators(true);

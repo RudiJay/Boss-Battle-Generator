@@ -29,8 +29,8 @@ public class BossLogic : MonoBehaviour
     [SerializeField]
     private float minSpeedBuffer = 0.5f;
 
-    private int maxHealth = 100;
-    private int currentHealth;
+    private int maxLife = 100;
+    private int currentLife;
 
     [SerializeField]
     private float delayBetweenAttackSequenceLoop;
@@ -42,9 +42,11 @@ public class BossLogic : MonoBehaviour
         return performingAttacks;
     }
 
-    public void SetMaxHealth(int value)
+    public void SetMaxLife(int value)
     {
-        maxHealth = value;
+        maxLife = value;
+        currentLife = maxLife;
+        UIManager.Instance.SetBossLife(1.0f);
     }
 
     private void Start()
@@ -54,6 +56,31 @@ public class BossLogic : MonoBehaviour
 
         attackSequence = new List<IAttackType>();
         movementPatternSequence = new List<MovementPatternType>();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            DamageBoss(10);
+        }
+    }
+
+    public void ResetBoss()
+    {
+        currentLife = maxLife;
+        UIManager.Instance.SetBossLife(1.0f);
+    }
+
+    private void DamageBoss(int dmg)
+    {
+        currentLife -= dmg;
+        UIManager.Instance.SetBossLife(currentLife / (float)maxLife);
+
+        if (currentLife < 0)
+        {
+            GameManager.Instance.ExitPlayMode();
+        }
     }
 
     public void StartAttackSequence()
@@ -77,7 +104,7 @@ public class BossLogic : MonoBehaviour
 
     public void StartBossFight()
     {
-        currentHealth = maxHealth;
+        currentLife = maxLife;
 
         logicActive = true;
 

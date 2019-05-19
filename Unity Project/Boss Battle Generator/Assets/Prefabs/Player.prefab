@@ -208,3 +208,4 @@ MonoBehaviour:
   playerMovementSpeed: 3
   rotationSpeed: 10
   projectileSource: {fileID: 8292902366717225825}
+  camBorderOffset: 2

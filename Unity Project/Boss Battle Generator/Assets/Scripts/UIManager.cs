@@ -1,7 +1,8 @@
 ﻿/* 
  * Copyright (C) 2019 Rudi Jay Prentice - All right reserved
  */
- 
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -20,6 +21,14 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private CanvasGroup generationModeCanvasGroup, playModeCanvasGroup, indicatorCanvasGroup;
+
+    
+    [SerializeField]
+    private Slider bossLifebar, bossLifeProgressBar;
+    private float bossLife = 0.0f;
+    private float currentLifebarUpdateProgress = 1.0f;
+    [SerializeField]
+    private float bossLifebarUpdateSpeed = 0.25f;
 
     [SerializeField]
     private GameObject exitDialogue;
@@ -47,6 +56,38 @@ public class UIManager : MonoBehaviour
         PopulateBossTypeDropdown();
 
         playModeButton.interactable = false;
+    }
+
+    private void Update()
+    {
+        if (currentLifebarUpdateProgress < 1.0f && bossLifeProgressBar.gameObject.activeInHierarchy)
+        {
+            currentLifebarUpdateProgress += (Time.deltaTime * bossLifebarUpdateSpeed * 0.005f);
+            
+            bossLifeProgressBar.value = Mathf.Lerp(bossLifeProgressBar.value, bossLife, currentLifebarUpdateProgress / 1.0f);
+        }
+    }
+
+    public void SetBossLifebarActive(bool value)
+    {
+        if (!value)
+        {
+            currentLifebarUpdateProgress = 1.0f;
+            bossLife = 0.0f;
+            bossLifebar.value = 0.0f;
+            bossLifeProgressBar.value = 0.0f;
+        }
+
+        bossLifebar.gameObject.SetActive(value);
+
+    }
+
+    public void SetBossLife(float life)
+    {
+        bossLife = life;
+        bossLifebar.value = life;
+        bossLifeProgressBar.value = Mathf.Max(bossLifebar.value, bossLifeProgressBar.value);
+        currentLifebarUpdateProgress = 0.0f;
     }
 
     public void ToggleGeneratorUI()

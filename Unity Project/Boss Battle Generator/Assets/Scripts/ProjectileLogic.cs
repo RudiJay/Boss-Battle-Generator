@@ -91,7 +91,7 @@ public class ProjectileLogic : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Player")
+        if (other.attachedRigidbody.tag == "Player")
         {
             DisableProjectile();
 
@@ -101,7 +101,7 @@ public class ProjectileLogic : MonoBehaviour
                 player.DamagePlayer();
             }
         }
-        else if (other.tag == "Boss")
+        else if (other.attachedRigidbody.tag == "Boss")
         {
             DisableProjectile();
 

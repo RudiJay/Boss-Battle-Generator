@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 953644342538231532}
   m_Layer: 10
   m_Name: Sprite
-  m_TagString: Boss
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 6583423999412778128}
   m_Layer: 0
   m_Name: BossBody
-  m_TagString: Boss
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

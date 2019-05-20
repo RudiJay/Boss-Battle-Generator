@@ -130,12 +130,18 @@ public class GameManager : MonoBehaviour
 
     public void SetBossLife(int value)
     {
-        bossLogic.SetMaxLife(value);
+        if (bossLogic != null)
+        {
+            bossLogic.SetMaxLife(value);
+        }
     }
 
     public void SetBossSpeed(float value)
     {
-        bossLogic.SetMovementSpeedModifier(value);
+        if (bossLogic != null)
+        {
+            bossLogic.SetMovementSpeedModifier(value);
+        }
     }
 
     public Transform GetPlayerTransform()
@@ -201,15 +207,21 @@ public class GameManager : MonoBehaviour
 
     public void StartAttackSequence()
     {
-        if (!bossLogic.GetCurrentlyPerformingAttackSequence())
+        if (bossLogic != null)
         {
-            bossLogic.StartAttackSequence();
+            if (!bossLogic.GetCurrentlyPerformingAttackSequence())
+            {
+                bossLogic.StartAttackSequence();
+            }
         }
     }
 
     public void StopAttackSequence()
     {
-        bossLogic.StopAttackSequence();
+        if (bossLogic != null)
+        {
+            bossLogic.StopAttackSequence();
+        }
     }
 
     public void StartBossFight()

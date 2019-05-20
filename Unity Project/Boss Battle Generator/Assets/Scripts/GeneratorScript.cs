@@ -1297,6 +1297,10 @@ public class GeneratorScript : MonoBehaviour
                     attackType.SetupAttack(attackWeapon.gameObject);
                 }
             }
+            else
+            {
+                attackType.SetupAttack();
+            }
 
             bossAttackTypes.Add(attackType);
 

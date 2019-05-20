@@ -18,6 +18,9 @@ public class ProjectileLogic : MonoBehaviour
     [SerializeField]
     private ProjectileData data; //serialised for runtime debugging
 
+    /// <summary>
+    /// The Transform of the object this projectile is targeting possibly tracking
+    /// </summary>
     private Transform targetTransform;
 
     private Vector3 travelVector;
@@ -73,11 +76,16 @@ public class ProjectileLogic : MonoBehaviour
                     float rotationStrength = Mathf.Min(data.rotationSpeed * Time.deltaTime, 1);
 
                     Vector3 dir = targetTransform.position - transform.position;
-                    travelVector = transform.up + dir;
+
+                    float targetAngle = Vector3.SignedAngle(Vector3.up, dir, Vector3.forward);
+
+                    Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
+
+                    transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationStrength);
                 }
             }
 
-            rb.MovePosition(transform.position + (travelVector.normalized * data.travelSpeed * Time.fixedDeltaTime));
+            rb.MovePosition(transform.position + (transform.up * data.travelSpeed * Time.fixedDeltaTime));
         }
     }
 

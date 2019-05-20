@@ -5,6 +5,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Projectile attack type subclass
+/// fires a number of Projectile objects from an assigned boss weapon when performed
+/// </summary>
 [CreateAssetMenu(fileName = "NewProjectileAttack", menuName = "AttackTypes/ProjectileAttack")]
 public class ProjectileAttack : ScriptableObject, IAttackType
 {
@@ -12,26 +16,30 @@ public class ProjectileAttack : ScriptableObject, IAttackType
     private float delayAfterAttack;
 
     [SerializeField][EnumFlags]
-    private WeaponOrientationMode requiredWeaponTypes;
+    private WeaponOrientationMode requiredWeaponTypes; 
 
     [SerializeField][EnumFlags]
-    private BossTypeName compatibleBossTypes;
+    private BossTypeName compatibleBossTypes; 
 
     [SerializeField]
     private int projectilesPerShot = 1;
     [SerializeField]
     private float projectileShotSpread = 30;
-    //number of shots per attack
-    //shot interval(s)
+    //TODO: number of shots per attack
+    //TODO: shot interval(s)
 
+    /// <summary>
+    /// Data about the projectile this attack will fire
+    /// </summary>
     [SerializeField]
     private ProjectileData projectileToFire;
+    //TODO: allow multiple types of projectile to be fired by one attack
 
-    //projectile behavior (burst?)
-    //projectile damage
+    //TODO: weapon movement behavior (spin weapon while shooting) (move 30 degrees between shots)
 
-    //weapon movement behavior (spin weapon while shooting) (move 30 degrees between shots)
-
+    /// <summary>
+    /// The list of weapons this instance of the attack fires from
+    /// </summary>
     private List<Weapon> assignedWeapons = new List<Weapon>();
 
     public float DelayAfterAttack
@@ -56,11 +64,6 @@ public class ProjectileAttack : ScriptableObject, IAttackType
         return compatibleBossTypes;
     }
 
-    public void ResetAttack()
-    {
-        assignedWeapons.Clear();
-    }
-
     public void SetupAttack(GameObject performingObj)
     {
         Weapon weapon = performingObj.GetComponent<Weapon>();
@@ -69,6 +72,7 @@ public class ProjectileAttack : ScriptableObject, IAttackType
         {
             assignedWeapons.Add(weapon);
 
+            //if the weapon has a symmetrical pair, also add that weapon
             Weapon mirror = weapon.mirrorPair;
             if (mirror != null)
             {
@@ -94,6 +98,7 @@ public class ProjectileAttack : ScriptableObject, IAttackType
     {
         float firingAngle = (projectileInShot * projectileShotSpread) - (projectilesPerShot / 2) * projectileShotSpread;
 
+        //offset projectile firing angle by hald if there are an even number of shots
         if (projectilesPerShot % 2 == 0)
         {
             firingAngle += projectileShotSpread / 2.0f;

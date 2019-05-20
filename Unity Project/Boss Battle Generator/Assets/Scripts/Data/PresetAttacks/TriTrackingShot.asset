@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bcef602d7588eba4494d86bcae410e68, type: 3}
-  m_Name: QuadBurst
+  m_Name: TriTrackingShot
   m_EditorClassIdentifier: 
-  delayAfterAttack: 1
-  requiredWeaponTypes: 64
-  compatibleBossTypes: 60
-  projectilesPerShot: 4
-  projectileShotSpread: 90
+  delayAfterAttack: 2
+  requiredWeaponTypes: 63
+  compatibleBossTypes: 30
+  projectilesPerShot: 3
+  projectileShotSpread: 25
   projectileToFire:
     isPlayerProjectile: 0
     damage: 10
-    scale: {x: 0.5, y: 0.5}
+    scale: {x: 0.4, y: 0.6}
     projectileSprite: {fileID: 21300000, guid: 17aadb2cccb4a3e4b88c711dd1b2be7c, type: 3}
     colorOverlay: {r: 0, g: 0, b: 0, a: 0}
-    travelSpeed: 2
+    travelSpeed: 2.5
     rotationSpeed: 1
-    tracksPlayer: 0
-    trackingTime: 5
-    trackingStartupTime: 1
-    selfDestructTime: 10
+    tracksPlayer: 1
+    trackingTime: 8
+    trackingStartupTime: 2
+    selfDestructTime: 15

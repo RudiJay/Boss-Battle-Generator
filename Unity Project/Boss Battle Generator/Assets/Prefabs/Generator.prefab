@@ -690,10 +690,12 @@ MonoBehaviour:
     NormaliseRotProbability: 0.01
     CentreXAndNormaliseRotProbability: 0.5
     MirrorProbability: 0.5
+  minShapeFractionOfMax: 7.5
   nonComplementaryColorChance: 0.5
   asymmetricColorChance: 0.05
   perlinColorScaleMin: 25
   perlinColorScaleMax: 500
+  perlinOriginPointResolution: 100
   bossSpriteOutlineWidth: 2
   weaponSpriteOutlineWidth: 2
   weaponBrightnessTintAmount: 0.25
@@ -758,6 +760,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f7c08aa3ccaa65a48bed0bf1db8f128d, type: 2}
   - {fileID: 11400000, guid: d3367c9b2dce13b4b9603eeabf8cf6a2, type: 2}
   - {fileID: 11400000, guid: a36c547b7063c674e97134207021fbae, type: 2}
+  - {fileID: 11400000, guid: 5459f958bd31b24478b59cb654bf1ba9, type: 2}
+  - {fileID: 11400000, guid: b7908ace8eeda664e927641950971bc9, type: 2}
   availableAccelerationTypes:
   - {fileID: 11400000, guid: 6cd8ced43c3a6544f862a8160c700029, type: 2}
   - {fileID: 11400000, guid: b44b9533264f85845a3f5d50c5e128ba, type: 2}

@@ -354,6 +354,7 @@ public class GeneratorScript : MonoBehaviour
         ClearMovementPatterns();
         UIManager.Instance.ResetAttackUI();
         UIManager.Instance.ResetMovementPatternUI();
+        UIManager.Instance.ResetBossStatUI();
 
         yield return null;
 
@@ -1443,11 +1444,11 @@ public class GeneratorScript : MonoBehaviour
     {
         int bossLife = rand.Next(minBossLifePoints, maxBossLifePoints);
         GameManager.Instance.SetBossLife(bossLife);
+        UIManager.Instance.SetMaxLifePoints(bossLife);
         UIManager.Instance.SetBossLifebarActive(true);
-        Debug.Log(bossLife);
 
         float bossSpeedModifier = rand.Next((int)(minBossSpeed * 100), (int)(maxBossSpeed * 100)) / 100.0f; //scale up and down by 100 to work around int generation restrictions
         GameManager.Instance.SetBossSpeed(bossSpeedModifier);
-        Debug.Log(bossSpeedModifier);
+        UIManager.Instance.SetSpeedFactor(bossSpeedModifier);
     }
 }

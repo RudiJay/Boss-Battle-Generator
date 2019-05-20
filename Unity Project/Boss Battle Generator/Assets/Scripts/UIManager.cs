@@ -45,6 +45,8 @@ public class UIManager : MonoBehaviour
     private Text attackQuantityLabel, currentAttackLabel, attackSequenceLengthLabel;
     [SerializeField]
     private Text currentMovementPatternLabel, movementPatternSequenceLengthLabel;
+    [SerializeField]
+    private Text maxLifePointsLabel, speedFactorLabel;
 
     private void Awake()
     {
@@ -190,6 +192,12 @@ public class UIManager : MonoBehaviour
         movementPatternSequenceLengthLabel.text = "?";
     }
 
+    public void ResetBossStatUI()
+    {
+        maxLifePointsLabel.text = "???";
+        speedFactorLabel.text = "?.??";
+    }
+
     public void SetAttackQuantity(int value)
     {
         attackQuantityLabel.text = value.ToString();
@@ -237,6 +245,16 @@ public class UIManager : MonoBehaviour
         {
             currentMovementPatternLabel.color = textColor;
         }
+    }
+
+    public void SetMaxLifePoints(int value)
+    {
+        maxLifePointsLabel.text = value.ToString();
+    }
+
+    public void SetSpeedFactor(float value)
+    {
+        speedFactorLabel.text = value.ToString();
     }
 
     public void UpdateSeedUI(string seedString)

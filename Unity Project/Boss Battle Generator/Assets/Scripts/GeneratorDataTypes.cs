@@ -150,7 +150,7 @@ public struct WeaponType
 [System.Serializable]
 public struct ProjectileData
 {
-    public LayerMask layer;
+    public bool isPlayerProjectile;
     public int damage;
 
     public Vector2 scale;

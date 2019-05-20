@@ -209,9 +209,7 @@ MonoBehaviour:
   rotationSpeed: 10
   projectileSource: {fileID: 8292902366717225825}
   playerProjectile:
-    layer:
-      serializedVersion: 2
-      m_Bits: 8192
+    isPlayerProjectile: 1
     damage: 10
     scale: {x: 0.25, y: 0.5}
     projectileSprite: {fileID: 21300000, guid: 17aadb2cccb4a3e4b88c711dd1b2be7c, type: 3}

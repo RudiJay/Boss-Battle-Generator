@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 288365106590931023}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: FakeTarget
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8907273495315690600}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: AttackSource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7916569406894609461}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,6 +144,8 @@ MonoBehaviour:
   fakeTarget: {fileID: 288365106590931023}
   randomiseSwivelThreshold: 5
   rotationSpeed: 2.5
+  trackPlayerSpeed: 5
+  isCollidingWithOtherWeapon: 0
 --- !u!50 &2356973522992522243
 Rigidbody2D:
   serializedVersion: 4
@@ -175,7 +177,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7884827304505370480}
   - component: {fileID: 6322990996200091711}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Sprite
   m_TagString: Weapon
   m_Icon: {fileID: 0}

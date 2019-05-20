@@ -10,6 +10,8 @@ TagManager:
   - Weapon
   - Background
   - Generator
+  - BossAttack
+  - PlayerAttack
   layers:
   - Default
   - TransparentFX

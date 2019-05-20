@@ -12,9 +12,11 @@ public class ProjectileLogic : MonoBehaviour
     private Rigidbody2D rb;
     [SerializeField]
     private SpriteRenderer sr;
+    [SerializeField]
+    private Collider2D col;
 
     [SerializeField]
-    private ProjectileData data;
+    private ProjectileData data; //serialised for runtime debugging
 
     private Transform targetTransform;
 
@@ -31,7 +33,15 @@ public class ProjectileLogic : MonoBehaviour
     {
         data = value;
 
-        gameObject.layer = (int)Mathf.Log(data.layer.value, 2);
+        if (data.isPlayerProjectile)
+        {
+            col.gameObject.layer = LayerMask.NameToLayer("PlayerAttack");
+        }
+        else
+        {
+            col.gameObject.layer = LayerMask.NameToLayer("BossAttack");
+        }
+
         sr.sprite = data.projectileSprite;
         sr.transform.localScale = data.scale;
     }

@@ -18,9 +18,7 @@ MonoBehaviour:
   projectilesPerShot: 3
   projectileShotSpread: 25
   projectileToFire:
-    layer:
-      serializedVersion: 2
-      m_Bits: 2048
+    collisionLayer: BossAttack
     damage: 10
     scale: {x: 0.5, y: 0.5}
     projectileSprite: {fileID: 21300000, guid: 17aadb2cccb4a3e4b88c711dd1b2be7c, type: 3}

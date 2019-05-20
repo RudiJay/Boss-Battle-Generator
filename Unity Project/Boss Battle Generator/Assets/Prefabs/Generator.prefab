@@ -229,7 +229,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generationStepDelay: 0.1
-  bossDemonstrationDelay: 1
   autoGeneratorDelay: 5
   seed: 0
   maxBossWidth: 625
@@ -692,7 +691,7 @@ MonoBehaviour:
     MirrorProbability: 0.5
   minShapeFractionOfMax: 7.5
   nonComplementaryColorChance: 0.5
-  asymmetricColorChance: 0.05
+  asymmetricPatternChance: 0.25
   perlinColorScaleMin: 25
   perlinColorScaleMax: 500
   perlinOriginPointResolution: 100
@@ -832,3 +831,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  minBossLifePoints: 75
+  maxBossLifePoints: 300
+  minBossSpeed: 1.5
+  maxBossSpeed: 13

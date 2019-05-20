@@ -6,12 +6,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This class is applied to the boss generator prefab object and manages all generation-specific functions in scene
+/// </summary>
 public class GeneratorScript : MonoBehaviour
 {
     public static GeneratorScript Instance;
 
     private bool generatorActive = true;
 
+    /// <summary>
+    /// variable containing an instance of the Random engine for the boss generator
+    /// Stored to avoid outside calls affecting sequence
+    /// </summary>
     private System.Random rand;
 
     private GameObject bossObj;
@@ -19,33 +26,30 @@ public class GeneratorScript : MonoBehaviour
     private BossLogic bossLogic;
     private WeaponManager weaponManager;
 
-    private Camera spriteSnapshotCam;
+    private Camera spriteSnapshotCam; //camera for taking snapshot of sprite shape for sprite generation
+    private GameObject snapshotSpriteObj; //sprite shape template for taking snapshot of and including in boss sprite
 
-    private GameObject snapshotSpriteObj;
+    private GameObject background; //the gameobject holding the background image
 
-    private GameObject background;
-
-    private IEnumerator bossGeneration;
+    private IEnumerator bossGeneration; //coroutine instance for boss generation sequence
     private bool generationInProgress = false;
     private WaitForSeconds generationStepDelayTime;
 
-    private IEnumerator autoGenerator;
+    private IEnumerator autoGenerator; //coroutine instance for starting boss generation automatically
     private bool isAutoGenerating = false;
     private WaitForSeconds autoGenerateWaitForSeconds;
 
     [Header("Interface")]
     [SerializeField]
-    private float generationStepDelay = 0.5f;
+    private float generationStepDelay = 0.5f; //time in seconds to wait between steps of boss generation
     [SerializeField]
-    private float bossDemonstrationDelay = 0.5f;
-    [SerializeField]
-    private float autoGeneratorDelay = 2.0f;
+    private float autoGeneratorDelay = 2.0f; //time in seconds to wait between automatically restarting boss generation
 
     
     [Header("Generation Variables")]
     [SerializeField][Space(10)]
-    private int seed;
-    private int symmetryValue;
+    private int seed; //the seed for boss generation random values
+    private int symmetryValue; //variable containing current random value to use for symmetry calculations
 
     [SerializeField]
     private int maxBossWidth = 500, maxBossHeight = 500;
@@ -69,25 +73,25 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField][Space(10)]
     private ShapeType[] spriteGenerationShapes;
     [SerializeField]
-    private float minShapeFractionOfMax = 7.5f;
-    private int spriteShapeComplexity = 3;
+    private float minShapeFractionOfMax = 7.5f; //denominator for the minimum fraction of the max size a shape can be scaled to
+    private int spriteShapeComplexity = 3; //number of basic shapes a boss sprite is made up of
 
     private int colorQuantity = 3;
     private Color[] colorPalette;
     [SerializeField]
     [Range(0, 1)]
-    private float nonComplementaryColorChance = 0.5f, asymmetricColorChance = 0.25f;
+    private float nonComplementaryColorChance = 0.5f, asymmetricPatternChance = 0.25f; //chance of colours not being complementary, or pattern being asymmetrical
     [SerializeField]
-    private int perlinColorScaleMin = 25, perlinColorScaleMax = 100;
+    private int perlinColorScaleMin = 25, perlinColorScaleMax = 100; //min and max values for random scaling of perlin noise map for pattern gen
     [SerializeField]
-    private int perlinOriginPointResolution = 100;
+    private int perlinOriginPointResolution = 100; //the max value for random origin on perlin noise map in x and y. Min is negative value.
     [SerializeField]
-    private int bossSpriteOutlineWidth = 1, weaponSpriteOutlineWidth = 1;
+    private int bossSpriteOutlineWidth = 1, weaponSpriteOutlineWidth = 1; //number of pixels diameter for outlines around boss and weapon sprites
     [SerializeField]
     [Range(0, 1)]
-    private float weaponBrightnessTintAmount = 0.25f;
+    private float weaponBrightnessTintAmount = 0.25f; //amount to tint brightness of weapon colour compared to color palette
     [SerializeField]
-    private bool useColorSchemeForBackground = false;
+    private bool useColorSchemeForBackground = false; //whether boss color scheme is used to tint background image or a random colour is used
 
     private bool weaponGenerationComplete = false;
     private bool weaponPositioningProcessComplete = false;
@@ -96,55 +100,65 @@ public class GeneratorScript : MonoBehaviour
     [SerializeField][Space(10)]
     private LayerMask bossSpriteLayer;
     [SerializeField]
-    private int maxWeaponTypeAttempts = 10, maxWeaponOrientationAttempts = 10, maxWeaponPosAttempts = 15;
+    private int maxWeaponTypeAttempts = 10, maxWeaponOrientationAttempts = 10, maxWeaponPosAttempts = 15; //number of times to attempt weapon gen loops before breaking out
     [SerializeField]
-    private WeaponType[] generatableWeapons;
-    private List<Weapon> bossWeapons;
-    private int weaponQuantity = 2;
+    private WeaponType[] generatableWeapons; //array of preset weapons that are possible to be placed on a boss
+    private List<Weapon> bossWeapons; //list of weapons placed on current boss
+    private int weaponQuantity = 2; //quantity of weapons the boss has, not counting mirror pairs
 
     private bool attackGenerationComplete = false;
     [Header("Attacks")]
     [SerializeField]
     [Space(10)]
-    private int attackQuantityMax = 10;
+    private int attackQuantityMax = 10; //maximum quantity of attack types a boss can have
     [SerializeField]
-    private int attackSequenceLengthMin = 1, attackSequenceLengthMax = 15;
+    private int attackSequenceLengthMin = 1, attackSequenceLengthMax = 15; //min and max attack sequence length
     [SerializeField]
-    private ScriptableObject[] generatableAttackTypes;
-    private List<IAttackType> bossAttackTypes;
-    private List<IAttackType> bossAttackSequence;
-    private int attackQuantity = 3;
+    private ScriptableObject[] generatableAttackTypes; //array of preset attacks that are possible for a boss to pick from
+    private List<IAttackType> bossAttackTypes; //list of attack types current boss knows
+    private List<IAttackType> bossAttackSequence; //list containing the ordered attack sequence the current boss performs
+    private int attackQuantity = 3; //quantity of attack types the current boss has
 
     private bool movementPatternGenerationComplete = false;
     [Header("Movement Patterns")]
     [SerializeField]
     [Space(10)]
-    private List<VelocityCurveType> availableAccelerationTypes;
+    private List<VelocityCurveType> availableAccelerationTypes; //list containing preset velocity curves the boss can apply to movement patterns
     [SerializeField]
-    private List<MovementPatternType> generatedMovementPatterns;
-    private List<MovementPatternType> bossMovementPatternSequence;
-    private int movementPatternQuantity = 5;
+    private List<MovementPatternType> generatedMovementPatterns; //list containing the movement patterns the current boss uses
+    private List<MovementPatternType> bossMovementPatternSequence; //list containing ordered movement pattern the current boss performs
+    private int movementPatternQuantity = 5; //quantity of movement patterns the current boss has
     
-
     [SerializeField]
     private int movementPatternQuantityMin = 1, movementPatternQuantityMax = 5;
     [SerializeField]
     private int movementPatternSequenceLengthMin = 1, movementPatternSequenceLengthMax = 15;
     [SerializeField]
-    private AnimationCurve movementsPerPatternProbabilityWeighting;
+    private AnimationCurve movementsPerPatternProbabilityWeighting; //curve determining the probability weightings of values for the number of movements per pattern
     [SerializeField]
-    private int destinationPointCountMin = 2, destinationPointCountMax = 9;
+    private int destinationPointCountMin = 2, destinationPointCountMax = 9; //min and max number of points the can boss move between during a movement pattern
     [SerializeField]
-    private float minDestinationX = -10.5f, minDestinationY = -8.0f, maxDestinationX = 10.5f, maxDestinationY = 1.5f;
+    private float minDestinationX = -10.5f, minDestinationY = -8.0f, maxDestinationX = 10.5f, maxDestinationY = 1.5f; //min and max x and y for generated destination points
     [SerializeField]
-    private float constrainXAxisChance = 0.15f, constrainYAxisChance = 0.3f;
+    private float constrainXAxisChance = 0.15f, constrainYAxisChance = 0.3f; //chance of x or y axis being constrained
     [SerializeField]
-    private float includeStartPointChance = 0.5f;
+    private float includeStartPointChance = 0.5f; //chance of start point being included in destination points
     [SerializeField]
-    private float randomlyDecideNextDestinationChance = 0.0f;
+    private float randomlyDecideNextDestinationChance = 0.0f; //chance of randomly deciding destinations in a pattern instead of in a set order
     [SerializeField]
-    private AnimationCurve destinationWaitTimeProbabilityWeighting;
+    private AnimationCurve destinationWaitTimeProbabilityWeighting; //probability weighting for values of amount of time to wait after reaching a destination point
 
+    [Header("Boss Stats")]
+    [SerializeField]
+    private int minBossLifePoints = 75;
+    [SerializeField]
+    private int maxBossLifePoints = 350; //min and max for boss life points
+    [SerializeField]
+    private float minBossSpeed = 2f, maxBossSpeed = 10f; //min and max for speed modifier of boss movement pattern movement
+
+    /// <summary>
+    /// Function updating variables for whether generator is currently active or not
+    /// </summary>
     public void CheckGeneratorActive()
     {
         generatorActive = GameManager.Instance.GetGeneratorActive();
@@ -188,7 +202,7 @@ public class GeneratorScript : MonoBehaviour
         generatedMovementPatterns = new List<MovementPatternType>();
         bossMovementPatternSequence = new List<MovementPatternType>();
 
-        //calculate determinant sizes
+        //calculate determinant sprite size variables
         textureWidth = (int)(maxBossWidth * 1.25f);
         textureHeight = (int)(maxBossHeight * 1.25f);
         xOffset = (textureWidth - maxBossWidth) / 2;
@@ -307,6 +321,9 @@ public class GeneratorScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Stop boss generation sequence coroutine
+    /// </summary>
     private void StopBossGeneration()
     {
         StopCoroutine(bossGeneration);
@@ -314,6 +331,10 @@ public class GeneratorScript : MonoBehaviour
         generationInProgress = false;
     }
 
+    /// <summary>
+    /// Coroutine for completing boss generation sequence over multiple frames
+    /// </summary>
+    /// <param name="generateNewSeed">Whether a new boss seed needs to be generated</param>
     private IEnumerator GenerationProcess(bool generateNewSeed)
     {
         generationInProgress = true;
@@ -343,8 +364,6 @@ public class GeneratorScript : MonoBehaviour
 
         SetBossType();
 
-        GenerateRandomSymmetryScore();
-
         yield return null;
 
         GenerateColorPalette();
@@ -353,8 +372,9 @@ public class GeneratorScript : MonoBehaviour
 
         yield return null;
 
+        //start sprite generation sequence
         StartCoroutine(GenerateSprite());
-
+        //wait until sequence is complete before continuing
         while (!spriteGenerationComplete)
         {
             yield return null;
@@ -363,29 +383,29 @@ public class GeneratorScript : MonoBehaviour
         GenerateColliders();
 
         yield return null;
-
+        
         StartCoroutine(GenerateWeapons());
-
+        //wait until sequence is complete before continuing
         while (!weaponGenerationComplete)
         {
             yield return null;
         }
 
         StartCoroutine(GenerateAttacks());
-
+        //wait until sequence is complete before continuing
         while (!attackGenerationComplete)
         {
             yield return null;
         }
 
-        UIManager.Instance.SetAttackQuantity(attackQuantity);
+        UIManager.Instance.SetAttackQuantity(attackQuantity); //not currently displayed on UI, useful for debug
 
         GenerateAttackSequence();
 
         yield return null;
 
         StartCoroutine(GenerateMovementPatterns());
-
+        //wait until sequence is complete before continuing
         while (!movementPatternGenerationComplete)
         {
             yield return null;
@@ -395,9 +415,9 @@ public class GeneratorScript : MonoBehaviour
 
         yield return null;
 
-        //TODO: Generate health
-        GameManager.Instance.SetBossLife(150);
-        UIManager.Instance.SetBossLifebarActive(true);
+        GenerateBossStats();
+
+        yield return null;
         
         GameManager.Instance.StartAttackSequence();
 
@@ -451,7 +471,7 @@ public class GeneratorScript : MonoBehaviour
 
         //weapon color is final index of color palette and a darker version of the first color
         float weaponBrightness = brightness;
-        weaponBrightness = (weaponBrightness > weaponBrightnessTintAmount) ? weaponBrightnessTintAmount : 0.0f;
+        weaponBrightness -= (weaponBrightness > weaponBrightnessTintAmount) ? weaponBrightnessTintAmount : -weaponBrightnessTintAmount;
         colorPalette[colorQuantity] = Color.HSVToRGB(hue, saturation, weaponBrightness);
 
         GenerateRandomSymmetryScore();
@@ -506,25 +526,28 @@ public class GeneratorScript : MonoBehaviour
             Material mat = background.GetComponent<Renderer>().material;
             Color bgColor;
 
-            if (useColorSchemeForBackground)
+            if (mat != null)
             {
-                bgColor = colorPalette[rand.Next(0, colorQuantity)];
+                if (useColorSchemeForBackground)
+                {
+                    bgColor = colorPalette[rand.Next(0, colorQuantity)];
+                }
+                else
+                {
+                    int redSeed = rand.Next(0, 255);
+                    int greenSeed = rand.Next(0, 255);
+                    int blueSeed = rand.Next(0, 255);
+
+                    bgColor = new Color(redSeed / 255f, greenSeed / 255f, blueSeed / 255f);
+                }
+
+                mat.SetColor("_Color", bgColor);
+
+                int xSeed = rand.Next(-100, 100);
+                int ySeed = rand.Next(-100, 100);
+
+                mat.mainTextureOffset = new Vector2(xSeed / 100f, ySeed / 100f);
             }
-            else
-            {
-                int redSeed = rand.Next(0, 255);
-                int greenSeed = rand.Next(0, 255);
-                int blueSeed = rand.Next(0, 255);
-
-                bgColor = new Color(redSeed / 255f, greenSeed / 255f, blueSeed / 255f);
-            }
-
-            mat.SetColor("_Color", bgColor);
-
-            int xSeed = rand.Next(-100, 100);
-            int ySeed = rand.Next(-100, 100);
-
-            mat.mainTextureOffset = new Vector2(xSeed / 100f, ySeed / 100f);
         }
     }
 
@@ -541,7 +564,7 @@ public class GeneratorScript : MonoBehaviour
 
         bool symmetricColor = false;
         GenerateRandomSymmetryScore();
-        if (symmetryValue / (float)maxProbabilityValue > asymmetricColorChance)
+        if (symmetryValue / (float)maxProbabilityValue > asymmetricPatternChance)
         {
             symmetricColor = true;
         }
@@ -1414,5 +1437,17 @@ public class GeneratorScript : MonoBehaviour
             UIManager.Instance.SetMovementPatternSequenceSize(generatedMovementPatterns.Count);
             bossLogic.SetupMovementPatternSequence(generatedMovementPatterns);
         }
+    }
+
+    private void GenerateBossStats()
+    {
+        int bossLife = rand.Next(minBossLifePoints, maxBossLifePoints);
+        GameManager.Instance.SetBossLife(bossLife);
+        UIManager.Instance.SetBossLifebarActive(true);
+        Debug.Log(bossLife);
+
+        float bossSpeedModifier = rand.Next((int)(minBossSpeed * 100), (int)(maxBossSpeed * 100)) / 100.0f; //scale up and down by 100 to work around int generation restrictions
+        GameManager.Instance.SetBossSpeed(bossSpeedModifier);
+        Debug.Log(bossSpeedModifier);
     }
 }

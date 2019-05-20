@@ -133,6 +133,11 @@ public class GameManager : MonoBehaviour
         bossLogic.SetMaxLife(value);
     }
 
+    public void SetBossSpeed(float value)
+    {
+        bossLogic.SetMovementSpeedModifier(value);
+    }
+
     public Transform GetPlayerTransform()
     {
         if (player != null)

@@ -49,6 +49,11 @@ public class BossLogic : MonoBehaviour
         UIManager.Instance.SetBossLife(1.0f);
     }
 
+    public void SetMovementSpeedModifier(float modifier)
+    {
+        movementSpeedMultiplier = modifier;
+    }
+
     private void Start()
     {
         bossAttackSequence = BossAttackSequenceLogic();

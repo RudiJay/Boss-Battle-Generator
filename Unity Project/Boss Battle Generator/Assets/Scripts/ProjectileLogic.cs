@@ -36,10 +36,12 @@ public class ProjectileLogic : MonoBehaviour
         if (data.isPlayerProjectile)
         {
             col.gameObject.layer = LayerMask.NameToLayer("PlayerAttack");
+            col.tag = "PlayerAttack";
         }
         else
         {
             col.gameObject.layer = LayerMask.NameToLayer("BossAttack");
+            col.tag = "BossAttack";
         }
 
         sr.sprite = data.projectileSprite;
@@ -100,6 +102,11 @@ public class ProjectileLogic : MonoBehaviour
             {
                 bossLogic.DamageBoss(data.damage);
             }
+        }
+        else if ((col.tag == "PlayerAttack" && other.tag == "BossAttack")
+            || (col.tag == "BossAttack" && other.tag == "PlayerAttack"))
+        {
+            DisableProjectile();
         }
     }
 
